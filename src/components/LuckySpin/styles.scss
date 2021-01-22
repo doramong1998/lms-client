@@ -1,0 +1,54 @@
+.container-spin {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  box-shadow: 0 0 7px 0 rgba(64,64,64,.6), 0 8px 50px rgba(64,64,64,.3);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  padding: 0 !important;
+  
+  .spin-round{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    transition: transform 7s cubic-bezier(.25,.1,0,1);
+    -webkit-transition: transform 7s cubic-bezier(.25,.1,0,1);
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .lucky-item{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    overflow: hidden;
+    width: 42%;
+    padding-left: 25%;
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    text-shadow: rgba(0,0,0,.5) 1px 0 2px;
+  }
+  
+  .button-start{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 20%;
+    height: 20%;
+    cursor: pointer;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: transform .3s ease-in-out;
+    -webkit-transition: transform .3s ease-in-out;
+  }
+
+  .button-start:hover{
+    transform: scale(1.1);
+  }
+}

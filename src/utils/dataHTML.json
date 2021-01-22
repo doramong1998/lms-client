@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "name": "",
+    "description": "",
+    "keywords": "",
+    "image": "",
+    "favicon": ""
+  },
+  "code": {
+    "head": "",
+    "body": ""
+  },
+  "conversionCode": {
+    "facebookPixelID": "",
+    "googleAnalyticsID": "",
+    "googleTagManagerID": ""
+  },
+  "sections": [
+    {
+      "id": "0",
+      "type": "section",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "typeBackground": "color",
+      "typeGradient": "linear-gradient",
+      "position": 0,
+      "backgroundImage": "",
+      "typeOverlay": "color",
+      "backgroundSize": "cover",
+      "backgroundAttachment": "scroll",
+      "backgroundOrigin": "content-box",
+      "backgroundPosition": "left top",
+      "backgroundRepeat": "no-repeat",
+      "backgroundOpacity": 100,
+      "className": "",
+      "classStyle": "",
+      "filter": {
+        "contrast": 100,
+        "brightness": 100,
+        "saturate": 100,
+        "sepia": 0,
+        "grayscale": 0,
+        "invert": 0,
+        "hueRotate": 0,
+        "blur": 0
+      },
+      "desktop": {
+        "height": 600
+      },
+      "mobile": {
+        "height": 600
+      },
+      "beauty": false
+    }
+  ],
+  "elements": [],
+  "formItem": []
+}

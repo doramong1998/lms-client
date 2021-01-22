@@ -1,0 +1,149 @@
+.toolbar {
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 0 5px 19px rgba(6, 21, 40, 0.3);
+  z-index: 1000;
+  background-color: var(--white);
+
+  button {
+    padding: 1px;
+  }
+
+  .toolbar__item {
+    margin: 2px;
+    display: flex;
+    z-index: 1001;
+
+    button {
+      color: var(--color-black) !important;
+      border: none !important;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: var(--color-white) !important;
+        border: none !important;
+      }
+
+      &:focus,
+      &:active {
+        box-shadow: none !important;
+      }
+    }
+
+    input {
+      width: 50px;
+      border: 1px solid var(--color-codGray);
+      border-radius: 3px;
+      text-align: center;
+    }
+  }
+}
+
+.toolbar__popover {
+  background-color: var(--white) !important;
+  z-index: 1000;
+  padding: 0px !important;
+  border: none !important;
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: left;
+  color: #000 !important;
+  display: flex;
+  align-items: center;
+
+  .popover-body {
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 19px rgba(6, 21, 40, 0.3);
+    overflow: hidden;
+  }
+
+  .arrow::after {
+    border-bottom-color: var(--white);
+  }
+
+  .arrow::before {
+    border-bottom-color: transparent;
+  }
+
+  button {
+    border: none;
+    color: var(--color-codGray);
+    text-align: left;
+  }
+}
+
+.width-100{
+  width: 100% !important;
+}
+
+.settings__item {
+  min-height: 15px;
+  // max-height: 500px;
+  overflow-y: hidden;
+
+  .__toggle {
+    padding: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    background: rgba(6, 21, 40, .01);
+    border-bottom: 1px solid rgba(6, 21, 40, .03);
+    position: relative;
+    cursor: pointer;
+    transition: all 150ms linear;
+  }
+
+  .__collapse {
+    padding: 0 10px;
+
+    label {
+      flex: 1;
+      font-size: 18px;
+      margin-bottom: 0;
+      font-weight: 600;
+    }
+
+    .__collapse__content {
+      box-shadow: 0 0 2px 0 rgba(0, 0, 0, .15);
+      border-radius: 5px;
+      vertical-align: middle;
+      transition: box-shadow 150ms linear;
+      display: flex;
+      align-items: center;
+
+      .__title {
+        display: block;
+        text-align: center;
+        overflow: hidden;
+        text-transform: initial;
+        font-size: 18px;
+        width: 100%;
+        background-color: var(--white);
+        border: none;
+        color: var(--black);
+
+        &:focus,
+        &:active {
+          box-shadow: none;
+        }
+      }
+
+      input {
+        font-size: 12px;
+        padding: 5px;
+        border-radius: 5px;
+        font-weight: 600;
+        border: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
