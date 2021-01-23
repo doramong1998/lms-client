@@ -1,11 +1,9 @@
 import Builder from './builder'
-import Preview from './preview'
 import Login from './login'
-import Template from './templates'
+import Home from './home'
 
 export {
   Builder,
-  Preview,
   Login,
-  Template,
+  Home
 }

@@ -3,7 +3,7 @@ import axios from 'axios'
 /**
  * Axios defaults
  */
-axios.defaults.baseURL = 'http://149.28.158.115:3000'
+axios.defaults.baseURL = 'http://localhost:9000'
 
 // Headers
 axios.defaults.headers.common['Content-Type'] = 'application/json'

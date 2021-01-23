@@ -1,66 +1,67 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, useHistory } from 'react-router-dom'
-import { actionSaveHTML, actionSaveHistory } from './store/builder/actions'
-import { actionGetDataLDP, actionSetLDPName } from './store/api/actions'
-import { LayoutMain, LayoutPreview } from './components'
+import React, { FunctionComponent } from 'react'
+import { Link, Route, Switch, useHistory } from 'react-router-dom'
 import {
-  Builder, Preview, Login, Template,
+  Builder, Login, Home
 } from './pages'
-import { ApplicationState } from './store'
+import { Avatar, Layout, Menu } from 'antd'
+import SubMenu from 'antd/lib/menu/SubMenu'
+import { UserOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons'
+
+const { Content, Footer } = Layout
 
 export interface Props { }
 
 const Routes: FunctionComponent<Props> = () => {
-  const dispatch = useDispatch()
   const history = useHistory()
-  const dataLDP = useSelector((state: ApplicationState) => state.api.dataLDP)
-
-  const [getOne, setGetOne] = useState(true)
-  const [idLocal, setIdLocal] = useState('')
-  const pathname = history?.location?.pathname
-  const access_token = history?.location?.search
-  useEffect(() => {
-    const id = pathname.indexOf('/builder') !== -1 ? pathname.replace('/builder/', '') : ''
-    if (access_token.slice(0, 14) === '?access_token=') {
-      localStorage.setItem('token', access_token.slice(14))
-    }
-    if (id !== '' && id !== idLocal) {
-      setIdLocal(id)
-      dispatch(actionGetDataLDP(id))
-    }
-    if (id === '' || !dataLDP || (dataLDP && !dataLDP?.status)) {
-      history.push('/login')
-    }
-    if (dataLDP?.status && getOne) {
-      const dataGet = JSON.parse(dataLDP.data.data)
-      dispatch(actionSetLDPName(dataLDP.data.title))
-      dispatch(actionSaveHTML(dataGet))
-      dispatch(actionSaveHistory([dataGet]))
-      setGetOne(false)
-      history.push(`/builder/${dataLDP.data._id}`)
-    }
-  }, [dispatch, dataLDP, getOne, pathname, idLocal, history, access_token])
-
+  console.log(history)
   return (
-    <Switch>
-      <Route exact path="/builder/:ldpId">
-        <LayoutMain>
-          <Builder />
-        </LayoutMain>
-      </Route>
-      <Route exact path="/preview">
-        <LayoutPreview>
-          <Preview />
-        </LayoutPreview>
-      </Route>
-      <Route exact path="/template">
-        <Template />
-      </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-    </Switch>
+    <Layout style={{ width: '100%' }}>
+     
+      <Menu mode="horizontal" style={{ width: '100%', background: '#dfe4ea' }}>
+        <Menu.Item key="mail">
+          <Link to='/home' >Trang chủ</Link>
+        </Menu.Item>
+        <Menu.Item key="app">
+          <Link to='/builder' >Giáo viên</Link>
+        </Menu.Item>
+        <SubMenu key="SubMenu" title="Khóa học">
+          <Menu.ItemGroup title="Item 1">
+            <Menu.Item key="setting:1">Option 1</Menu.Item>
+            <Menu.Item key="setting:2">Option 2</Menu.Item>
+          </Menu.ItemGroup>
+          <Menu.ItemGroup title="Item 2">
+            <Menu.Item key="setting:3">Option 3</Menu.Item>
+            <Menu.Item key="setting:4">Option 4</Menu.Item>
+          </Menu.ItemGroup>
+        </SubMenu>
+        <Menu.Item key="account">
+          <Link to='/login' >Tài khoản</Link>
+
+        </Menu.Item>
+        <SubMenu key="userSetting" title={<><Avatar size={32} icon={<UserOutlined />} className='mr--10' />Tran Huy</>} style={{ float: 'right' }}>
+          <Menu.Item key="user" icon={<UserOutlined />}>Cá nhân</Menu.Item>
+          <Menu.Item key="setting" icon={<SettingOutlined />}>Cài đặt</Menu.Item>
+          <Menu.Item key="logout" icon={<LogoutOutlined />}>Đăng xuất</Menu.Item>
+        </SubMenu>
+      </Menu>
+
+      <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+        <Switch>
+          <Route exact path="/builder">
+            <Builder />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route path="/home">
+          {history.location.pathname === '/home' && <div className='banner-page' style={{ backgroundImage: 'url(https://i.imgur.com/JR8ilHf.jpg)' }}>
+      </div>}
+            <Home />
+          </Route>
+        </Switch>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>CODE MASTER</Footer>
+    </Layout>
   )
 }
 

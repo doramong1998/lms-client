@@ -10,8 +10,11 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import configureStore from './configureStore'
 import Routes from './routes'
 import './styles/main.scss'
+import 'antd/dist/antd.css'
 
-interface MainProps {}
+
+interface MainProps {
+}
 
 library.add(fas, far, fab)
 
@@ -22,7 +25,7 @@ const Main: React.FC<MainProps> = () => {
       <Router>
         <Routes />
       </Router>
-    </Provider>
+    </Provider >
   )
 }
 
