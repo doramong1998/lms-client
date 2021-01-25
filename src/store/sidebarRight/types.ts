@@ -1,4 +1,0 @@
-export enum Types {
-  PUBLISH_LDP = 'PUBLISH_LDP',
-  HANDLE_DEVICE = 'HANDLE_DEVICE'
-}
