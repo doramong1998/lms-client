@@ -34,7 +34,11 @@ export default <Model>{
   effects: {
     *login({ payload }, { call, put }) {
       try {
-        const response: UserAndLogin = yield call(login, payload)
+        // const response: UserAndLogin = yield call(login, payload)
+        const response = {
+          accessToken: 'ok',
+          status: true
+        }
         yield put({
           type: 'saveLogin',
           payload: response,

@@ -96,7 +96,7 @@ const BasicLayout: FC<Props> = (props) => {
       ) : (
         <SecurityLayout>
           <ProLayout
-            logo="https://scontent.fhan5-5.fna.fbcdn.net/v/t1.0-9/118204835_118136243337701_8971002240734921452_n.png?_nc_cat=101&ccb=2&_nc_sid=09cbfe&_nc_ohc=mISlx-3n9O8AX8ZFRZe&_nc_ht=scontent.fhan5-5.fna&oh=20bb673d4a296b83c263ecddd40ac2c6&oe=6010FFED"
+            logo="https://www.mu.my/files/uploads/lms-training-background.png"
             formatMessage={formatMessage}
             {...props}
             {...settings}

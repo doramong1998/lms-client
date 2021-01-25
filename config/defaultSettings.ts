@@ -11,7 +11,7 @@ const proSettings: DefaultSettings = {
   "contentWidth": "Fluid",
   "fixedHeader": true,
   "fixSiderbar": true,
-  "title": "Landing Page",
+  "title": "LMS",
   "pwa": false,
   "iconfontUrl": "",
   "footerRender": false
