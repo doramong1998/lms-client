@@ -53,19 +53,19 @@ export function getRoutes() {
         "routes": [
           {
             "path": "/index.html",
-            "redirect": "/landing-page",
+            "redirect": "/calendar",
             "exact": true
           },
           {
             "path": "/",
-            "redirect": "/landing-page",
+            "redirect": "/calendar",
             "exact": true
           },
           {
-            "path": "/landing-page",
-            "name": "landingPages",
-            "icon": "SolutionOutlined",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__landingPages' */'@/pages/landingPages'), loading: LoadingComponent}),
+            "path": "/calendar",
+            "name": "Lịch cá nhân",
+            "icon": "CalendarOutlined",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Calendar' */'@/pages/Calendar'), loading: LoadingComponent}),
             "exact": true
           },
           {

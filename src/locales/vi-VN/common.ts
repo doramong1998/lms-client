@@ -48,4 +48,5 @@ export default {
   'common.no': 'Không',
   'common.id': 'ID',
   'common.information': 'Thông tin',
+  'common.date': 'Ngày',
 }

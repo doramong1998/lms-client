@@ -64,13 +64,13 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/landing-page',
+              redirect: '/calendar',
             },
             {
-              path: '/landing-page',
-              name: 'landingPages',
-              icon: 'SolutionOutlined',
-              component: '@/pages/landingPages'
+              path: '/calendar',
+              name: 'Lịch cá nhân',
+              icon: 'CalendarOutlined',
+              component: '@/pages/Calendar'
             },
             {
               name: 'bannerAds',

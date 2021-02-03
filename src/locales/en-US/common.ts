@@ -48,4 +48,5 @@ export default {
   'common.no': 'No',
   'common.id': 'ID',
   'common.information': 'Information',
+  'common.date': 'Date',
 }
