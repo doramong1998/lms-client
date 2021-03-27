@@ -4,7 +4,6 @@ import { Badge, Button, DatePicker, Divider, Form, Input, Modal, Select, Space }
 import type { Dispatch } from 'umi'
 import { connect, FormattedMessage, useIntl } from 'umi'
 import { CloseOutlined } from '@ant-design/icons'
-import type { LandingPageT } from '../../data'
 import type { UserAndLogin } from '@/pages/user/login/data'
 
 const { Option } = Select
@@ -131,16 +130,13 @@ const ModalCreateOrEdit: FC<Props> = ({
 
 export default connect(
   ({
-    landingPages,
     userAndLogin,
   }: {
-    landingPages: LandingPageT
     userAndLogin: UserAndLogin
     loading: {
       effects: Record<string, boolean>
     }
   }) => ({
-    dataCreate: landingPages.landingPageCreated,
     userAndLogin,
   }),
 )(ModalCreateOrEdit)

@@ -8,6 +8,7 @@ import { Location, LocationState, History } from 'history';
 
 export * from '/home/x/workspace/lms-client/src/models/setting';
 export * from '/home/x/workspace/lms-client/src/pages/Calendar/model';
+export * from '/home/x/workspace/lms-client/src/pages/Enroll/model';
 export * from '/home/x/workspace/lms-client/src/pages/themes/model';
 export * from '/home/x/workspace/lms-client/src/pages/user/change/model';
 export * from '/home/x/workspace/lms-client/src/pages/user/forgot/model';

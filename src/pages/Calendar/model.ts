@@ -12,7 +12,7 @@ import {
 } from './service'
 
 type Model = {
-  namespace: 'landingPages'
+  namespace: 'calendar'
   state: LandingPageT
   reducers: {
     savelistLandingPage: Reducer<LandingPageT>
@@ -28,7 +28,7 @@ type Model = {
 }
 
 export default <Model>{
-  namespace: 'landingPages',
+  namespace: 'calendar',
   state: {
     listLandingPage: {
       status: false,

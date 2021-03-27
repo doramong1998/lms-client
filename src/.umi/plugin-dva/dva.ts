@@ -7,10 +7,11 @@ import createLoading from '/home/x/workspace/lms-client/node_modules/dva-loading
 import { plugin, history } from '../core/umiExports';
 import ModelSetting0 from '/home/x/workspace/lms-client/src/models/setting.ts';
 import ModelModel1 from '/home/x/workspace/lms-client/src/pages/Calendar/model.ts';
-import ModelModel2 from '/home/x/workspace/lms-client/src/pages/themes/model.ts';
-import ModelModel3 from '/home/x/workspace/lms-client/src/pages/user/change/model.ts';
-import ModelModel4 from '/home/x/workspace/lms-client/src/pages/user/forgot/model.ts';
-import ModelModel5 from '/home/x/workspace/lms-client/src/pages/user/login/model.ts';
+import ModelModel2 from '/home/x/workspace/lms-client/src/pages/Enroll/model.ts';
+import ModelModel3 from '/home/x/workspace/lms-client/src/pages/themes/model.ts';
+import ModelModel4 from '/home/x/workspace/lms-client/src/pages/user/change/model.ts';
+import ModelModel5 from '/home/x/workspace/lms-client/src/pages/user/forgot/model.ts';
+import ModelModel6 from '/home/x/workspace/lms-client/src/pages/user/login/model.ts';
 
 let app:any = null;
 
@@ -39,6 +40,7 @@ app.model({ namespace: 'model', ...ModelModel2 });
 app.model({ namespace: 'model', ...ModelModel3 });
 app.model({ namespace: 'model', ...ModelModel4 });
 app.model({ namespace: 'model', ...ModelModel5 });
+app.model({ namespace: 'model', ...ModelModel6 });
   return app;
 }
 

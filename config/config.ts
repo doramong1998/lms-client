@@ -68,56 +68,58 @@ export default defineConfig({
             },
             {
               path: '/calendar',
-              name: 'Lịch cá nhân',
+              name: 'calendar',
               icon: 'CalendarOutlined',
               component: '@/pages/Calendar'
             },
             {
-              name: 'bannerAds',
-              icon: 'PictureOutlined',
-              path: '/banner-ads',
+              name: 'enroll',
+              icon: 'PlusCircleOutlined',
+              path: '/enroll',
+              routes: [
+                {
+                  path: '/enroll/asign',
+                  name: 'Đăng kí',
+                  // component: '@/pages/RoleAndPermission/Role',
+                  breadcrumbName: 'Đăng kí',
+                  exact: true,
+                  hideInMenu: false,
+                },
+                {
+                  path: '/enroll/list',
+                  name: 'Danh sách đăng kí',
+                  // component: '@/pages/RoleAndPermission/Role',
+                  breadcrumbName: 'Danh sách đăng kí',
+                  exact: true,
+                  hideInMenu: false,
+                },
+              ]
             },
             {
-              path: '/themes',
-              name: 'themes',
-              icon: 'LayoutOutlined',
-              component: '@/pages/themes'
+              path: '/news',
+              name: 'news',
+              icon: 'StarOutlined',
             },
             {
-              path: '/showcases',
-              name: 'showcases',
-              icon: 'LayoutOutlined',
+              path: '/file',
+              name: 'file',
+              icon: 'FileOutlined',
             },
             {
-              name: 'dynamic',
-              icon: 'PieChartOutlined',
-              path: '/dynamic',
+              path: '/class',
+              name: 'class',
+              icon: 'ReadOutlined',
             },
             {
-              path: '/funnel',
-              name: 'funnel',
-              icon: 'FilterOutlined',
-            },
-            {
-              name: 'integrations',
-              icon: 'AppstoreAddOutlined',
-              path: '/integrations',
-            },
-            {
-              name: 'domains',
-              icon: 'GlobalOutlined',
-              path: '/domains',
-            },
-            {
-              name: 'linkBuilder',
-              icon: 'LinkOutlined',
-              path: '/link-builder',
+              name: 'account',
+              icon: 'UserOutlined',
+              path: '/account',
+              component: '@/pages/settings'
             },
             {
               name: 'settings',
               icon: 'SettingOutlined',
               path: '/settings',
-              component: '@/pages/settings'
             },
             {
               component: '404',

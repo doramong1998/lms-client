@@ -1,24 +1,20 @@
 // @ts-nocheck
 
 import CalendarOutlined from '@ant-design/icons/CalendarOutlined';
-import PictureOutlined from '@ant-design/icons/PictureOutlined';
-import LayoutOutlined from '@ant-design/icons/LayoutOutlined';
-import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
-import FilterOutlined from '@ant-design/icons/FilterOutlined';
-import AppstoreAddOutlined from '@ant-design/icons/AppstoreAddOutlined';
-import GlobalOutlined from '@ant-design/icons/GlobalOutlined';
-import LinkOutlined from '@ant-design/icons/LinkOutlined';
+import PlusCircleOutlined from '@ant-design/icons/PlusCircleOutlined';
+import StarOutlined from '@ant-design/icons/StarOutlined';
+import FileOutlined from '@ant-design/icons/FileOutlined';
+import ReadOutlined from '@ant-design/icons/ReadOutlined';
+import UserOutlined from '@ant-design/icons/UserOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined'
 
 export default {
   CalendarOutlined,
-PictureOutlined,
-LayoutOutlined,
-PieChartOutlined,
-FilterOutlined,
-AppstoreAddOutlined,
-GlobalOutlined,
-LinkOutlined,
+PlusCircleOutlined,
+StarOutlined,
+FileOutlined,
+ReadOutlined,
+UserOutlined,
 SettingOutlined
 }
     
