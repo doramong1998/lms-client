@@ -63,65 +63,61 @@ export function getRoutes() {
           },
           {
             "path": "/calendar",
-            "name": "Lịch cá nhân",
+            "name": "calendar",
             "icon": "CalendarOutlined",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Calendar' */'@/pages/Calendar'), loading: LoadingComponent}),
             "exact": true
           },
           {
-            "name": "bannerAds",
-            "icon": "PictureOutlined",
-            "path": "/banner-ads",
+            "name": "enroll",
+            "icon": "PlusCircleOutlined",
+            "path": "/enroll",
+            "routes": [
+              {
+                "path": "/enroll/asign",
+                "name": "Đăng kí",
+                "breadcrumbName": "Đăng kí",
+                "exact": true,
+                "hideInMenu": false
+              },
+              {
+                "path": "/enroll/list",
+                "name": "Danh sách đăng kí",
+                "breadcrumbName": "Danh sách đăng kí",
+                "exact": true,
+                "hideInMenu": false
+              }
+            ]
+          },
+          {
+            "path": "/news",
+            "name": "news",
+            "icon": "StarOutlined",
             "exact": true
           },
           {
-            "path": "/themes",
-            "name": "themes",
-            "icon": "LayoutOutlined",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__themes' */'@/pages/themes'), loading: LoadingComponent}),
+            "path": "/file",
+            "name": "file",
+            "icon": "FileOutlined",
             "exact": true
           },
           {
-            "path": "/showcases",
-            "name": "showcases",
-            "icon": "LayoutOutlined",
+            "path": "/class",
+            "name": "class",
+            "icon": "ReadOutlined",
             "exact": true
           },
           {
-            "name": "dynamic",
-            "icon": "PieChartOutlined",
-            "path": "/dynamic",
-            "exact": true
-          },
-          {
-            "path": "/funnel",
-            "name": "funnel",
-            "icon": "FilterOutlined",
-            "exact": true
-          },
-          {
-            "name": "integrations",
-            "icon": "AppstoreAddOutlined",
-            "path": "/integrations",
-            "exact": true
-          },
-          {
-            "name": "domains",
-            "icon": "GlobalOutlined",
-            "path": "/domains",
-            "exact": true
-          },
-          {
-            "name": "linkBuilder",
-            "icon": "LinkOutlined",
-            "path": "/link-builder",
+            "name": "account",
+            "icon": "UserOutlined",
+            "path": "/account",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__settings' */'@/pages/settings'), loading: LoadingComponent}),
             "exact": true
           },
           {
             "name": "settings",
             "icon": "SettingOutlined",
             "path": "/settings",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__settings' */'@/pages/settings'), loading: LoadingComponent}),
             "exact": true
           },
           {

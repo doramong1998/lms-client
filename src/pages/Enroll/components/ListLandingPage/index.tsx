@@ -33,20 +33,12 @@ type Props = {
   dispatch: Dispatch
   dataTable: ListLandingPages
   userAndLogin: UserAndLogin
-  creating?: boolean
-  editing?: boolean
-  deletingOne?: boolean
-  deletingMulti?: boolean
 }
 
 const ListNew: FC<Props> = ({
   dispatch,
   dataTable,
   userAndLogin,
-  creating,
-  editing,
-  deletingOne,
-  deletingMulti,
 }) => {
   const { formatMessage } = useIntl()
   const [isVisibleModal, setIsVisibleModal] = useState(false)
@@ -90,37 +82,11 @@ const ListNew: FC<Props> = ({
     },
   ])
 
-  useEffect(() => {
-    dispatch({
-      type: 'landingPages/getLandingPage',
-    })
-  }, [dispatch])
-
-
-
-  useEffect(() => {
-    if (deletingOne === true || deletingMulti === true) {
-      setLoading(true)
-    }
-    if (deletingOne === false || deletingMulti === false) {
-      dispatch({
-        type: 'landingPages/getLandingPage',
-      })
-      setLoading(false)
-    }
-  }, [deletingOne, deletingMulti, dispatch])
-
-  useEffect(() => {
-    if (creating === true || editing === true) {
-      setLoading(true)
-    }
-    if (creating === false || editing === false) {
-      dispatch({
-        type: 'landingPages/getLandingPage',
-      })
-      setLoading(false)
-    }
-  }, [creating, dispatch, editing])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'landingPages/getLandingPage',
+  //   })
+  // }, [dispatch])
 
   const onSearch = (values: any) => {
     let query = ''
@@ -130,12 +96,12 @@ const ListNew: FC<Props> = ({
       )
       query = `&${qs.stringify({ or: [...listField] }, { arrayFormat: 'repeat' })}`
     }
-    dispatch({
-      type: 'landingPages/getLandingPage',
-      payload: {
-        query: `?limit=10&sort=createdAt,DESC&page=1${query}`,
-      },
-    })
+    // dispatch({
+    //   type: 'landingPages/getLandingPage',
+    //   payload: {
+    //     query: `?limit=10&sort=createdAt,DESC&page=1${query}`,
+    //   },
+    // })
   }
 
   const getListData = (value: any) => {
@@ -220,21 +186,14 @@ const ListNew: FC<Props> = ({
 
 export default connect(
   ({
-    landingPages,
     userAndLogin,
     loading,
   }: {
-    landingPages: LandingPageT
     userAndLogin: UserAndLogin
     loading: {
       effects: Record<string, boolean>
     }
   }) => ({
     userAndLogin,
-    dataTable: landingPages.listLandingPage,
-    creating: loading.effects['landingPages/createLandingPage'],
-    editing: loading.effects['landingPages/editLandingPage'],
-    deletingOne: loading.effects['landingPages/deleteLandingPage'],
-    deletingMulti: loading.effects['landingPages/deleteMultiLandingPage'],
   }),
 )(ListNew)

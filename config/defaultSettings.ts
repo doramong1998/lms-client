@@ -5,16 +5,16 @@ type DefaultSettings = Partial<ProSettings> & {
 }
 
 const proSettings: DefaultSettings = {
-  "navTheme": "dark",
-  "primaryColor": "#1890ff",
+  "navTheme": "light",
+  "primaryColor": "#fa551e",
   "layout": "side",
   "contentWidth": "Fluid",
-  "fixedHeader": true,
+  "fixedHeader": false,
   "fixSiderbar": true,
-  "title": "LMS",
+  "colorWeak": false,
+  "title": "LMS-ACT",
   "pwa": false,
   "iconfontUrl": "",
-  "footerRender": false
 }
 
 export type { DefaultSettings }

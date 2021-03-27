@@ -1,3 +1,3 @@
-import ListLandingPage from './ListLandingPage'
+import ListCalendar from './ListCalendar'
 
-export { ListLandingPage }
+export { ListCalendar }
