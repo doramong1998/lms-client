@@ -1,12 +1,11 @@
 // @ts-nocheck
 import './core/polyfill';
-import '@@/core/devScripts';
 import '../global.tsx';
 import { plugin } from './core/plugin';
 import './core/pluginRegister';
 import { createHistory } from './core/history';
-import { ApplyPluginsType } from '/home/x/workspace/lms-client/node_modules/umi/node_modules/@umijs/runtime';
-import { renderClient } from '/home/x/workspace/lms-client/node_modules/umi/node_modules/@umijs/renderer-react/dist/index.js';
+import { ApplyPluginsType } from 'E:/a/Doan/lms-client/node_modules/umi/node_modules/@umijs/runtime';
+import { renderClient } from 'E:/a/Doan/lms-client/node_modules/umi/node_modules/@umijs/renderer-react/dist/index.js';
 import { getRoutes } from './core/routes';
 
 

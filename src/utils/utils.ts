@@ -8,9 +8,9 @@ export const isUrl = (path: string): boolean => reg.test(path)
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1])
 
-export const API_URL = 'http://149.28.158.115:3000'
+export const API_URL = 'http://localhost:3000/api'
 
-export const BUILDER_URL = 'http://recbook-builder.2soft.top'
+// export const BUILDER_URL = 'http://recbook-builder.2soft.top'
 // export const BUILDER_URL = 'http://localhost:3000'
 
 export const modalConfirmDelete = (onOk?: any) => {

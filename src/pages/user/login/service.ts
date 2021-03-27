@@ -8,7 +8,7 @@ type ParamType = {
 };
 
 export const login = async (payload: ParamType) => {
-  return request(`${API_URL}/get-access-token`, {
+  return request(`${API_URL}/login`, {
     method: 'POST',
     data: payload.data,
   })

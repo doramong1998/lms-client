@@ -1,7 +1,7 @@
 export default {
-  'login.appId': 'App ID',
-  'login.userId': 'User ID',
+  'login.email': 'Email',
+  'login.password': 'Mật khẩu',
   'login.auto': 'Đăng nhập tự động',
   'login.forgot': 'Quên mật khẩu?',
-  'login.error': 'App ID hoặc User ID không chính xác!',
+  'login.error': 'Email hoặc mật khẩu không chính xác!',
 }

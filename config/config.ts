@@ -38,12 +38,12 @@ export default defineConfig({
               redirect: '/user/login',
             },
             {
-              name: 'login',
+              name: 'Đăng nhập',
               path: '/user/login',
               component: '@/pages/user/login',
             },
             {
-              name: 'forgot',
+              name: 'Quên mật khẩu',
               path: '/user/forgot',
               component: '@/pages/user/forgot',
             },

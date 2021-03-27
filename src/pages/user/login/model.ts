@@ -1,4 +1,5 @@
 import { getPageQuery } from '@/utils/utils'
+import { message } from 'antd'
 import { stringify } from 'querystring'
 import type { Effect, Reducer } from 'umi'
 import { history } from 'umi'
@@ -34,11 +35,7 @@ export default <Model>{
   effects: {
     *login({ payload }, { call, put }) {
       try {
-        // const response: UserAndLogin = yield call(login, payload)
-        const response = {
-          accessToken: 'ok',
-          status: true
-        }
+        const response: UserAndLogin = yield call(login, payload)
         yield put({
           type: 'saveLogin',
           payload: response,
@@ -65,10 +62,8 @@ export default <Model>{
           }, 100)
         }
       } catch (error) {
-        yield put({
-          type: 'saveLogin',
-          payload: error.data,
-        })
+        const err = yield error.response.json()
+        message.error(err.message || 'Có lỗi xảy ra, vui lòng thử lại!')
       }
     },
     *logout() {

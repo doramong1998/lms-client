@@ -47,7 +47,7 @@ const UserLayout: FC<UserLayoutProps> = (props) => {
         <div className="layout--main__content">
           <div className={styles.top}>
             <div className={styles.header}>
-              <span className={styles.title}>Landing Page</span>
+              <span className={styles.title}>Learning Management System</span>
             </div>
           </div>
           {children}

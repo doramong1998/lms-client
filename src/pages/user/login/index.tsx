@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import type { FC } from 'react'
 import { Alert, Button, Form, Input, notification } from 'antd'
 import type { Dispatch } from 'umi'
 import { connect, FormattedMessage, useIntl, setLocale } from 'umi'
-import { AppstoreOutlined, UserOutlined } from '@ant-design/icons'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
 import type { UserAndLogin } from './data'
 import styles from './style.less'
 
@@ -55,20 +55,24 @@ const Login: FC<Props> = ({ dispatch, userAndLogin = {}, loading }) => {
           )}
         </>
         <Form.Item
-          label={formatMessage({ id: 'login.appId' })}
-          name="appId"
+          label={formatMessage({ id: 'login.email' })}
+          name="email"
           rules={[
             {
               required: true,
               message: formatMessage({ id: 'form.formItem.required.message' }),
             },
+            {
+              type:'email',
+              message: formatMessage({ id: 'form.formItem.required.email' }),
+            },
           ]}
         >
-          <Input prefix={<AppstoreOutlined />} />
+          <Input prefix={<MailOutlined />} />
         </Form.Item>
         <Form.Item
-          label={formatMessage({ id: 'login.userId' })}
-          name="userId"
+          label={formatMessage({ id: 'login.password' })}
+          name="password"
           rules={[
             {
               required: true,
@@ -76,7 +80,7 @@ const Login: FC<Props> = ({ dispatch, userAndLogin = {}, loading }) => {
             },
           ]}
         >
-          <Input prefix={<UserOutlined />} />
+          <Input.Password prefix={<LockOutlined />} />
         </Form.Item>
         <Form.Item>
           <Button className="w--full"
