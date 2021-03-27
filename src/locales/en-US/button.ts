@@ -9,6 +9,7 @@ export default {
   'button.create': 'Create',
   'button.edit': 'Edit',
   'button.send': 'Send',
+  'button.login': 'Login',
   'button.delete.selected': 'Delete {count} selected',
   'button.delete.selected.confirm': 'Are you sure delete?',
 }

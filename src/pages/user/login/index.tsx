@@ -87,7 +87,7 @@ const Login: FC<Props> = ({ dispatch, userAndLogin = {}, loading }) => {
             loading={loading}
             type="primary"
             htmlType="submit">
-            <FormattedMessage id="button.send" />
+            <FormattedMessage id="button.login" />
           </Button>
         </Form.Item>
       </Form>

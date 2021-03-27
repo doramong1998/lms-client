@@ -9,6 +9,7 @@ export default {
   'button.create': 'Thêm mới',
   'button.edit': 'Chỉnh sửa',
   'button.send': 'Gửi',
+  'button.login': 'Đăng nhập',
   'button.delete.selected': 'Xóa {count} mục đã chọn',
   'button.delete.selected.confirm': 'Bạn chắc chắn muốn xóa?',
 }
