@@ -1,7 +1,7 @@
 import { getPageQuery } from '@/utils/utils'
 import { message } from 'antd'
 import { stringify } from 'querystring'
-import type { Effect, Reducer } from 'umi'
+import type { Effect, Reducer, Dispatch } from 'umi'
 import { history } from 'umi'
 import type { UserAndLogin } from './data'
 import { login } from './service'

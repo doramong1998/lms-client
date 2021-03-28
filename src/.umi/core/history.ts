@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createBrowserHistory, History } from '/home/x/workspace/lms-client/node_modules/umi/node_modules/@umijs/runtime';
+import { createBrowserHistory, History } from 'E:/a/Doan/lms-client/node_modules/umi/node_modules/@umijs/runtime';
 
 let options = {
   "basename": "/"

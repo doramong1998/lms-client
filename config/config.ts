@@ -114,12 +114,13 @@ export default defineConfig({
               name: 'account',
               icon: 'UserOutlined',
               path: '/account',
-              component: '@/pages/settings'
+              component: '@/pages/Account'
             },
             {
               name: 'settings',
               icon: 'SettingOutlined',
               path: '/settings',
+              component: '@/pages/settings'
             },
             {
               component: '404',

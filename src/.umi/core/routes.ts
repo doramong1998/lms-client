@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { ApplyPluginsType, dynamic } from '/home/x/workspace/lms-client/node_modules/umi/node_modules/@umijs/runtime';
+import { ApplyPluginsType, dynamic } from 'E:/a/Doan/lms-client/node_modules/umi/node_modules/@umijs/runtime';
 import * as umiExports from './umiExports';
 import { plugin } from './plugin';
 import LoadingComponent from '@/components/PageLoading';
@@ -21,13 +21,13 @@ export function getRoutes() {
             "exact": true
           },
           {
-            "name": "login",
+            "name": "Đăng nhập",
             "path": "/user/login",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__user__login' */'@/pages/user/login'), loading: LoadingComponent}),
             "exact": true
           },
           {
-            "name": "forgot",
+            "name": "Quên mật khẩu",
             "path": "/user/forgot",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__user__forgot' */'@/pages/user/forgot'), loading: LoadingComponent}),
             "exact": true
@@ -39,7 +39,7 @@ export function getRoutes() {
             "exact": true
           },
           {
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/home/x/workspace/lms-client/src/pages/404'), loading: LoadingComponent}),
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'E:/a/Doan/lms-client/src/pages/404'), loading: LoadingComponent}),
             "exact": true
           }
         ]
@@ -111,17 +111,18 @@ export function getRoutes() {
             "name": "account",
             "icon": "UserOutlined",
             "path": "/account",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__settings' */'@/pages/settings'), loading: LoadingComponent}),
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Account' */'@/pages/Account'), loading: LoadingComponent}),
             "exact": true
           },
           {
             "name": "settings",
             "icon": "SettingOutlined",
             "path": "/settings",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__settings' */'@/pages/settings'), loading: LoadingComponent}),
             "exact": true
           },
           {
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'/home/x/workspace/lms-client/src/pages/404'), loading: LoadingComponent}),
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__404' */'E:/a/Doan/lms-client/src/pages/404'), loading: LoadingComponent}),
             "exact": true
           }
         ]

@@ -3,11 +3,11 @@ import {
   createIntl,
   IntlShape,
   MessageDescriptor,
-} from '/home/x/workspace/lms-client/node_modules/react-intl';
+} from 'E:/a/Doan/lms-client/node_modules/react-intl';
 import { ApplyPluginsType } from 'umi';
 import { event, LANG_CHANGE_EVENT } from './locale';
 // @ts-ignore
-import warning from '/home/x/workspace/lms-client/node_modules/warning/warning.js';
+import warning from 'E:/a/Doan/lms-client/node_modules/warning/warning.js';
 
 import { plugin } from '../core/plugin';
 
@@ -34,7 +34,7 @@ export {
   defineMessages,
   injectIntl,
   useIntl,
-} from '/home/x/workspace/lms-client/node_modules/react-intl';
+} from 'E:/a/Doan/lms-client/node_modules/react-intl';
 
 let g_intl: IntlShape;
 
@@ -43,7 +43,7 @@ const useLocalStorage = true;
 export const localeInfo: {[key: string]: any} = {
   'en-US': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/Calendar/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/Enroll/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/settings/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/themes/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/user/change/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/user/forgot/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/user/login/locales/en-US.ts')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/Account/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/Calendar/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/Enroll/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/settings/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/themes/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/user/change/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/user/forgot/locales/en-US.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/user/login/locales/en-US.ts')),
     },
     locale: 'en-US',
     antd: {
@@ -53,7 +53,7 @@ export const localeInfo: {[key: string]: any} = {
   },
   'vi-VN': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/Calendar/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/Enroll/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/settings/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/themes/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/user/change/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/user/forgot/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('/home/x/workspace/lms-client/src/pages/user/login/locales/vi-VN.ts')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/Account/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/Calendar/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/Enroll/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/settings/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/themes/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/user/change/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/user/forgot/locales/vi-VN.ts')),...((locale) => locale.__esModule ? locale.default : locale)(require('E:/a/Doan/lms-client/src/pages/user/login/locales/vi-VN.ts')),
     },
     locale: 'vi-VN',
     antd: {

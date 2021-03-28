@@ -6,13 +6,14 @@ import { EffectsCommandMap, SubscriptionAPI } from 'dva';
 import { match } from 'react-router-dom';
 import { Location, LocationState, History } from 'history';
 
-export * from '/home/x/workspace/lms-client/src/models/setting';
-export * from '/home/x/workspace/lms-client/src/pages/Calendar/model';
-export * from '/home/x/workspace/lms-client/src/pages/Enroll/model';
-export * from '/home/x/workspace/lms-client/src/pages/themes/model';
-export * from '/home/x/workspace/lms-client/src/pages/user/change/model';
-export * from '/home/x/workspace/lms-client/src/pages/user/forgot/model';
-export * from '/home/x/workspace/lms-client/src/pages/user/login/model';
+export * from 'E:/a/Doan/lms-client/src/models/setting';
+export * from 'E:/a/Doan/lms-client/src/pages/Account/model';
+export * from 'E:/a/Doan/lms-client/src/pages/Calendar/model';
+export * from 'E:/a/Doan/lms-client/src/pages/Enroll/model';
+export * from 'E:/a/Doan/lms-client/src/pages/themes/model';
+export * from 'E:/a/Doan/lms-client/src/pages/user/change/model';
+export * from 'E:/a/Doan/lms-client/src/pages/user/forgot/model';
+export * from 'E:/a/Doan/lms-client/src/pages/user/login/model';
 
 export interface Action<T = any> {
   type: T

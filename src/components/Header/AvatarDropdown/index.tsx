@@ -1,24 +1,24 @@
-import React from 'react'
+import { useEffect } from 'react'
 import type { FC } from 'react'
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons'
 import { Avatar, Dropdown, Menu } from 'antd'
 import type { Dispatch } from 'umi'
 import { history, connect, FormattedMessage } from 'umi'
 import classNames from 'classnames'
-// import { AccountInfo, SettingsAndAccount } from '@/pages/settings/account/data'
 import styles from '../styles.less'
+import { Account,AccountT } from '@/pages/Account/data'
 
 type Props = {
   dispatch: Dispatch
-  // accountInfo: AccountInfo
+  accountInfo: Account
 }
 
-const AvatarDropdown: FC<Props> = ({ dispatch }) => {
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'settingsAndAccount/getAccountInfo',
-  //   })
-  // }, [])
+const AvatarDropdown: FC<Props> = ({ dispatch, accountInfo }) => {
+  useEffect(() => {
+    dispatch({
+      type: 'account/getAccount',
+    })
+  }, [])
 
   const onMenuClick = (e: any) => {
     if (e.key === 'logout') {
@@ -77,16 +77,16 @@ const AvatarDropdown: FC<Props> = ({ dispatch }) => {
           size="small"
           className={styles.avatar}
           alt="avatar"
-          src="https://i.ytimg.com/vi/82bQkQLBdQU/maxresdefault.jpg"
+          src={accountInfo?.data?.avatar}
           />
-        <span className="anticon">Usopp</span>
+        <span className="anticon">{accountInfo?.data?.lastName}</span>
       </span>
     </Dropdown>
   )
 }
 
 export default connect(
-  // ({ settingsAndAccount }: { settingsAndAccount: SettingsAndAccount }) => ({
-  //   accountInfo: settingsAndAccount.accountInfo,
-  // })
+  ({ account }: { account: AccountT }) => ({
+    accountInfo: account.detailAccount,
+  })
 )(AvatarDropdown)
