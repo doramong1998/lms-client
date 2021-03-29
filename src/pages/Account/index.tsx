@@ -1,7 +1,6 @@
-import React from 'react'
 import type { FC } from 'react'
 import { GridContent } from '@ant-design/pro-layout'
-import { ListCalendar } from './components'
+import { AccountDetail } from './components'
 
 type Props = {}
 
@@ -10,7 +9,7 @@ const LandingpPage: FC<Props> = () => {
     <GridContent>
       <div className="layout--main">
         <div className="layout--main__content">
-          <ListCalendar />
+          <AccountDetail />
         </div>
       </div>
     </GridContent>

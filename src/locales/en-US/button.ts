@@ -7,6 +7,7 @@ export default {
   'button.yes': 'Yes',
   'button.cancel': 'Cancel',
   'button.create': 'Create',
+  'button.save': 'Save',
   'button.edit': 'Edit',
   'button.send': 'Send',
   'button.login': 'Login',

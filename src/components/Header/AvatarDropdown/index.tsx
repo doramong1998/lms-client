@@ -31,7 +31,7 @@ const AvatarDropdown: FC<Props> = ({ dispatch, accountInfo }) => {
       return
     }
 
-    history.push(`/settings`)
+    history.push(`/account`)
   }
 
   return (

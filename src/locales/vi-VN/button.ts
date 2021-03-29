@@ -8,6 +8,7 @@ export default {
   'button.cancel': 'Hủy',
   'button.create': 'Thêm mới',
   'button.edit': 'Chỉnh sửa',
+  'button.save': 'Lưu',
   'button.send': 'Gửi',
   'button.login': 'Đăng nhập',
   'button.delete.selected': 'Xóa {count} mục đã chọn',

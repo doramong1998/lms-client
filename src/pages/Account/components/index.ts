@@ -1,3 +1,3 @@
-import ListCalendar from './ListCalendar'
+import AccountDetail from './AccountDetail'
 
-export { ListCalendar }
+export { AccountDetail }
