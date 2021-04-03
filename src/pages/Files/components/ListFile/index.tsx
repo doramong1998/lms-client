@@ -95,8 +95,6 @@ const ListNew: FC<Props> = ({
     modalConfirmDelete(onOk);
   };
 
-  console.log(dataTable, dataSource);
-
   return (
     <>
       <div className="layout--main__title">
