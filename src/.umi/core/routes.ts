@@ -66,23 +66,31 @@ export function getRoutes() {
             "name": "calendar",
             "icon": "CalendarOutlined",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Calendar' */'@/pages/Calendar'), loading: LoadingComponent}),
+            "visible": [
+              "1",
+              "2",
+              "3"
+            ],
             "exact": true
           },
           {
             "name": "enroll",
             "icon": "PlusCircleOutlined",
             "path": "/enroll",
+            "visible": [
+              "3"
+            ],
             "routes": [
               {
                 "path": "/enroll/asign",
-                "name": "Đăng kí",
+                "name": "enroll",
                 "breadcrumbName": "Đăng kí",
                 "exact": true,
                 "hideInMenu": false
               },
               {
                 "path": "/enroll/list",
-                "name": "Danh sách đăng kí",
+                "name": "enrollList",
                 "breadcrumbName": "Danh sách đăng kí",
                 "exact": true,
                 "hideInMenu": false
@@ -93,18 +101,53 @@ export function getRoutes() {
             "path": "/news",
             "name": "news",
             "icon": "StarOutlined",
+            "visible": [
+              "1",
+              "2",
+              "3"
+            ],
             "exact": true
           },
           {
             "path": "/file",
             "name": "file",
             "icon": "FileOutlined",
+            "visible": [
+              "1",
+              "2",
+              "3"
+            ],
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Files' */'@/pages/Files'), loading: LoadingComponent}),
             "exact": true
           },
           {
             "path": "/class",
             "name": "class",
             "icon": "ReadOutlined",
+            "visible": [
+              "2",
+              "3"
+            ],
+            "exact": true
+          },
+          {
+            "path": "/class-manage",
+            "name": "class-manage",
+            "icon": "GroupOutlined",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__ClassManage' */'@/pages/ClassManage'), loading: LoadingComponent}),
+            "visible": [
+              "1"
+            ],
+            "exact": true
+          },
+          {
+            "path": "/account-manage",
+            "name": "account-manage",
+            "icon": "UsergroupAddOutlined",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__AccountManage' */'@/pages/AccountManage'), loading: LoadingComponent}),
+            "visible": [
+              "1"
+            ],
             "exact": true
           },
           {
@@ -112,6 +155,11 @@ export function getRoutes() {
             "icon": "UserOutlined",
             "path": "/account",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Account' */'@/pages/Account'), loading: LoadingComponent}),
+            "visible": [
+              "1",
+              "2",
+              "3"
+            ],
             "exact": true
           },
           {
@@ -119,6 +167,11 @@ export function getRoutes() {
             "icon": "SettingOutlined",
             "path": "/settings",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__settings' */'@/pages/settings'), loading: LoadingComponent}),
+            "visible": [
+              "1",
+              "2",
+              "3"
+            ],
             "exact": true
           },
           {

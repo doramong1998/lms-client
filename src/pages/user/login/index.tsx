@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { Alert, Button, Form, Input, notification } from 'antd'
 import type { Dispatch } from 'umi'
 import { connect, FormattedMessage, useIntl, setLocale } from 'umi'
-import { LockOutlined, MailOutlined } from '@ant-design/icons'
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import type { UserAndLogin } from './data'
 import styles from './style.less'
 
@@ -55,20 +55,16 @@ const Login: FC<Props> = ({ dispatch, userAndLogin = {}, loading }) => {
           )}
         </>
         <Form.Item
-          label={formatMessage({ id: 'login.email' })}
-          name="email"
+          label={formatMessage({ id: 'login.account' })}
+          name="username"
           rules={[
             {
               required: true,
               message: formatMessage({ id: 'form.formItem.required.message' }),
             },
-            {
-              type:'email',
-              message: formatMessage({ id: 'form.formItem.required.email' }),
-            },
           ]}
         >
-          <Input prefix={<MailOutlined />} />
+          <Input prefix={<UserOutlined />} />
         </Form.Item>
         <Form.Item
           label={formatMessage({ id: 'login.password' })}

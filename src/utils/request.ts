@@ -13,11 +13,11 @@ const errorHandler = (error: { response: Response }): Response => {
       description: formatMessage({ id: 'error.network' }),
     })
   }
-  return response
+  throw error
 }
 
-// call API = umi-request
 const request = extend({
+// call API = umi-request
   errorHandler,
 })
 

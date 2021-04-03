@@ -1,7 +1,7 @@
 import { getPageQuery } from '@/utils/utils'
 import { message } from 'antd'
 import { stringify } from 'querystring'
-import type { Effect, Reducer, Dispatch } from 'umi'
+import type { Effect, Reducer } from 'umi'
 import { history } from 'umi'
 import type { UserAndLogin } from './data'
 import { login } from './service'
@@ -23,6 +23,7 @@ export default <Model>{
   state: {
     status: true,
     accessToken: localStorage.getItem('token') || '',
+    permissionId: localStorage.getItem('auth') || ''
   },
   reducers: {
     saveLogin(state, { payload }) {
@@ -42,6 +43,7 @@ export default <Model>{
         })
         if (response?.accessToken) {
           yield localStorage.setItem('token', response?.accessToken)
+          yield localStorage.setItem('auth', response?.permissionId)
           setTimeout(() => {
             const urlParams = new URL(window.location.href)
             const params = getPageQuery()

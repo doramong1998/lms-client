@@ -70,16 +70,18 @@ export default defineConfig({
               path: '/calendar',
               name: 'calendar',
               icon: 'CalendarOutlined',
-              component: '@/pages/Calendar'
+              component: '@/pages/Calendar',
+              visible: ["1","2","3"],
             },
             {
               name: 'enroll',
               icon: 'PlusCircleOutlined',
               path: '/enroll',
+              visible: ["3"],
               routes: [
                 {
                   path: '/enroll/asign',
-                  name: 'Đăng kí',
+                  name: 'enroll',
                   // component: '@/pages/RoleAndPermission/Role',
                   breadcrumbName: 'Đăng kí',
                   exact: true,
@@ -87,7 +89,7 @@ export default defineConfig({
                 },
                 {
                   path: '/enroll/list',
-                  name: 'Danh sách đăng kí',
+                  name: 'enrollList',
                   // component: '@/pages/RoleAndPermission/Role',
                   breadcrumbName: 'Danh sách đăng kí',
                   exact: true,
@@ -99,28 +101,48 @@ export default defineConfig({
               path: '/news',
               name: 'news',
               icon: 'StarOutlined',
+              visible: ["1","2","3"],
             },
             {
               path: '/file',
               name: 'file',
               icon: 'FileOutlined',
+              visible: ["1","2","3"],
+              component: '@/pages/Files',
             },
             {
               path: '/class',
               name: 'class',
               icon: 'ReadOutlined',
+              visible: ["2","3"],
+            },
+            {
+              path: '/class-manage',
+              name: 'class-manage',
+              icon: 'GroupOutlined',
+              component: '@/pages/ClassManage',
+              visible: ["1"],
+            },
+            {
+              path: '/account-manage',
+              name: 'account-manage',
+              icon: 'UsergroupAddOutlined',
+              component: '@/pages/AccountManage',
+              visible: ["1"],
             },
             {
               name: 'account',
               icon: 'UserOutlined',
               path: '/account',
-              component: '@/pages/Account'
+              component: '@/pages/Account',
+              visible: ["1","2","3"],
             },
             {
               name: 'settings',
               icon: 'SettingOutlined',
               path: '/settings',
-              component: '@/pages/settings'
+              component: '@/pages/settings',
+              visible: ["1","2","3"],
             },
             {
               component: '404',

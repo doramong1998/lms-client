@@ -3,8 +3,7 @@ export type Account = {
   data?: {
     id?: number;
     idUser?: string;
-    lastName?: string;
-    firstName?: string;
+    fullName?: string;
     gender?: string;
     dob?: string;
     class?: string;
@@ -12,12 +11,14 @@ export type Account = {
     address?: string;
     phone?: string;
     email?: string;
-    permission?: string;
+    permissionId?: string;
     avatar?: string;
+    status?: boolean;
   };
   status?: number;
 };
 
 export type AccountT = {
-  detailAccount: Account
+  detailAccount: Account,
+  listClass: any,
 };

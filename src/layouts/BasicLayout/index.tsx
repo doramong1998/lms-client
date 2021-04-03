@@ -39,13 +39,17 @@ export type BasicLayoutContext = { [K in 'location']: Props[K] } & {
   breadcrumbNameMap: Record<string, MenuDataItem>
 }
 
-const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
+const menuDataRender = (menuList: MenuDataItem[]): any =>
   menuList.map((item) => {
     const localItem = {
       ...item,
       children: item.children ? menuDataRender(item.children) : undefined,
     }
-    return Authorized.check(item.authority, localItem, null) as MenuDataItem
+    let auth = localStorage.getItem('auth')
+    if(item?.visible?.indexOf(auth) > -1){
+      return Authorized.check(item.authority, localItem, null) as MenuDataItem
+    }
+    return null
   })
 
 const BasicLayout: FC<Props> = (props) => {

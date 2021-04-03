@@ -1,7 +1,7 @@
 export default {
-  'login.email': 'Email',
+  'login.account': 'Username',
   'login.userId': 'Password',
   'login.auto': 'Remember Password',
   'login.forgot': 'Forgot Password?',
-  'login.error': 'Email or password is incorrect!',
+  'login.error': 'Username or password is incorrect!',
 }
