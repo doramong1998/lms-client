@@ -1,11 +1,21 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Table, Menu, Badge, Button, Dropdown, Space } from "antd";
+import {
+  Row,
+  Col,
+  Divider,
+  Table,
+  Menu,
+  Badge,
+  Button,
+  Dropdown,
+  Space,
+} from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage } from "umi";
 import ModalCreate from "./ModalCreate";
-import type { ClassT, ListClass, Class } from "../../data";
+import type { SubjectT, ListSubject, Subject } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
 import {
   EditOutlined,
@@ -16,7 +26,7 @@ import {
 
 type Props = {
   dispatch: Dispatch;
-  dataTable: ListClass;
+  dataTable: ListSubject;
   loadingGet: boolean;
   loadingCreate: boolean;
   loadingUpdate: boolean;
@@ -38,10 +48,10 @@ const ListNew: FC<Props> = ({
 
   useEffect(() => {
     dispatch({
-      type: "classManage/getListClass",
+      type: "subjectManage/getListSubject",
     });
     dispatch({
-      type: "classManage/getListTeacher",
+      type: "subjectManage/getListTeacher",
     });
   }, [dispatch]);
 
@@ -69,21 +79,20 @@ const ListNew: FC<Props> = ({
     ) {
       setSelectedRowKeys([]);
       dispatch({
-        type: "classManage/getListClass",
+        type: "subjectManage/getListSubject",
       });
       setLoading(false);
     }
   }, [loadingCreate, dispatch, loadingDelete, loadingUpdate]);
 
   const dataSource =
-    dataTable?.data?.map((item: Class) => ({
+    dataTable?.data?.map((item: Subject) => ({
       id: item?.id,
-      idClass: item?.idClass,
+      idSubject: item?.idSubject,
       name: item?.name,
+      code: item?.code,
       studentNum: item?.studentNum,
       idTeacher: item.idTeacher,
-      students: item.students,
-      files: item?.files,
       status: item?.status,
       teacher: item?.teacher,
       totalStudent: item?.totalStudent,
@@ -98,10 +107,10 @@ const ListNew: FC<Props> = ({
   const onDeleteOne = (id: any) => {
     const onOk = () =>
       dispatch({
-        type: "classManage/deleteClass",
+        type: "subjectManage/deleteSubject",
         payload: {
           data: {
-            id
+            id,
           },
         },
       });
@@ -115,9 +124,14 @@ const ListNew: FC<Props> = ({
       fixed: "left",
       render: (value: any, item: any, index: number) => index + 1,
     },
+
     {
-      title: "Lớp",
+      title: "Tên môn học",
       dataIndex: "name",
+    },
+    {
+      title: "Mã môn học",
+      dataIndex: "code",
     },
     {
       title: "Quản lý",
@@ -131,10 +145,6 @@ const ListNew: FC<Props> = ({
     {
       title: "SL sinh viên tối đa",
       dataIndex: "totalStudent",
-    },
-    {
-      title: "SL tài liệu",
-      dataIndex: "file",
     },
     {
       title: "Trạng thái",
@@ -156,7 +166,10 @@ const ListNew: FC<Props> = ({
           <Menu>
             <Menu.Item
               icon={<EditOutlined />}
-              onClick={() => { setIsVisibleModal(true); setData(record)}}
+              onClick={() => {
+                setIsVisibleModal(true);
+                setData(record);
+              }}
             >
               Cập nhật
             </Menu.Item>
@@ -187,7 +200,7 @@ const ListNew: FC<Props> = ({
   return (
     <>
       <div className="layout--main__title">
-        <FormattedMessage id="ClassManage.listClass" />
+        <FormattedMessage id="subjectManage.listSubject" />
       </div>
       <Divider />
       <Row gutter={24} className="mb--24">
@@ -197,7 +210,7 @@ const ListNew: FC<Props> = ({
             <Button
               type="primary"
               onClick={() => {
-                setIsVisibleModal(true)
+                setIsVisibleModal(true);
               }}
             >
               <PlusOutlined className="mr--5" />
@@ -221,7 +234,10 @@ const ListNew: FC<Props> = ({
 
       <ModalCreate
         isVisibleModal={isVisibleModal}
-        setIsVisibleModal={() => {setIsVisibleModal(false); setData(null)} }
+        setIsVisibleModal={() => {
+          setIsVisibleModal(false);
+          setData(null);
+        }}
         data={data}
       />
     </>
@@ -230,18 +246,18 @@ const ListNew: FC<Props> = ({
 
 export default connect(
   ({
-    classManage,
+    subjectManage,
     loading,
   }: {
-    classManage: ClassT;
+    subjectManage: SubjectT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    dataTable: classManage.listClass,
-    loadingGet: loading.effects["classManage/getListClass"],
-    loadingCreate: loading.effects["classManage/createClass"],
-    loadingUpdate: loading.effects["classManage/updateClass"],
-    loadingDelete: loading.effects["classManage/deleteClass"],
+    dataTable: subjectManage.listSubject,
+    loadingGet: loading.effects["subjectManage/getListSubject"],
+    loadingCreate: loading.effects["subjectManage/createSubject"],
+    loadingUpdate: loading.effects["subjectManage/updateSubject"],
+    loadingDelete: loading.effects["subjectManage/deleteSubject"],
   })
 )(ListNew);

@@ -1,24 +1,23 @@
-export type Class = {
+export type Subject = {
   id?: number,
-  idClass?: string,
+  idSubject?: string,
   name?: string,
   studentNum?: number,
   fileNum?: number,
   idTeacher?: string,
-  students?: string,
-  files?: number,
+  code?: string,
   status?: string,
   teacher?: any,
   totalStudent?: number,
 }
 
-export type ListClass = {
+export type ListSubject = {
   status?: number,
   data?: [],
   message?: string
 }
 
-export type ClassT = {
-  listClass: ListClass,
+export type SubjectT = {
+  listSubject: ListSubject,
   listTeacher: any,
 }

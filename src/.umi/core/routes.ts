@@ -141,6 +141,26 @@ export function getRoutes() {
             "exact": true
           },
           {
+            "path": "/subject",
+            "name": "subject",
+            "icon": "BookOutlined",
+            "visible": [
+              "2",
+              "3"
+            ],
+            "exact": true
+          },
+          {
+            "path": "/subject-manage",
+            "name": "subject-manage",
+            "icon": "BookOutlined",
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__subjectManage' */'@/pages/subjectManage'), loading: LoadingComponent}),
+            "visible": [
+              "1"
+            ],
+            "exact": true
+          },
+          {
             "path": "/account-manage",
             "name": "account-manage",
             "icon": "UsergroupAddOutlined",

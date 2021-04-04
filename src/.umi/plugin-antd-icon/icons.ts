@@ -6,6 +6,7 @@ import StarOutlined from '@ant-design/icons/StarOutlined';
 import FileOutlined from '@ant-design/icons/FileOutlined';
 import ReadOutlined from '@ant-design/icons/ReadOutlined';
 import GroupOutlined from '@ant-design/icons/GroupOutlined';
+import BookOutlined from '@ant-design/icons/BookOutlined';
 import UsergroupAddOutlined from '@ant-design/icons/UsergroupAddOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined'
@@ -17,6 +18,7 @@ StarOutlined,
 FileOutlined,
 ReadOutlined,
 GroupOutlined,
+BookOutlined,
 UsergroupAddOutlined,
 UserOutlined,
 SettingOutlined

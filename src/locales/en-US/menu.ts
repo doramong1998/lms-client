@@ -3,6 +3,8 @@ export default {
   'menu.account': 'Account',
   'menu.account-manage': 'Account Manage',
   'menu.class-manage': 'Class Manage',
+  'menu.subject': 'Subject',
+  'menu.subject-manage': 'Subject Manage',
   'menu.file': 'File',
   'menu.class': 'Class',
   'menu.settings': 'Setting',

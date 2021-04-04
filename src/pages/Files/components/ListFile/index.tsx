@@ -1,19 +1,21 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Button, Space, Card, Skeleton } from "antd";
+import { Row, Col, Divider, Button, Space, Card, Spin } from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage } from "umi";
 import ModalCreate from "./ModalCreate";
 import type { FileT, ListFile, File } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
+import { saveAs } from "file-saver";
 import {
-  EditOutlined,
   PlusOutlined,
   EllipsisOutlined,
-  SettingOutlined,
+  DownloadOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
+import ModalShow from "./ModalShow";
 
 type Props = {
   dispatch: Dispatch;
@@ -33,6 +35,7 @@ const ListNew: FC<Props> = ({
   loadingUpdate,
 }) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const [isVisibleShow, setIsVisibleShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
 
@@ -117,30 +120,75 @@ const ListNew: FC<Props> = ({
           </Space>
         </Col>
       </Row>
-
-      <Row gutter={12}>
-        {dataSource?.map((item: any) => (
-          <Col span={24} md={6} key={item.id}>
-            <Card
-              className="w--full"
-              style={{ marginTop: 16 }}
-              actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
-              ]}
-              cover={<img alt="picture" src={item.url} />}
-            >
-              <Meta title={item.name} />
-            </Card>
-          </Col>
-        ))}
-      </Row>
-
+      <Spin spinning={loading}>
+        <Row gutter={12}>
+          {dataSource?.map((item: any) => {
+            if (item?.type.indexOf("image") !== -1) {
+              return (
+                <Col span={24} md={6} key={item.id}>
+                  <Card
+                    className="w--full"
+                    style={{ marginTop: 16 }}
+                    actions={[
+                      <EyeOutlined
+                        key="watch"
+                        onClick={() => {
+                          setIsVisibleShow(true);
+                          setData(item);
+                        }}
+                      />,
+                      <DownloadOutlined
+                        key="download"
+                        onClick={() => saveAs(item.url, item.name)}
+                      />,
+                      <EllipsisOutlined key="ellipsis" />,
+                    ]}
+                    cover={<img style={{height: '180px'}} alt="picture" src={item.url} />}
+                  >
+                    <Meta title={item.name} />
+                  </Card>
+                </Col>
+              );
+            } else if (item?.type.indexOf("video") !== -1) {
+              return (
+                <Col span={24} md={6} key={item.id}>
+                  <Card
+                    className="w--full"
+                    style={{ marginTop: 16 }}
+                    actions={[
+                      <EyeOutlined
+                        key="watch"
+                        onClick={() => {
+                          setIsVisibleShow(true);
+                          setData(item);
+                        }}
+                      />,
+                      <DownloadOutlined
+                        key="download"
+                        onClick={() => saveAs(item.url, item.name)}
+                      />,
+                      <EllipsisOutlined key="ellipsis" />,
+                    ]}
+                    cover={<img style={{height: '180px'}} alt="picture" src="http://res.cloudinary.com/huy12312312a/image/upload/v1617502931/wpy5looxqrpcpg8wzpti.png" />}
+                  >
+                    <Meta title={item.name} />
+                  </Card>
+                </Col>
+              );
+            } else return null;
+          })}
+        </Row>
+      </Spin>
       <ModalCreate
         isVisibleModal={isVisibleModal}
         setIsVisibleModal={() => {
           setIsVisibleModal(false);
+        }}
+      />
+      <ModalShow
+        isVisibleModal={isVisibleShow}
+        setIsVisibleModal={() => {
+          setIsVisibleShow(false);
           setData(null);
         }}
         data={data}

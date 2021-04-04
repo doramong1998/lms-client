@@ -13,6 +13,7 @@ export * from 'E:/a/Doan/lms-client/src/pages/Calendar/model';
 export * from 'E:/a/Doan/lms-client/src/pages/ClassManage/model';
 export * from 'E:/a/Doan/lms-client/src/pages/Enroll/model';
 export * from 'E:/a/Doan/lms-client/src/pages/Files/model';
+export * from 'E:/a/Doan/lms-client/src/pages/SubjectManage/model';
 export * from 'E:/a/Doan/lms-client/src/pages/themes/model';
 export * from 'E:/a/Doan/lms-client/src/pages/user/change/model';
 export * from 'E:/a/Doan/lms-client/src/pages/user/forgot/model';

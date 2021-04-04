@@ -12,10 +12,11 @@ import ModelModel3 from 'E:/a/Doan/lms-client/src/pages/Calendar/model.ts';
 import ModelModel4 from 'E:/a/Doan/lms-client/src/pages/ClassManage/model.ts';
 import ModelModel5 from 'E:/a/Doan/lms-client/src/pages/Enroll/model.ts';
 import ModelModel6 from 'E:/a/Doan/lms-client/src/pages/Files/model.ts';
-import ModelModel7 from 'E:/a/Doan/lms-client/src/pages/themes/model.ts';
-import ModelModel8 from 'E:/a/Doan/lms-client/src/pages/user/change/model.ts';
-import ModelModel9 from 'E:/a/Doan/lms-client/src/pages/user/forgot/model.ts';
-import ModelModel10 from 'E:/a/Doan/lms-client/src/pages/user/login/model.ts';
+import ModelModel7 from 'E:/a/Doan/lms-client/src/pages/SubjectManage/model.ts';
+import ModelModel8 from 'E:/a/Doan/lms-client/src/pages/themes/model.ts';
+import ModelModel9 from 'E:/a/Doan/lms-client/src/pages/user/change/model.ts';
+import ModelModel10 from 'E:/a/Doan/lms-client/src/pages/user/forgot/model.ts';
+import ModelModel11 from 'E:/a/Doan/lms-client/src/pages/user/login/model.ts';
 
 let app:any = null;
 
@@ -49,6 +50,7 @@ app.model({ namespace: 'model', ...ModelModel7 });
 app.model({ namespace: 'model', ...ModelModel8 });
 app.model({ namespace: 'model', ...ModelModel9 });
 app.model({ namespace: 'model', ...ModelModel10 });
+app.model({ namespace: 'model', ...ModelModel11 });
   return app;
 }
 
