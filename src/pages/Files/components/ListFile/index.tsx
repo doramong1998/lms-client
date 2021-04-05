@@ -143,7 +143,13 @@ const ListNew: FC<Props> = ({
                       />,
                       <EllipsisOutlined key="ellipsis" />,
                     ]}
-                    cover={<img style={{height: '180px'}} alt="picture" src={item.url} />}
+                    cover={
+                      <img
+                        style={{ height: "180px" }}
+                        alt="picture"
+                        src={item.url}
+                      />
+                    }
                   >
                     <Meta title={item.name} />
                   </Card>
@@ -169,13 +175,51 @@ const ListNew: FC<Props> = ({
                       />,
                       <EllipsisOutlined key="ellipsis" />,
                     ]}
-                    cover={<img style={{height: '180px'}} alt="picture" src="http://res.cloudinary.com/huy12312312a/image/upload/v1617502931/wpy5looxqrpcpg8wzpti.png" />}
+                    cover={
+                      <img
+                        style={{ height: "180px" }}
+                        alt="picture"
+                        src="http://res.cloudinary.com/huy12312312a/image/upload/v1617502931/wpy5looxqrpcpg8wzpti.png"
+                      />
+                    }
                   >
                     <Meta title={item.name} />
                   </Card>
                 </Col>
               );
-            } else return null;
+            } else {
+              return (
+                <Col span={24} md={6} key={item.id}>
+                  <Card
+                    className="w--full"
+                    style={{ marginTop: 16 }}
+                    actions={[
+                      <EyeOutlined
+                        key="watch"
+                        onClick={() => {
+                          setIsVisibleShow(true);
+                          setData(item);
+                        }}
+                      />,
+                      <DownloadOutlined
+                        key="download"
+                        onClick={() => saveAs(item.url, item.name)}
+                      />,
+                      <EllipsisOutlined key="ellipsis" />,
+                    ]}
+                    cover={
+                      <img
+                        style={{ height: "180px" }}
+                        alt="picture"
+                        src="http://res.cloudinary.com/huy12312312a/image/upload/v1617523896/lzk9tftmfoe8xrfodrwf.png"
+                      />
+                    }
+                  >
+                    <Meta title={item.name} />
+                  </Card>
+                </Col>
+              );
+            }
           })}
         </Row>
       </Spin>

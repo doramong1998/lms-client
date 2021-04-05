@@ -1,14 +1,19 @@
 import React, { FC, useRef, useState } from "react";
-import { Modal, Row, Col, Image, Button, Progress, Slider } from "antd";
+import { Modal, Row, Col, Image, Button, Slider } from "antd";
 import { connect } from "umi";
 import {
   CloseOutlined,
   DownloadOutlined,
   PauseCircleOutlined,
   PlayCircleOutlined,
+  LeftOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
+// import { Document, Page } from "react-pdf";
+import FileViewer from "react-file-viewer";
 import ReactPlayer from "react-player";
 import { saveAs } from "file-saver";
+// import { getParamsFromUrl } from "@/utils/utils";
 
 type Props = {
   data: any;
@@ -23,8 +28,11 @@ const ModalCreateOrEdit: FC<Props> = ({
 }) => {
   const [play, setPlay] = useState(false);
   const [percent, setPercent] = useState(0);
-  const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0);
   const player: any = useRef();
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const renderFile = () => {
     if (data?.type.indexOf("image") !== -1) {
       return <Image width={600} src={data?.url} />;
@@ -38,7 +46,26 @@ const ModalCreateOrEdit: FC<Props> = ({
           onProgress={(value: any) => setPercent(value.played)}
         />
       );
-    } else return null;
+    } else {
+      switch (data?.type) {
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          return <FileViewer fileType="docx" filePath={data?.url}></FileViewer>;
+        case "application/pdf":
+          return <FileViewer fileType="pdf" filePath={data?.url}></FileViewer>;
+        // return (
+        //   <Document
+        //     file={{url: data?.url,httpHeaders: getParamsFromUrl(data.url) }}
+        //     onLoadSuccess={(values: any) => setNumPages(values.numPages)}
+        //   >
+        //     <Page pageNumber={pageNumber} />
+        //   </Document>
+        // );
+        case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+          return <FileViewer fileType="csv" filePath={data?.url}></FileViewer>;
+        default:
+          return null;
+      }
+    }
   };
 
   const renderButton = () => {
@@ -81,11 +108,52 @@ const ModalCreateOrEdit: FC<Props> = ({
               type="primary"
               style={{ float: "right" }}
               icon={<DownloadOutlined />}
+              onClick={() => saveAs(data.url, data.name)}
             ></Button>
           </Col>
         </Row>
       );
-    } else return null;
+    } else {
+      switch (data?.type) {
+        case "application/pdf":
+          return (
+            <Row gutter={12} justify="center" align="middle" className="mt--10">
+              <Col span={12}>
+                <Button
+                  onClick={() =>
+                    setPageNumber(
+                      pageNumber === 1 ? pageNumber : pageNumber - 1
+                    )
+                  }
+                  icon={<LeftOutlined />}
+                ></Button>
+                &nbsp;
+                <Button
+                  onClick={() =>
+                    setPageNumber(
+                      pageNumber === numPages ? pageNumber : pageNumber + 1
+                    )
+                  }
+                  icon={<RightOutlined />}
+                ></Button>
+              </Col>
+              <Col span={6}>
+                Trang {pageNumber} / {numPages}
+              </Col>
+              <Col span={6}>
+                <Button
+                  type="primary"
+                  style={{ float: "right" }}
+                  icon={<DownloadOutlined />}
+                  onClick={() => saveAs(data.url, data.name)}
+                ></Button>
+              </Col>
+            </Row>
+          );
+        default:
+          return null;
+      }
+    }
   };
 
   return (
@@ -104,7 +172,7 @@ const ModalCreateOrEdit: FC<Props> = ({
       width={700}
     >
       <Row justify="center">{renderFile()}</Row>
-      <div>{renderButton()}</div>
+      <div className="w--full">{renderButton()}</div>
     </Modal>
   );
 };

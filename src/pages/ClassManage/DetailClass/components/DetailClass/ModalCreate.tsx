@@ -1,15 +1,12 @@
 import { FC, useEffect } from "react";
 import {
   Button,
-  Col,
-  DatePicker,
   Divider,
   Form,
   Input,
   Modal,
   Select,
   Space,
-  Row,
   InputNumber,
 } from "antd";
 import type { Dispatch } from "umi";
@@ -128,7 +125,7 @@ const ModalCreateOrEdit: FC<Props> = ({
         >
           <Select placeholder="Chọn giáo viên" className="w--full">
             {listTeacher?.data?.map((item: any) => (
-              <Option value={item.idUser}>{item.fullName}</Option>
+              <Option key={item.idUser} value={item.idUser}>{item.fullName}</Option>
             ))}
           </Select>
         </Form.Item>
@@ -136,6 +133,20 @@ const ModalCreateOrEdit: FC<Props> = ({
         <Form.Item
           name="studentNum"
           label="Số lượng sinh viên"
+          rules={[
+            {
+              required: true,
+              message: formatMessage({
+                id: "form.formItem.required.message",
+              }),
+            },
+          ]}
+        >
+          <InputNumber className="w--full" />
+        </Form.Item>
+        <Form.Item
+          name="totalStudent"
+          label="Số lượng sinh viên tối đa"
           rules={[
             {
               required: true,

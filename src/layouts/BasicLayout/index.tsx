@@ -45,11 +45,7 @@ const menuDataRender = (menuList: MenuDataItem[]): any =>
       ...item,
       children: item.children ? menuDataRender(item.children) : undefined,
     }
-    let auth = localStorage.getItem('auth')
-    if(item?.visible?.indexOf(auth) > -1){
       return Authorized.check(item.authority, localItem, null) as MenuDataItem
-    }
-    return null
   })
 
 const BasicLayout: FC<Props> = (props) => {

@@ -1,3 +1,4 @@
+import { setAuthority } from '@/utils/authority'
 import { getPageQuery } from '@/utils/utils'
 import { message } from 'antd'
 import { stringify } from 'querystring'
@@ -43,7 +44,7 @@ export default <Model>{
         })
         if (response?.accessToken) {
           yield localStorage.setItem('token', response?.accessToken)
-          yield localStorage.setItem('auth', response?.permissionId)
+          setAuthority(response?.permissionId)
           setTimeout(() => {
             const urlParams = new URL(window.location.href)
             const params = getPageQuery()

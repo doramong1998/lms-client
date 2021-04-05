@@ -66,7 +66,7 @@ export function getRoutes() {
             "name": "calendar",
             "icon": "CalendarOutlined",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Calendar' */'@/pages/Calendar'), loading: LoadingComponent}),
-            "visible": [
+            "authority": [
               "1",
               "2",
               "3"
@@ -77,7 +77,7 @@ export function getRoutes() {
             "name": "enroll",
             "icon": "PlusCircleOutlined",
             "path": "/enroll",
-            "visible": [
+            "authority": [
               "3"
             ],
             "routes": [
@@ -101,7 +101,7 @@ export function getRoutes() {
             "path": "/news",
             "name": "news",
             "icon": "StarOutlined",
-            "visible": [
+            "authority": [
               "1",
               "2",
               "3"
@@ -112,7 +112,7 @@ export function getRoutes() {
             "path": "/file",
             "name": "file",
             "icon": "FileOutlined",
-            "visible": [
+            "authority": [
               "1",
               "2",
               "3"
@@ -124,7 +124,7 @@ export function getRoutes() {
             "path": "/class",
             "name": "class",
             "icon": "ReadOutlined",
-            "visible": [
+            "authority": [
               "2",
               "3"
             ],
@@ -134,17 +134,32 @@ export function getRoutes() {
             "path": "/class-manage",
             "name": "class-manage",
             "icon": "GroupOutlined",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__ClassManage' */'@/pages/ClassManage'), loading: LoadingComponent}),
-            "visible": [
+            "authority": [
               "1"
             ],
-            "exact": true
+            "routes": [
+              {
+                "path": "/class-manage",
+                "name": "list",
+                "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__ClassManage__ListClass' */'@/pages/ClassManage/ListClass'), loading: LoadingComponent}),
+                "exact": true,
+                "hideInMenu": true
+              },
+              {
+                "path": "/class-manage/:id",
+                "name": "detail",
+                "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__ClassManage__DetailClass' */'@/pages/ClassManage/DetailClass'), loading: LoadingComponent}),
+                "breadcrumbName": "Chi tiết",
+                "exact": true,
+                "hideInMenu": true
+              }
+            ]
           },
           {
             "path": "/subject",
             "name": "subject",
             "icon": "BookOutlined",
-            "visible": [
+            "authority": [
               "2",
               "3"
             ],
@@ -155,7 +170,7 @@ export function getRoutes() {
             "name": "subject-manage",
             "icon": "BookOutlined",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__subjectManage' */'@/pages/subjectManage'), loading: LoadingComponent}),
-            "visible": [
+            "authority": [
               "1"
             ],
             "exact": true
@@ -165,7 +180,7 @@ export function getRoutes() {
             "name": "account-manage",
             "icon": "UsergroupAddOutlined",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__AccountManage' */'@/pages/AccountManage'), loading: LoadingComponent}),
-            "visible": [
+            "authority": [
               "1"
             ],
             "exact": true
@@ -175,7 +190,7 @@ export function getRoutes() {
             "icon": "UserOutlined",
             "path": "/account",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Account' */'@/pages/Account'), loading: LoadingComponent}),
-            "visible": [
+            "authority": [
               "1",
               "2",
               "3"
@@ -187,7 +202,7 @@ export function getRoutes() {
             "icon": "SettingOutlined",
             "path": "/settings",
             "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__settings' */'@/pages/settings'), loading: LoadingComponent}),
-            "visible": [
+            "authority": [
               "1",
               "2",
               "3"

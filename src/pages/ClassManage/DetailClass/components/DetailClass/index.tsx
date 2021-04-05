@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import type { FC } from "react";
 import { Row, Col, Divider, Table, Menu, Badge, Button, Dropdown, Space } from "antd";
 import type { Dispatch } from "umi";
-import { connect, FormattedMessage } from "umi";
+import { connect, FormattedMessage, history } from "umi";
 import ModalCreate from "./ModalCreate";
 import type { ClassT, ListClass, Class } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
@@ -12,6 +12,7 @@ import {
   DeleteOutlined,
   MoreOutlined,
   PlusOutlined,
+  EyeOutlined
 } from "@ant-design/icons";
 
 type Props = {
@@ -154,6 +155,12 @@ const ListNew: FC<Props> = ({
       render: (value: any, record: any) => {
         const menu = (
           <Menu>
+             <Menu.Item
+              icon={<EyeOutlined />}
+              onClick={() => history.push(`/class-manage/${value.id}`)}
+            >
+              Chi tiết
+            </Menu.Item>
             <Menu.Item
               icon={<EditOutlined />}
               onClick={() => { setIsVisibleModal(true); setData(record)}}
@@ -187,7 +194,7 @@ const ListNew: FC<Props> = ({
   return (
     <>
       <div className="layout--main__title">
-        <FormattedMessage id="ClassManage.listClass" />
+        Chi tiết lớp ...
       </div>
       <Divider />
       <Row gutter={24} className="mb--24">

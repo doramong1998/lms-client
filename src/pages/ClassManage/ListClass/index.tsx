@@ -4,7 +4,7 @@ import { ListClass } from './components'
 
 type Props = {}
 
-const LandingpPage: FC<Props> = () => {
+const ClassManage: FC<Props> = () => {
   return (
     <GridContent>
       <div className="layout--main">
@@ -16,4 +16,4 @@ const LandingpPage: FC<Props> = () => {
   )
 }
 
-export default LandingpPage
+export default ClassManage

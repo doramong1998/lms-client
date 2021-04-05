@@ -1,6 +1,6 @@
 // https://github.com/umijs/umi-request
 import { extend } from 'umi-request'
-import { formatMessage } from 'umi'
+import { formatMessage, history } from 'umi'
 import { notification } from 'antd'
 
 // Xử lý ngoại lệ
@@ -13,6 +13,13 @@ const errorHandler = (error: { response: Response }): Response => {
       description: formatMessage({ id: 'error.network' }),
     })
   }
+  if (error?.response?.status === 401) {
+    notification.error({
+      message: 'Chưa đăng nhập hoặc đăng nhập đã hết hạn, vui lòng đăng nhập lại.',
+    })
+    history.push('/user/login')
+  }
+
   throw error
 }
 

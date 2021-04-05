@@ -2,7 +2,7 @@ import { reloadAuthorized } from './Authorized'
 
 export function getAuthority(str?: string): string | string[] {
   const authorityString =
-    typeof str === 'undefined' && localStorage ? localStorage.getItem('recbook-authority') : str
+    typeof str === 'undefined' && localStorage ? localStorage.getItem('auth') : str
   let authority
   try {
     if (authorityString) {
@@ -22,7 +22,7 @@ export function getAuthority(str?: string): string | string[] {
 
 export function setAuthority(authority: string | string[]): void {
   const proAuthority = typeof authority === 'string' ? [authority] : authority
-  localStorage.setItem('recbook-authority', JSON.stringify(proAuthority))
+  localStorage.setItem('auth', JSON.stringify(proAuthority))
   // auto reload
   reloadAuthorized()
 }

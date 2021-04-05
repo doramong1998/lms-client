@@ -10,9 +10,6 @@ export const getPageQuery = () => parse(window.location.href.split('?')[1])
 
 export const API_URL = 'http://localhost:3000/api'
 
-// export const BUILDER_URL = 'http://recbook-builder.2soft.top'
-// export const BUILDER_URL = 'http://localhost:3000'
-
 export const modalConfirmDelete = (onOk?: any) => {
   Modal.confirm({
     title: formatMessage({ id: 'button.delete.selected.confirm' }),
@@ -22,3 +19,16 @@ export const modalConfirmDelete = (onOk?: any) => {
     onOk,
   })
 }
+
+export const getParamsFromUrl = (url: string) => {
+	var params = {};
+	var parser = document.createElement('a');
+	parser.href = url;
+	var query = parser.search.substring(1);
+	var vars = query.split('&');
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split('=');
+		params[pair[0]] = decodeURIComponent(pair[1]);
+	}
+	return params;
+};
