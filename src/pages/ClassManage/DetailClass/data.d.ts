@@ -14,11 +14,12 @@ export type Class = {
 
 export type ListClass = {
   status?: number,
-  data?: {},
+  data?: Class,
   message?: string
 }
 
 export type ClassT = {
   detailClass: ListClass,
   listTeacher: any,
+  listStudent: any
 }

@@ -127,10 +127,6 @@ const ListNew: FC<Props> = ({
     },
     {
       title: "SL sinh viên",
-      dataIndex: "studentNum",
-    },
-    {
-      title: "SL sinh viên tối đa",
       dataIndex: "totalStudent",
     },
     {

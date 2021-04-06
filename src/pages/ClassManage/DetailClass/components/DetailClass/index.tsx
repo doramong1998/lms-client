@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Table, Menu, Badge, Button, Dropdown, Space } from "antd";
+import { Row, Col, Divider, Table, Menu, Badge, Button, Dropdown, Space, Avatar } from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage, history } from "umi";
-import ModalCreate from "./ModalCreate";
-import type { ClassT, ListClass, Class } from "../../data";
+import ModalAdd from "./ModalAdd";
+import type { ClassT } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
 import {
   EditOutlined,
@@ -17,7 +17,7 @@ import {
 
 type Props = {
   dispatch: Dispatch;
-  dataTable: ListClass;
+  dataTable: any;
   loadingGet: boolean;
   loadingCreate: boolean;
   loadingUpdate: boolean;
@@ -39,10 +39,13 @@ const ListNew: FC<Props> = ({
 
   useEffect(() => {
     dispatch({
-      type: "classManage/getListClass",
+      type: "classManageAndDetail/getDetailClass",
+      payload: {
+        id: history.location.pathname.replace('/class-manage/','')
+      }
     });
     dispatch({
-      type: "classManage/getListTeacher",
+      type: "classManageAndDetail/getListTeacher",
     });
   }, [dispatch]);
 
@@ -70,24 +73,24 @@ const ListNew: FC<Props> = ({
     ) {
       setSelectedRowKeys([]);
       dispatch({
-        type: "classManage/getListClass",
+        type: "classManageAndDetail/getListClass",
       });
       setLoading(false);
     }
   }, [loadingCreate, dispatch, loadingDelete, loadingUpdate]);
 
   const dataSource =
-    dataTable?.data?.map((item: Class) => ({
+    dataTable?.data?.students?.map((item: any) => ({
       id: item?.id,
-      idClass: item?.idClass,
-      name: item?.name,
-      studentNum: item?.studentNum,
-      idTeacher: item.idTeacher,
-      students: item.students,
-      files: item?.files,
+      fullName: item?.fullName,
+      avatar: item?.avatar,
+      address: item?.address,
+      dob: item.dob,
+      email: item.email,
+      gender: item?.gender,
       status: item?.status,
-      teacher: item?.teacher,
-      totalStudent: item?.totalStudent,
+      phone: item?.phone,
+      studentId: item?.studentId,
     })) || [];
 
   const rowSelection = {
@@ -99,7 +102,7 @@ const ListNew: FC<Props> = ({
   const onDeleteOne = (id: any) => {
     const onOk = () =>
       dispatch({
-        type: "classManage/deleteClass",
+        type: "classManageAndDetail/deleteClass",
         payload: {
           data: {
             id
@@ -114,28 +117,55 @@ const ListNew: FC<Props> = ({
       title: "STT",
       dataIndex: "STT",
       fixed: "left",
+      align:'center',
+      width: 70,
       render: (value: any, item: any, index: number) => index + 1,
     },
     {
-      title: "Lớp",
-      dataIndex: "name",
+      title: "Ảnh đại diện",
+      dataIndex: "avatar",
+      align:'center',
+      width: 150,
+      render: (value: any) => <Avatar size={50} src={value} />
     },
     {
-      title: "Quản lý",
-      dataIndex: "teacher",
-      render: (value: any) => value?.fullName,
+      title: "Họ và tên",
+      dataIndex: "fullName",
+      width: 150,
     },
     {
-      title: "SL sinh viên",
-      dataIndex: "studentNum",
+      title: "Mã sinh viên",
+      dataIndex: "studentId",
+      align:'center',
+      width: 120,
     },
     {
-      title: "SL sinh viên tối đa",
-      dataIndex: "totalStudent",
+      title: "Giới tính",
+      dataIndex: "gender",
+      align:'center',
+      width: 120,
+      render: (value: any) => value === 'male' ? 'Nam' : 'Nữ'
     },
     {
-      title: "SL tài liệu",
-      dataIndex: "file",
+      title: "Ngày sinh",
+      dataIndex: "dob",
+      align:'center',
+      width: 120,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      align:'center',
+      width: 120,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      width: 160,
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
     },
     {
       title: "Trạng thái",
@@ -150,16 +180,16 @@ const ListNew: FC<Props> = ({
     {
       title: "Hành động",
       dataIndex: "",
+      align:'center',
       fixed: "right",
-      width: 150,
+      width: 120,
       render: (value: any, record: any) => {
         const menu = (
           <Menu>
              <Menu.Item
               icon={<EyeOutlined />}
-              onClick={() => history.push(`/class-manage/${value.id}`)}
             >
-              Chi tiết
+              Xem điểm
             </Menu.Item>
             <Menu.Item
               icon={<EditOutlined />}
@@ -194,8 +224,33 @@ const ListNew: FC<Props> = ({
   return (
     <>
       <div className="layout--main__title">
-        Chi tiết lớp ...
+        Chi tiết lớp {dataTable?.data?.name}
       </div>
+      <Divider />
+      <Row gutter={12} className='mb--5'>
+        <Col span={12} className='font-size--20 font-weight--500'>Thông tin chung:</Col>
+        <Col span={12}>
+          <Space className="w--full justify-content--flexEnd">
+            <Button type='default' icon={<EditOutlined/>}>Sửa</Button>
+          </Space>
+        </Col>
+      </Row>
+        <Row gutter={12}>
+          <Col span={8} lg={4} className='font-weight--500'>Quản lý lớp:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.fullName}</Col>
+        </Row>
+        <Row gutter={12}>
+        <Col span={8} lg={4} className='font-weight--500'>Số điện thoại:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.phone}</Col>
+        </Row>
+        <Row>
+        <Col span={8} lg={4} className='font-weight--500'>Email:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.email}</Col>
+        </Row>
+        <Row>
+        <Col span={8} lg={4} className='font-weight--500'>Tổng số sinh viên:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.students.length}</Col>
+        </Row>
       <Divider />
       <Row gutter={24} className="mb--24">
         <Col md={12}></Col>
@@ -224,12 +279,14 @@ const ListNew: FC<Props> = ({
         loading={loading}
         columns={columns}
         dataSource={dataSource}
+        scroll={{x: 1500}}
+        style={{width: 1183}}
       ></Table>
 
-      <ModalCreate
+      <ModalAdd
         isVisibleModal={isVisibleModal}
-        setIsVisibleModal={() => {setIsVisibleModal(false); setData(null)} }
-        data={data}
+        setIsVisibleModal={() => setIsVisibleModal(false) }
+        dataClass={dataTable}
       />
     </>
   );
@@ -237,18 +294,18 @@ const ListNew: FC<Props> = ({
 
 export default connect(
   ({
-    classManage,
+    classManageAndDetail,
     loading,
   }: {
-    classManage: ClassT;
+    classManageAndDetail: ClassT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    dataTable: classManage.listClass,
-    loadingGet: loading.effects["classManage/getListClass"],
-    loadingCreate: loading.effects["classManage/createClass"],
-    loadingUpdate: loading.effects["classManage/updateClass"],
-    loadingDelete: loading.effects["classManage/deleteClass"],
+    dataTable: classManageAndDetail.detailClass,
+    loadingGet: loading.effects["classManageAndDetail/getListClass"],
+    loadingCreate: loading.effects["classManageAndDetail/createClass"],
+    loadingUpdate: loading.effects["classManageAndDetail/updateClass"],
+    loadingDelete: loading.effects["classManageAndDetail/deleteClass"],
   })
 )(ListNew);

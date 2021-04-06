@@ -4,6 +4,8 @@ import type { ClassT } from "./data";
 import {
   getDetailClass,
   getListTeacher,
+  getListStudent,
+  addStudentToClass,
 } from "./service";
 
 type Model = {
@@ -12,10 +14,13 @@ type Model = {
   reducers: {
     saveDetailClass: Reducer<ClassT>;
     saveListTeacher: Reducer<ClassT>;
+    saveListStudent: Reducer<ClassT>;
   };
   effects: {
     getDetailClass: Effect;
     getListTeacher: Effect;
+    getListStudent: Effect;
+    addStudentToClass: Effect;
   };
 };
 
@@ -24,12 +29,13 @@ export default <Model>{
   state: {
     detailClass: {},
     listTeacher: {},
+    listStudent: {}
   },
   reducers: {
     saveDetailClass(state, { payload }) {
       return {
         ...state,
-        listClass: {
+        detailClass: {
           ...payload,
         },
       };
@@ -38,6 +44,14 @@ export default <Model>{
       return {
         ...state,
         listTeacher: {
+          ...payload,
+        },
+      };
+    },
+    saveListStudent(state, { payload }) {
+      return {
+        ...state,
+        listStudent: {
           ...payload,
         },
       };
@@ -64,6 +78,28 @@ export default <Model>{
         });
       } catch (error) {
         //
+      }
+    },
+    *getListStudent({ payload }, { call, put }) {
+      try {
+        const response = yield call(getListStudent, payload);
+        yield put({
+          type: "saveListStudent",
+          payload: response,
+        });
+      } catch (error) {
+        //
+      }
+    },
+    *addStudentToClass({ payload }, { call, put }) {
+      try {
+        const response = yield call(addStudentToClass, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
       }
     },
   },
