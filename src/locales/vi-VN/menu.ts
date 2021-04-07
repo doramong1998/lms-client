@@ -7,6 +7,8 @@ export default {
   'menu.class-manage.detail': 'Chi tiết lớp',
   'menu.subject': 'Môn học',
   'menu.subject-manage': 'Quản lý môn học',
+  'menu.subject-manage.list': 'Quản lý môn học',
+  'menu.subject-manage.detail': 'Chi tiết môn học',
   'menu.file': 'Tài liệu',
   'menu.class': 'Lớp học',
   'menu.settings': 'Cài đặt',

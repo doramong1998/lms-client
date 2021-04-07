@@ -1,43 +1,43 @@
 import { message } from "antd";
 import type { Effect, Reducer } from "umi";
-import type { ClassT } from "./data";
+import type { SubjectT } from "./data";
 import {
-  getDetailClass,
+  getDetailSubject,
   getListTeacher,
   getListStudent,
-  addStudentToClass,
-  changeTeacherClass
+  addStudentToSubject,
+  changeTeacherSubject
 } from "./service";
 
 type Model = {
-  namespace: "classManageAndDetail";
-  state: ClassT;
+  namespace: "subjectManageAndDetail";
+  state: SubjectT;
   reducers: {
-    saveDetailClass: Reducer<ClassT>;
-    saveListTeacher: Reducer<ClassT>;
-    saveListStudent: Reducer<ClassT>;
+    saveDetailSubject: Reducer<SubjectT>;
+    saveListTeacher: Reducer<SubjectT>;
+    saveListStudent: Reducer<SubjectT>;
   };
   effects: {
-    getDetailClass: Effect;
+    getDetailSubject: Effect;
     getListTeacher: Effect;
     getListStudent: Effect;
-    addStudentToClass: Effect;
-    changeTeacherClass: Effect;
+    addStudentToSubject: Effect;
+    changeTeacherSubject: Effect;
   };
 };
 
 export default <Model>{
-  namespace: "classManageAndDetail",
+  namespace: "subjectManageAndDetail",
   state: {
-    detailClass: {},
+    detailSubject: {},
     listTeacher: {},
     listStudent: {}
   },
   reducers: {
-    saveDetailClass(state, { payload }) {
+    saveDetailSubject(state, { payload }) {
       return {
         ...state,
-        detailClass: {
+        detailSubject: {
           ...payload,
         },
       };
@@ -60,11 +60,11 @@ export default <Model>{
     },
   },
   effects: {
-    *getDetailClass({ payload }, { call, put }) {
+    *getDetailSubject({ payload }, { call, put }) {
       try {
-        const response = yield call(getDetailClass, payload);
+        const response = yield call(getDetailSubject, payload);
         yield put({
-          type: "saveDetailClass",
+          type: "saveDetailSubject",
           payload: response,
         });
       } catch (error) {
@@ -93,9 +93,9 @@ export default <Model>{
         //
       }
     },
-    *addStudentToClass({ payload }, { call, put }) {
+    *addStudentToSubject({ payload }, { call, put }) {
       try {
-        const response = yield call(addStudentToClass, payload);
+        const response = yield call(addStudentToSubject, payload);
         message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {
@@ -104,9 +104,9 @@ export default <Model>{
         return Promise.reject(err);
       }
     },
-    *changeTeacherClass({ payload }, { call, put }) {
+    *changeTeacherSubject({ payload }, { call, put }) {
       try {
-        const response = yield call(changeTeacherClass, payload);
+        const response = yield call(changeTeacherSubject, payload);
         message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {

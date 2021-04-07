@@ -13,7 +13,7 @@ import {
   Space,
 } from "antd";
 import type { Dispatch } from "umi";
-import { connect, FormattedMessage } from "umi";
+import { connect, FormattedMessage, history } from "umi";
 import ModalCreate from "./ModalCreate";
 import type { SubjectT, ListSubject, Subject } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
@@ -22,6 +22,7 @@ import {
   DeleteOutlined,
   MoreOutlined,
   PlusOutlined,
+  EyeOutlined
 } from "@ant-design/icons";
 
 type Props = {
@@ -140,11 +141,11 @@ const ListNew: FC<Props> = ({
     },
     {
       title: "SL sinh viên",
-      dataIndex: "studentNum",
+      dataIndex: "totalStudent",
     },
     {
-      title: "SL sinh viên tối đa",
-      dataIndex: "totalStudent",
+      title: "SL tài liệu",
+      dataIndex: "files",
     },
     {
       title: "Trạng thái",
@@ -164,6 +165,12 @@ const ListNew: FC<Props> = ({
       render: (value: any, record: any) => {
         const menu = (
           <Menu>
+             <Menu.Item
+              icon={<EyeOutlined />}
+              onClick={() => history.push(`/subject-manage/${value.id}`)}
+            >
+              Chi tiết
+            </Menu.Item>
             <Menu.Item
               icon={<EditOutlined />}
               onClick={() => {

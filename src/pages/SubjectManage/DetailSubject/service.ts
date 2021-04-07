@@ -7,8 +7,8 @@ type ParamType = {
   data?: any
 }
 
-export const getDetailClass = (payload: ParamType) => {
-  return request(`${API_URL}/classes/detail/${payload.id}`)
+export const getDetailSubject = (payload: ParamType) => {
+  return request(`${API_URL}/subject/detail/${payload.id}`)
 }
 
 export const getListTeacher = () => {
@@ -19,15 +19,15 @@ export const getListStudent = () => {
   return request(`${API_URL}/users/getStudent`)
 }
 
-export const addStudentToClass = (payload: ParamType) => {
-  return request(`${API_URL}/classes/addStudentToClass`,{
+export const addStudentToSubject = (payload: ParamType) => {
+  return request(`${API_URL}/subject/addStudentToSubject`,{
     method: 'POST',
     data: payload.data,
   } )
 }
 
-export const changeTeacherClass = (payload: ParamType) => {
-  return request(`${API_URL}/classes/changeTeacherClass`,{
+export const changeTeacherSubject = (payload: ParamType) => {
+  return request(`${API_URL}/subject/changeTeacherSubject`,{
     method: 'POST',
     data: payload.data,
   } )

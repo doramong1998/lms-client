@@ -169,11 +169,26 @@ export function getRoutes() {
             "path": "/subject-manage",
             "name": "subject-manage",
             "icon": "BookOutlined",
-            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__subjectManage' */'@/pages/subjectManage'), loading: LoadingComponent}),
             "authority": [
               "1"
             ],
-            "exact": true
+            "routes": [
+              {
+                "path": "/subject-manage",
+                "name": "list",
+                "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__SubjectManage__TableSubject' */'@/pages/SubjectManage/TableSubject'), loading: LoadingComponent}),
+                "exact": true,
+                "hideInMenu": true
+              },
+              {
+                "path": "/subject-manage/:id",
+                "name": "detail",
+                "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__SubjectManage__DetailSubject' */'@/pages/SubjectManage/DetailSubject'), loading: LoadingComponent}),
+                "breadcrumbName": "Chi tiết",
+                "exact": true,
+                "hideInMenu": true
+              }
+            ]
           },
           {
             "path": "/account-manage",

@@ -7,6 +7,8 @@ export default {
   'menu.class-manage.detail': 'Detail class',
   'menu.subject': 'Subject',
   'menu.subject-manage': 'Subject Manage',
+  'menu.subject-manage.list': 'Subject Manage',
+  'menu.subject-manage.detail': 'Detail subject',
   'menu.file': 'File',
   'menu.class': 'Class',
   'menu.settings': 'Setting',

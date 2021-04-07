@@ -1,32 +1,24 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import {
-  Row,
-  Col,
-  Divider,
-  Table,
-  Menu,
-  Badge,
-  Button,
-  Dropdown,
-  Space,
-} from "antd";
+import { Row, Col, Divider, Table, Menu, Badge, Button, Dropdown, Space, Avatar } from "antd";
 import type { Dispatch } from "umi";
-import { connect, FormattedMessage } from "umi";
-import ModalCreate from "./ModalCreate";
-import type { AccountT, ListAccount, Account } from "../../data";
+import { connect, FormattedMessage, history } from "umi";
+import ModalAdd from "./ModalAdd";
+import type { SubjectT } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
 import {
   EditOutlined,
   DeleteOutlined,
   MoreOutlined,
   PlusOutlined,
+  EyeOutlined
 } from "@ant-design/icons";
+import ModalTeacher from "./ModalTeacher";
 
 type Props = {
   dispatch: Dispatch;
-  dataTable: ListAccount;
+  dataTable: any;
   loadingGet: boolean;
   loadingCreate: boolean;
   loadingUpdate: boolean;
@@ -44,14 +36,18 @@ const ListNew: FC<Props> = ({
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [isVisibleTeacher, setIsVisibleTeacher] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
     dispatch({
-      type: "accountManage/getListAccount",
+      type: "subjectManageAndDetail/getDetailSubject",
+      payload: {
+        id: history.location.pathname.replace('/subject-manage/','')
+      }
     });
     dispatch({
-      type: "accountManage/getListClass",
+      type: "subjectManageAndDetail/getListTeacher",
     });
   }, [dispatch]);
 
@@ -79,28 +75,24 @@ const ListNew: FC<Props> = ({
     ) {
       setSelectedRowKeys([]);
       dispatch({
-        type: "accountManage/getListAccount",
+        type: "subjectManageAndDetail/getListSubject",
       });
       setLoading(false);
     }
   }, [loadingCreate, dispatch, loadingDelete, loadingUpdate]);
 
   const dataSource =
-    dataTable?.data?.map((item: Account) => ({
+    dataTable?.data?.students?.map((item: any) => ({
       id: item?.id,
-      idUser: item?.idUser,
       fullName: item?.fullName,
-      gender: item?.gender,
-      dob: item?.dob,
-      idClass: item?.idClass,
-      studentId: item?.studentId,
-      address: item?.address,
-      phone: item?.phone,
-      email: item?.email,
-      permissionId: item?.permissionId,
       avatar: item?.avatar,
+      address: item?.address,
+      dob: item?.dob,
+      email: item?.email,
+      gender: item?.gender,
       status: item?.status,
-      username: item?.username,
+      phone: item?.phone,
+      studentId: item?.studentId,
     })) || [];
 
   const rowSelection = {
@@ -112,10 +104,10 @@ const ListNew: FC<Props> = ({
   const onDeleteOne = (id: any) => {
     const onOk = () =>
       dispatch({
-        type: "accountManage/deleteAccount",
+        type: "subjectManageAndDetail/deleteSubject",
         payload: {
           data: {
-            id,
+            id
           },
         },
       });
@@ -132,51 +124,54 @@ const ListNew: FC<Props> = ({
       render: (value: any, item: any, index: number) => index + 1,
     },
     {
-      title: "Họ tên",
+      title: "Ảnh đại diện",
+      dataIndex: "avatar",
+      align:'center',
+      width: 150,
+      render: (value: any) => <Avatar size={50} src={value} />
+    },
+    {
+      title: "Họ và tên",
       dataIndex: "fullName",
-      width: 200,
-    },
-    {
-      title: "Giới tính",
-      dataIndex: "gender",
-      render: (value: any) => (value === "male" ? "Nam" : "Nữ"),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phone",
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "dob",
+      width: 180,
     },
     {
       title: "Mã sinh viên",
       dataIndex: "studentId",
+      align:'center',
+      width: 120,
     },
     {
-      title: "Quyền hạn",
-      dataIndex: "permissionId",
-      render: (value: any) => {
-        switch (value) {
-          case 1:
-            return "Quản trị viên";
-          case 2:
-            return "Giáo viên";
-          case 3:
-            return "Sinh viên";
-          default:
-            return "";
-        }
-      },
+      title: "Giới tính",
+      dataIndex: "gender",
+      align:'center',
+      width: 120,
+      render: (value: any) => value === 'male' ? 'Nam' : 'Nữ'
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "dob",
+      align:'center',
+      width: 120,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      align:'center',
+      width: 120,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      width: 160,
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
-      align:'center',
       render: (value: any) => (
         <Badge
           status={value ? "success" : "default"}
@@ -187,18 +182,20 @@ const ListNew: FC<Props> = ({
     {
       title: "Hành động",
       dataIndex: "",
-      fixed: "right",
       align:'center',
+      fixed: "right",
       width: 120,
       render: (value: any, record: any) => {
         const menu = (
           <Menu>
+             <Menu.Item
+              icon={<EyeOutlined />}
+            >
+              Xem điểm
+            </Menu.Item>
             <Menu.Item
               icon={<EditOutlined />}
-              onClick={() => {
-                setIsVisibleModal(true);
-                setData(record);
-              }}
+              onClick={() => { setIsVisibleModal(true); setData(record)}}
             >
               Cập nhật
             </Menu.Item>
@@ -229,8 +226,37 @@ const ListNew: FC<Props> = ({
   return (
     <>
       <div className="layout--main__title">
-        <FormattedMessage id="accountManage.listAccount" />
+        Chi tiết môn học: {dataTable?.data?.name}
       </div>
+      <Divider />
+      <Row gutter={12} className='mb--5'>
+        <Col span={12} className='font-size--20 font-weight--500'>Thông tin chung:</Col>
+        <Col span={12}>
+          <Space className="w--full justify-content--flexEnd">
+            <Button type='default' onClick={() => setIsVisibleTeacher(true)} icon={<EditOutlined/>}>Sửa</Button>
+          </Space>
+        </Col>
+      </Row>
+      <Row gutter={12}>
+          <Col span={8} lg={4} className='font-weight--500'>Mã môn học:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.code}</Col>
+        </Row>
+        <Row gutter={12}>
+          <Col span={8} lg={4} className='font-weight--500'>Quản lý lớp:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.fullName}</Col>
+        </Row>
+        <Row gutter={12}>
+        <Col span={8} lg={4} className='font-weight--500'>Số điện thoại:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.phone}</Col>
+        </Row>
+        <Row>
+        <Col span={8} lg={4} className='font-weight--500'>Email:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.email}</Col>
+        </Row>
+        <Row>
+        <Col span={8} lg={4} className='font-weight--500'>Tổng số sinh viên:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.students.length}</Col>
+        </Row>
       <Divider />
       <Row gutter={24} className="mb--24">
         <Col md={12}></Col>
@@ -239,7 +265,7 @@ const ListNew: FC<Props> = ({
             <Button
               type="primary"
               onClick={() => {
-                setIsVisibleModal(true);
+                setIsVisibleModal(true)
               }}
             >
               <PlusOutlined className="mr--5" />
@@ -260,16 +286,19 @@ const ListNew: FC<Props> = ({
         columns={columns}
         dataSource={dataSource}
         scroll={{x: 1500}}
-        // style={{width: 1183}}
+        style={{width: 1183}}
       ></Table>
 
-      <ModalCreate
+      <ModalAdd
         isVisibleModal={isVisibleModal}
-        setIsVisibleModal={() => {
-          setIsVisibleModal(false);
-          setData(null);
-        }}
-        data={data}
+        setIsVisibleModal={() => setIsVisibleModal(false) }
+        dataSubject={dataTable}
+      />
+
+      <ModalTeacher
+        isVisibleModal={isVisibleTeacher}
+        setIsVisibleModal={() => setIsVisibleTeacher(false) }
+        dataSubject={dataTable}
       />
     </>
   );
@@ -277,18 +306,18 @@ const ListNew: FC<Props> = ({
 
 export default connect(
   ({
-    accountManage,
+    subjectManageAndDetail,
     loading,
   }: {
-    accountManage: AccountT;
+    subjectManageAndDetail: SubjectT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    dataTable: accountManage.listAccount,
-    loadingGet: loading.effects["accountManage/getListAccount"],
-    loadingCreate: loading.effects["accountManage/createAccount"],
-    loadingUpdate: loading.effects["accountManage/updateAccount"],
-    loadingDelete: loading.effects["accountManage/deleteAccount"],
+    dataTable: subjectManageAndDetail.detailSubject,
+    loadingGet: loading.effects["subjectManageAndDetail/getListSubject"],
+    loadingCreate: loading.effects["subjectManageAndDetail/createSubject"],
+    loadingUpdate: loading.effects["subjectManageAndDetail/updateSubject"],
+    loadingDelete: loading.effects["subjectManageAndDetail/deleteSubject"],
   })
 )(ListNew);

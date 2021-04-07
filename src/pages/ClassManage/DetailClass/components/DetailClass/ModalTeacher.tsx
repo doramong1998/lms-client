@@ -16,15 +16,15 @@ const { Option } = Select;
 
 type Props = {
   dispatch: Dispatch;
-  listStudent: any;
+  listTeacher: any;
   isVisibleModal: boolean;
   setIsVisibleModal: any;
   dataClass: any;
 };
 
-const ModalTeacher: FC<Props> = ({
+const ModalCreateOrEdit: FC<Props> = ({
   dispatch,
-  listStudent,
+  listTeacher,
   isVisibleModal,
   setIsVisibleModal,
   dataClass
@@ -33,13 +33,13 @@ const ModalTeacher: FC<Props> = ({
   const [value, setValue] = useState<any>(undefined)
   useEffect(() => {
     dispatch({
-      type: "classManageAndDetail/getListStudent",
+      type: "classManageAndDetail/getListTeacher",
     });
   }, [dispatch])
 
   const handleFinish = () => {
     dispatch({
-      type: "classManageAndDetail/addStudentToClass",
+      type: "classManageAndDetail/changeTeacherClass",
       payload: {
         data: {
           idUser: value,
@@ -75,11 +75,11 @@ const ModalTeacher: FC<Props> = ({
     >
   <>
         <Row>
-          Chọn sinh viên:
+          Chọn giáo viên:
         </Row>
         <Row className='mt--15'>
-        <Select placeholder='Chọn sinh viên' value={value} className='w--full' onChange={(select) => setValue(select)}>
-            {listStudent?.data?.map((item: any) => <Option key={item.id} value={item.idUser}>{item.fullName} - {item.studentId}</Option>)}
+        <Select placeholder='Chọn giáo viên' value={value} className='w--full' onChange={(select) => setValue(select)}>
+            {listTeacher?.data?.map((item: any) => <Option key={item.id} value={item.idUser}>{item.fullName} - {item.phone}</Option>)}
     </Select>
         </Row>
         <Divider />
@@ -110,6 +110,6 @@ export default connect(
       effects: Record<string, boolean>;
     };
   }) => ({
-    listStudent: classManageAndDetail.listStudent,
+    listTeacher: classManageAndDetail.listTeacher,
   })
-)(ModalTeacher);
+)(ModalCreateOrEdit);

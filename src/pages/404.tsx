@@ -1,4 +1,3 @@
-import React from 'react'
 import type { FC } from 'react'
 import { Button, Result } from 'antd'
 import { history } from 'umi'
@@ -6,12 +5,12 @@ import { history } from 'umi'
 const NoFoundPage: FC<{}> = () => (
   <Result
     status="404"
-    title="404"
-    subTitle="Sorry, the page you visited does not exist."
+    title="Trang không tồn tại!"
+    subTitle="Đường dẫn không đúng hoặc bạn không có quyền truy cập trang web này!"
     extra={
       <Button type="primary"
         onClick={() => history.push('/')}>
-        Back Home
+        Quay lại
       </Button>
     }
   />

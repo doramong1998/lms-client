@@ -10,47 +10,47 @@ import {
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage } from "umi";
 import { CloseOutlined } from "@ant-design/icons";
-import { ClassT } from "../../data";
+import { SubjectT } from "../../data";
 
 const { Option } = Select;
 
 type Props = {
   dispatch: Dispatch;
-  listStudent: any;
+  listTeacher: any;
   isVisibleModal: boolean;
   setIsVisibleModal: any;
-  dataClass: any;
+  dataSubject: any;
 };
 
-const ModalTeacher: FC<Props> = ({
+const ModalCreateOrEdit: FC<Props> = ({
   dispatch,
-  listStudent,
+  listTeacher,
   isVisibleModal,
   setIsVisibleModal,
-  dataClass
+  dataSubject
 }) => {
 
   const [value, setValue] = useState<any>(undefined)
   useEffect(() => {
     dispatch({
-      type: "classManageAndDetail/getListStudent",
+      type: "subjectManageAndDetail/getListTeacher",
     });
   }, [dispatch])
 
   const handleFinish = () => {
     dispatch({
-      type: "classManageAndDetail/addStudentToClass",
+      type: "subjectManageAndDetail/changeTeacherSubject",
       payload: {
         data: {
           idUser: value,
-          idClass: dataClass?.data?.idClass
+          idSubject: dataSubject?.data?.idSubject
         }
       }
     }).then(() => {
       dispatch({
-        type: "classManageAndDetail/getDetailClass",
+        type: "subjectManageAndDetail/getDetailSubject",
         payload: {
-          id: dataClass?.data?.id
+          id: dataSubject?.data?.id
         }
       });
       setValue(undefined)
@@ -75,11 +75,11 @@ const ModalTeacher: FC<Props> = ({
     >
   <>
         <Row>
-          Chọn sinh viên:
+          Chọn giáo viên:
         </Row>
         <Row className='mt--15'>
-        <Select placeholder='Chọn sinh viên' value={value} className='w--full' onChange={(select) => setValue(select)}>
-            {listStudent?.data?.map((item: any) => <Option key={item.id} value={item.idUser}>{item.fullName} - {item.studentId}</Option>)}
+        <Select placeholder='Chọn giáo viên' value={value} className='w--full' onChange={(select) => setValue(select)}>
+            {listTeacher?.data?.map((item: any) => <Option key={item.id} value={item.idUser}>{item.fullName} - {item.phone}</Option>)}
     </Select>
         </Row>
         <Divider />
@@ -103,13 +103,13 @@ const ModalTeacher: FC<Props> = ({
 
 export default connect(
   ({
-    classManageAndDetail,
+    subjectManageAndDetail,
   }: {
-    classManageAndDetail: ClassT;
+    subjectManageAndDetail: SubjectT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    listStudent: classManageAndDetail.listStudent,
+    listTeacher: subjectManageAndDetail.listTeacher,
   })
-)(ModalTeacher);
+)(ModalCreateOrEdit);

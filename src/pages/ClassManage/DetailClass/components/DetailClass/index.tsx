@@ -14,6 +14,7 @@ import {
   PlusOutlined,
   EyeOutlined
 } from "@ant-design/icons";
+import ModalTeacher from "./ModalTeacher";
 
 type Props = {
   dispatch: Dispatch;
@@ -35,6 +36,7 @@ const ListNew: FC<Props> = ({
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [isVisibleTeacher, setIsVisibleTeacher] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
@@ -85,8 +87,8 @@ const ListNew: FC<Props> = ({
       fullName: item?.fullName,
       avatar: item?.avatar,
       address: item?.address,
-      dob: item.dob,
-      email: item.email,
+      dob: item?.dob,
+      email: item?.email,
       gender: item?.gender,
       status: item?.status,
       phone: item?.phone,
@@ -131,7 +133,7 @@ const ListNew: FC<Props> = ({
     {
       title: "Họ và tên",
       dataIndex: "fullName",
-      width: 150,
+      width: 180,
     },
     {
       title: "Mã sinh viên",
@@ -224,14 +226,14 @@ const ListNew: FC<Props> = ({
   return (
     <>
       <div className="layout--main__title">
-        Chi tiết lớp {dataTable?.data?.name}
+        Chi tiết lớp: {dataTable?.data?.name}
       </div>
       <Divider />
       <Row gutter={12} className='mb--5'>
         <Col span={12} className='font-size--20 font-weight--500'>Thông tin chung:</Col>
         <Col span={12}>
           <Space className="w--full justify-content--flexEnd">
-            <Button type='default' icon={<EditOutlined/>}>Sửa</Button>
+            <Button type='default' onClick={() => setIsVisibleTeacher(true)} icon={<EditOutlined/>}>Sửa</Button>
           </Space>
         </Col>
       </Row>
@@ -286,6 +288,12 @@ const ListNew: FC<Props> = ({
       <ModalAdd
         isVisibleModal={isVisibleModal}
         setIsVisibleModal={() => setIsVisibleModal(false) }
+        dataClass={dataTable}
+      />
+
+      <ModalTeacher
+        isVisibleModal={isVisibleTeacher}
+        setIsVisibleModal={() => setIsVisibleTeacher(false) }
         dataClass={dataTable}
       />
     </>

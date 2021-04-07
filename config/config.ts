@@ -149,8 +149,24 @@ export default defineConfig({
               path: "/subject-manage",
               name: "subject-manage",
               icon: "BookOutlined",
-              component: "@/pages/subjectManage",
               authority: ["1"],
+              routes: [
+                {
+                  path: "/subject-manage",
+                  name: "list",
+                  component: "@/pages/SubjectManage/TableSubject",
+                  exact: true,
+                  hideInMenu: true,
+                },
+                {
+                  path: "/subject-manage/:id",
+                  name: "detail",
+                  component: "@/pages/SubjectManage/DetailSubject",
+                  breadcrumbName: "Chi tiết",
+                  exact: true,
+                  hideInMenu: true,
+                },
+              ]
             },
             {
               path: "/account-manage",

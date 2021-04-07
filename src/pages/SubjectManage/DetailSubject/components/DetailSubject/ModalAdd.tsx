@@ -10,7 +10,7 @@ import {
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage } from "umi";
 import { CloseOutlined } from "@ant-design/icons";
-import { ClassT } from "../../data";
+import { SubjectT } from "../../data";
 
 const { Option } = Select;
 
@@ -19,7 +19,7 @@ type Props = {
   listStudent: any;
   isVisibleModal: boolean;
   setIsVisibleModal: any;
-  dataClass: any;
+  dataSubject: any;
 };
 
 const ModalTeacher: FC<Props> = ({
@@ -27,30 +27,30 @@ const ModalTeacher: FC<Props> = ({
   listStudent,
   isVisibleModal,
   setIsVisibleModal,
-  dataClass
+  dataSubject
 }) => {
 
   const [value, setValue] = useState<any>(undefined)
   useEffect(() => {
     dispatch({
-      type: "classManageAndDetail/getListStudent",
+      type: "subjectManageAndDetail/getListStudent",
     });
   }, [dispatch])
 
   const handleFinish = () => {
     dispatch({
-      type: "classManageAndDetail/addStudentToClass",
+      type: "subjectManageAndDetail/addStudentToSubject",
       payload: {
         data: {
           idUser: value,
-          idClass: dataClass?.data?.idClass
+          idSubject: dataSubject?.data?.idSubject
         }
       }
     }).then(() => {
       dispatch({
-        type: "classManageAndDetail/getDetailClass",
+        type: "subjectManageAndDetail/getDetailSubject",
         payload: {
-          id: dataClass?.data?.id
+          id: dataSubject?.data?.id
         }
       });
       setValue(undefined)
@@ -103,13 +103,13 @@ const ModalTeacher: FC<Props> = ({
 
 export default connect(
   ({
-    classManageAndDetail,
+    subjectManageAndDetail,
   }: {
-    classManageAndDetail: ClassT;
+    subjectManageAndDetail: SubjectT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    listStudent: classManageAndDetail.listStudent,
+    listStudent: subjectManageAndDetail.listStudent,
   })
 )(ModalTeacher);
