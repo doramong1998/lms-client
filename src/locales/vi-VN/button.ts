@@ -6,6 +6,7 @@ export default {
   'button.export.success': 'Xuất file thành công!',
   'button.yes': 'Đồng ý',
   'button.cancel': 'Hủy',
+  'button.close': 'Đóng',
   'button.create': 'Thêm mới',
   'button.edit': 'Chỉnh sửa',
   'button.save': 'Lưu',

@@ -21,5 +21,7 @@ export type ListClass = {
 export type ClassT = {
   detailClass: ListClass,
   listTeacher: any,
-  listStudent: any
+  listStudent: any,
+  pointStudent: any,
+  listClassStudent: any,
 }

@@ -6,7 +6,10 @@ import {
   getListTeacher,
   getListStudent,
   addStudentToClass,
-  changeTeacherClass
+  changeTeacherClass,
+  deleteStudentFromClass,
+  getPointStudent,
+  getClassBytStudent
 } from "./service";
 
 type Model = {
@@ -16,6 +19,8 @@ type Model = {
     saveDetailClass: Reducer<ClassT>;
     saveListTeacher: Reducer<ClassT>;
     saveListStudent: Reducer<ClassT>;
+    savePointStudent: Reducer<ClassT>;
+    saveListClassStudent: Reducer<ClassT>;
   };
   effects: {
     getDetailClass: Effect;
@@ -23,6 +28,9 @@ type Model = {
     getListStudent: Effect;
     addStudentToClass: Effect;
     changeTeacherClass: Effect;
+    deleteStudentFromClass: Effect;
+    getPointStudent: Effect;
+    getClassBytStudent: Effect;
   };
 };
 
@@ -31,7 +39,9 @@ export default <Model>{
   state: {
     detailClass: {},
     listTeacher: {},
-    listStudent: {}
+    listStudent: {},
+    pointStudent: {},
+    listClassStudent: {}
   },
   reducers: {
     saveDetailClass(state, { payload }) {
@@ -54,6 +64,22 @@ export default <Model>{
       return {
         ...state,
         listStudent: {
+          ...payload,
+        },
+      };
+    },
+    savePointStudent(state, { payload }) {
+      return {
+        ...state,
+        pointStudent: {
+          ...payload,
+        },
+      };
+    },
+    saveListClassStudent(state, { payload }) {
+      return {
+        ...state,
+        listClassStudent: {
           ...payload,
         },
       };
@@ -113,6 +139,42 @@ export default <Model>{
         const err = yield error.response.json();
         message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
+      }
+    },
+    *deleteStudentFromClass({ payload }, { call, put }) {
+      try {
+        const response = yield call(deleteStudentFromClass, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *getPointStudent({ payload }, { call, put }) {
+      try {
+        const response = yield call(getPointStudent, payload);
+        yield put({
+          type: "savePointStudent",
+          payload: response,
+        });
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *getClassBytStudent({ payload }, { call, put }) {
+      try {
+        const response = yield call(getClassBytStudent, payload);
+        yield put({
+          type: "saveListClassStudent",
+          payload: response,
+        });
+      } catch (error) {
+        //
       }
     },
   },

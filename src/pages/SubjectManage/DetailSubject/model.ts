@@ -6,7 +6,9 @@ import {
   getListTeacher,
   getListStudent,
   addStudentToSubject,
-  changeTeacherSubject
+  changeTeacherSubject,
+  deleteStudentFromSubject,
+  updatePoint
 } from "./service";
 
 type Model = {
@@ -23,6 +25,8 @@ type Model = {
     getListStudent: Effect;
     addStudentToSubject: Effect;
     changeTeacherSubject: Effect;
+    deleteStudentFromSubject: Effect;
+    updatePoint: Effect;
   };
 };
 
@@ -107,6 +111,28 @@ export default <Model>{
     *changeTeacherSubject({ payload }, { call, put }) {
       try {
         const response = yield call(changeTeacherSubject, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *deleteStudentFromSubject({ payload }, { call, put }) {
+      try {
+        const response = yield call(deleteStudentFromSubject, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *updatePoint({ payload }, { call, put }) {
+      try {
+        const response = yield call(updatePoint, payload);
         message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {

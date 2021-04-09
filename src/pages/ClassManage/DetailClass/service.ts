@@ -32,3 +32,24 @@ export const changeTeacherClass = (payload: ParamType) => {
     data: payload.data,
   } )
 }
+
+export const deleteStudentFromClass = (payload: ParamType) => {
+  return request(`${API_URL}/classes/deleteStudentFromClass`,{
+    method: 'DELETE',
+    data: payload.data,
+  } )
+}
+
+export const getPointStudent = (payload: ParamType) => {
+  return request(`${API_URL}/classes/getPointStudent`,{
+    method: 'POST',
+    data: payload.data
+  })
+}
+
+export const getClassBytStudent = (payload: ParamType) => {
+  return request(`${API_URL}/classes/getClassBytStudent`,{
+    method: 'POST',
+    data: payload.data
+  })
+}

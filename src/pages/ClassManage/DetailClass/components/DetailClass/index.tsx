@@ -15,6 +15,7 @@ import {
   EyeOutlined
 } from "@ant-design/icons";
 import ModalTeacher from "./ModalTeacher";
+import ModalPoint from "./ModalPoint";
 
 type Props = {
   dispatch: Dispatch;
@@ -25,7 +26,7 @@ type Props = {
   loadingDelete: boolean;
 };
 
-const ListNew: FC<Props> = ({
+const DetailClass: FC<Props> = ({
   dispatch,
   dataTable,
   loadingCreate,
@@ -37,6 +38,7 @@ const ListNew: FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
   const [isVisibleTeacher, setIsVisibleTeacher] = useState(false);
+  const [isVisiblePoint, setIsVisiblePoint] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
@@ -75,7 +77,10 @@ const ListNew: FC<Props> = ({
     ) {
       setSelectedRowKeys([]);
       dispatch({
-        type: "classManageAndDetail/getListClass",
+        type: "classManageAndDetail/getDetailClass",
+        payload: {
+          id: history.location.pathname.replace('/class-manage/','')
+        }
       });
       setLoading(false);
     }
@@ -88,6 +93,7 @@ const ListNew: FC<Props> = ({
       avatar: item?.avatar,
       address: item?.address,
       dob: item?.dob,
+      idUser: item?.idUser,
       email: item?.email,
       gender: item?.gender,
       status: item?.status,
@@ -101,18 +107,19 @@ const ListNew: FC<Props> = ({
     },
   };
 
-  const onDeleteOne = (id: any) => {
+  const onDeleteOne = (idUser: any) => {
     const onOk = () =>
       dispatch({
-        type: "classManageAndDetail/deleteClass",
+        type: "classManageAndDetail/deleteStudentFromClass",
         payload: {
           data: {
-            id
+            idUser,
+            idClass: dataTable?.data?.idClass
           },
         },
       });
     modalConfirmDelete(onOk);
-  };
+  }
 
   const columns: any = [
     {
@@ -190,19 +197,20 @@ const ListNew: FC<Props> = ({
           <Menu>
              <Menu.Item
               icon={<EyeOutlined />}
+              onClick={() => { setIsVisiblePoint(true); setData(value)}}
             >
               Xem điểm
             </Menu.Item>
-            <Menu.Item
+            {/* <Menu.Item
               icon={<EditOutlined />}
-              onClick={() => { setIsVisibleModal(true); setData(record)}}
+              onClick={() => { setIsVisiblePoint(true); setData(value)}}
             >
               Cập nhật
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item
               danger
               icon={<DeleteOutlined />}
-              onClick={() => onDeleteOne(record.id)}
+              onClick={() => onDeleteOne(value.idUser)}
             >
               Xóa
             </Menu.Item>
@@ -296,6 +304,11 @@ const ListNew: FC<Props> = ({
         setIsVisibleModal={() => setIsVisibleTeacher(false) }
         dataClass={dataTable}
       />
+        <ModalPoint
+        isVisibleModal={isVisiblePoint}
+        setIsVisibleModal={() => setIsVisiblePoint(false) }
+        data={data}
+      />
     </>
   );
 };
@@ -312,8 +325,8 @@ export default connect(
   }) => ({
     dataTable: classManageAndDetail.detailClass,
     loadingGet: loading.effects["classManageAndDetail/getListClass"],
-    loadingCreate: loading.effects["classManageAndDetail/createClass"],
+    loadingCreate: loading.effects["classManageAndDetail/addStudentToClass"],
     loadingUpdate: loading.effects["classManageAndDetail/updateClass"],
-    loadingDelete: loading.effects["classManageAndDetail/deleteClass"],
+    loadingDelete: loading.effects["classManageAndDetail/deleteStudentFromClass"],
   })
-)(ListNew);
+)(DetailClass);

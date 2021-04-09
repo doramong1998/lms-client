@@ -6,6 +6,7 @@ export default {
   'button.export.success': 'Export successfully!',
   'button.yes': 'Yes',
   'button.cancel': 'Cancel',
+  'button.close': 'Close',
   'button.create': 'Create',
   'button.save': 'Save',
   'button.edit': 'Edit',

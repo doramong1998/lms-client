@@ -32,3 +32,17 @@ export const changeTeacherSubject = (payload: ParamType) => {
     data: payload.data,
   } )
 }
+
+export const deleteStudentFromSubject = (payload: ParamType) => {
+  return request(`${API_URL}/subject/deleteStudentFromSubject`,{
+    method: 'DELETE',
+    data: payload.data,
+  } )
+}
+
+export const updatePoint = (payload: ParamType) => {
+  return request(`${API_URL}/point/updatePoint`,{
+    method: 'POST',
+    data: payload.data,
+  } )
+}
