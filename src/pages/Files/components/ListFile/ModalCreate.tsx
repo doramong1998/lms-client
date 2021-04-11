@@ -3,9 +3,8 @@ import { Modal, Upload, message, Spin } from "antd";
 import type { Dispatch } from "umi";
 import { connect } from "umi";
 import { CloseOutlined, InboxOutlined } from "@ant-design/icons";
-import { KEY_API } from "@/utils/utils";
 
-const { Dragger, LIST_IGNORE }: any = Upload;
+const { Dragger }: any = Upload;
 
 type Props = {
   dispatch: Dispatch;
@@ -44,44 +43,20 @@ const ModalCreateOrEdit: FC<Props> = ({
     // },
     beforeUpload: () => false,
     onChange: (info: any) => {
+        message.info('Đang kiểm tra file...')
         const form = new FormData()
-        form.append('apikey', KEY_API)
         form.append('file',info.file)
-        dispatch({
-          type: "files/scanBeforeUpload",
+        dispatch(({
+          type: "files/createFile",
           payload: {
-            data: form,
+            data: form
           }
-        }).then((res: any)=> {
+        })).then((res: any) => {
           dispatch({
-            type: "files/resultScan",
-            payload: {
-              query: res.resource,
-            }
-          }).then((res: any) => {
-            if(res.positives !== 0){
-              message.error('File chứa mã thực thi hoặc virus, vui lòng thử lại!')
-            }
-            else {
-              message.success('Đã quét xong, đang upload file!')
-              dispatch(({
-                type: "files/createFile",
-                payload: {
-                  data: form
-                }
-              })).then((res: any) => {
-                message.success(`File ${res?.data?.name} tải lên thành công.`);
-                dispatch({
-                  type: "files/getListFile",
-                 
-                });
-                setIsVisibleModal(false);
-              })
-            }
-          })
+            type: "files/getListFile",
+          });
+          setIsVisibleModal(false)
         })
-      
-     
     },
   };
 
@@ -101,8 +76,8 @@ const ModalCreateOrEdit: FC<Props> = ({
       destroyOnClose
       centered
     >
-      <Spin spinning={loading} tip='Đang kiểm tra mã độc...'>
       <Dragger {...props}>
+      <Spin spinning={loading} tip='Đang kiểm tra mã độc...'>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
@@ -110,8 +85,9 @@ const ModalCreateOrEdit: FC<Props> = ({
         <p className="ant-upload-hint">
           Hỗ trợ tải một hoặc nhiều file cùng lúc
         </p>
+        </Spin>
       </Dragger>
-      </Spin>
+     
     
     </Modal>
   );
@@ -124,7 +100,7 @@ export default connect(
       effects: Record<string, boolean>;
     };
   }) => ({
-    loadingScan: loading.effects["files/scanBeforeUpload"],
-    loadingGet: loading.effects["files/resultScan"],
+    loadingScan: loading.effects["files/createFile"],
+    loadingGet: loading.effects["files/getListFile"],
   })
 )(ModalCreateOrEdit);

@@ -253,7 +253,6 @@ export default connect(
   }) => ({
     dataTable: files.listFile,
     loadingGet: loading.effects["files/getListFile"],
-    loadingCreate: loading.effects["files/createFile"],
     loadingUpdate: loading.effects["files/updateFile"],
     loadingDelete: loading.effects["files/deleteFile"],
   })
