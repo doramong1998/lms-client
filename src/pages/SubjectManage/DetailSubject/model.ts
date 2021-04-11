@@ -8,7 +8,8 @@ import {
   addStudentToSubject,
   changeTeacherSubject,
   deleteStudentFromSubject,
-  updatePoint
+  updatePoint,
+  getAttend
 } from "./service";
 
 type Model = {
@@ -18,6 +19,7 @@ type Model = {
     saveDetailSubject: Reducer<SubjectT>;
     saveListTeacher: Reducer<SubjectT>;
     saveListStudent: Reducer<SubjectT>;
+    saveAttendSubject: Reducer<SubjectT>;
   };
   effects: {
     getDetailSubject: Effect;
@@ -27,6 +29,7 @@ type Model = {
     changeTeacherSubject: Effect;
     deleteStudentFromSubject: Effect;
     updatePoint: Effect;
+    getAttend: Effect;
   };
 };
 
@@ -35,7 +38,8 @@ export default <Model>{
   state: {
     detailSubject: {},
     listTeacher: {},
-    listStudent: {}
+    listStudent: {},
+    attendSubject: {}
   },
   reducers: {
     saveDetailSubject(state, { payload }) {
@@ -58,6 +62,14 @@ export default <Model>{
       return {
         ...state,
         listStudent: {
+          ...payload,
+        },
+      };
+    },
+    saveAttendSubject(state, { payload }) {
+      return {
+        ...state,
+        attendSubject: {
           ...payload,
         },
       };
@@ -139,6 +151,17 @@ export default <Model>{
         const err = yield error.response.json();
         message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
+      }
+    },
+    *getAttend({ payload }, { call, put }) {
+      try {
+        const response = yield call(getAttend, payload);
+        yield put({
+          type: "saveAttendSubject",
+          payload: response,
+        });
+      } catch (error) {
+        //
       }
     },
   },

@@ -6,6 +6,8 @@ import {
   createFile,
   updateFile,
   deleteFile,
+  resultScan,
+  scanBeforeUpload,
 } from "./service";
 
 type Model = {
@@ -19,6 +21,8 @@ type Model = {
     createFile: Effect;
     updateFile: Effect;
     deleteFile: Effect;
+    resultScan: Effect;
+    scanBeforeUpload: Effect;
   };
 };
 
@@ -53,7 +57,6 @@ export default <Model>{
     *createFile({ payload }, { call, put }) {
       try {
         const response = yield call(createFile, payload);
-        message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {
         const err = yield error.response.json();
@@ -80,6 +83,27 @@ export default <Model>{
       } catch (error) {
         const err = yield error.response.json();
         message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *resultScan({ payload }, { call, put }) {
+      try {
+        yield new Promise((resolve) => setTimeout(resolve, 5000));
+        const response = yield call(resultScan, payload);
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error("Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *scanBeforeUpload({ payload }, { call, put }) {
+      try {
+        const response = yield call(scanBeforeUpload, payload);
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error("Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
       }
     },

@@ -1,14 +1,17 @@
-import { FC } from "react";
-import { Modal, Upload, message } from "antd";
+import { FC, useEffect, useState } from "react";
+import { Modal, Upload, message, Spin } from "antd";
 import type { Dispatch } from "umi";
-import { connect, useIntl } from "umi";
+import { connect } from "umi";
 import { CloseOutlined, InboxOutlined } from "@ant-design/icons";
+import { KEY_API } from "@/utils/utils";
 
-const { Dragger } = Upload;
+const { Dragger, LIST_IGNORE }: any = Upload;
 
 type Props = {
   dispatch: Dispatch;
   data: any;
+  loadingScan: boolean;
+  loadingGet: boolean;
   isVisibleModal: boolean;
   setIsVisibleModal: any;
 };
@@ -16,38 +19,75 @@ type Props = {
 const ModalCreateOrEdit: FC<Props> = ({
   dispatch,
   data,
+  loadingGet,
+  loadingScan,
   isVisibleModal,
   setIsVisibleModal,
 }) => {
-  const { formatMessage } = useIntl();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (loadingGet === true || loadingScan === true) {
+      setLoading(true);
+    }
+    if (loadingGet === false || loadingScan === true) {
+      setLoading(false);
+    }
+  }, [loadingGet, dispatch, loadingScan]);
 
   const props = {
     name: "file",
-    multiple: true,
-    action: "http://localhost:3000/api/upload/media",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
+    multiple: false,
+    showUploadList: false,
+    // action: "http://localhost:3000/api/upload/media",
+    // headers: {
+    //   Authorization: `Bearer ${localStorage.getItem("token")}`,
+    // },
+    beforeUpload: () => false,
     onChange: (info: any) => {
-      const { status } = info.file;
-      if (status !== "uploading") {
-      }
-      if (status === "done") {
-        message.success(`File ${info.file.name} tải lên thành công.`);
+        const form = new FormData()
+        form.append('apikey', KEY_API)
+        form.append('file',info.file)
         dispatch({
-          type: "files/getListFile",
-        });
-      } else if (status === "error") {
-        message.error(`File ${info.file.name} tải lên thất bại.`);
-      }
+          type: "files/scanBeforeUpload",
+          payload: {
+            data: form,
+          }
+        }).then((res: any)=> {
+          dispatch({
+            type: "files/resultScan",
+            payload: {
+              query: res.resource,
+            }
+          }).then((res: any) => {
+            if(res.positives !== 0){
+              message.error('File chứa mã thực thi hoặc virus, vui lòng thử lại!')
+            }
+            else {
+              message.success('Đã quét xong, đang upload file!')
+              dispatch(({
+                type: "files/createFile",
+                payload: {
+                  data: form
+                }
+              })).then((res: any) => {
+                message.success(`File ${res?.data?.name} tải lên thành công.`);
+                dispatch({
+                  type: "files/getListFile",
+                 
+                });
+                setIsVisibleModal(false);
+              })
+            }
+          })
+        })
+      
+     
     },
   };
 
   return (
     <Modal
-      title={formatMessage({
-        id: !data ? "button.create" : "button.update",
-      })}
+      title="Tải file lên"
       visible={isVisibleModal}
       footer={null}
       closeIcon={
@@ -57,8 +97,11 @@ const ModalCreateOrEdit: FC<Props> = ({
           }}
         />
       }
+      width={600}
+      destroyOnClose
       centered
     >
+      <Spin spinning={loading} tip='Đang kiểm tra mã độc...'>
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
@@ -68,7 +111,20 @@ const ModalCreateOrEdit: FC<Props> = ({
           Hỗ trợ tải một hoặc nhiều file cùng lúc
         </p>
       </Dragger>
+      </Spin>
+    
     </Modal>
   );
 };
-export default connect()(ModalCreateOrEdit);
+export default connect(
+  ({
+    loading,
+  }: {
+    loading: {
+      effects: Record<string, boolean>;
+    };
+  }) => ({
+    loadingScan: loading.effects["files/scanBeforeUpload"],
+    loadingGet: loading.effects["files/resultScan"],
+  })
+)(ModalCreateOrEdit);

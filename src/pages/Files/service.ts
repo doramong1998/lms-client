@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { API_URL } from '@/utils/utils'
+import { API_URL, VIRUSTOTAL_URL, KEY_API } from '@/utils/utils'
 
 type ParamType = {
   id?: number
@@ -32,3 +32,24 @@ export const deleteFile = (payload: ParamType) => {
   })
 }
 
+export const scanBeforeUpload = (payload: ParamType) => {
+  return request(`${VIRUSTOTAL_URL}/scan`, {
+    method: 'POST',
+    data: payload.data,
+  })
+}
+
+export const resultScan = (payload: ParamType) => {
+  return request(`${VIRUSTOTAL_URL}/report?apikey=${KEY_API}&resource=${payload.query}`)
+}
+
+// export const scanBeforeUpload = (payload: ParamType) => {
+//   return request(`/scan`, {
+//     method: 'POST',
+//     data: payload.data,
+//   })
+// }
+
+// export const resultScan = (payload: ParamType) => {
+//   return request('/resultScan')
+// }

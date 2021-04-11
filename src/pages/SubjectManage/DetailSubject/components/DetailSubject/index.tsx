@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { FC } from "react";
 import {
   Row,
@@ -22,9 +22,11 @@ import {
   DeleteOutlined,
   MoreOutlined,
   PlusOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import ModalTeacher from "./ModalTeacher";
 import ModalUpdatePoint from "./ModalUpdatePoint";
+import ModalAttend from "./ModalAttend";
 
 type Props = {
   dispatch: Dispatch;
@@ -50,6 +52,7 @@ const ListNew: FC<Props> = ({
   const [data, setData] = useState<any>(null);
   const [isVisibleTeacher, setIsVisibleTeacher] = useState(false);
   const [isVisiblePoint, setIsVisiblePoint] = useState(false);
+  const [isVisibleAttend, setIsVisibleAttend] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
@@ -313,13 +316,21 @@ const ListNew: FC<Props> = ({
         <Col md={12}></Col>
         <Col md={12}>
           <Space className="w--full justify-content--flexEnd">
+          <Button
+              type="default"
+              onClick={() => {
+                setIsVisibleAttend(true);
+              }}
+            >
+              <CheckCircleOutlined className="mr--2" />Điểm danh
+            </Button>
             <Button
               type="primary"
               onClick={() => {
                 setIsVisibleModal(true);
               }}
             >
-              <PlusOutlined className="mr--5" />
+              <PlusOutlined className="mr--2" />
               <FormattedMessage id="button.create" />
             </Button>
           </Space>
@@ -358,6 +369,12 @@ const ListNew: FC<Props> = ({
         data={data}
         dataTable={dataTable}
       />
+
+      <ModalAttend
+        isVisibleModal={isVisibleAttend}
+        setIsVisibleModal={() => setIsVisibleAttend(false)}
+        data={dataTable}
+      />  
     </>
   );
 };

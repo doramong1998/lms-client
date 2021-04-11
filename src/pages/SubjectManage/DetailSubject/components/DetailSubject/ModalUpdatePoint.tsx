@@ -173,13 +173,13 @@ const ModalPoint: FC<Props> = ({
 
 export default connect(
   ({
-    classManage,
+    subjectManageAndDetail,
   }: {
-    classManage: SubjectT;
+    subjectManageAndDetail: SubjectT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    listTeacher: classManage.listTeacher,
+    listTeacher: subjectManageAndDetail.listTeacher,
   })
 )(ModalPoint);

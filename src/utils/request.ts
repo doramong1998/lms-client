@@ -15,7 +15,7 @@ const errorHandler = (error: { response: Response }): Response => {
   }
   if (error?.response?.status === 401) {
     notification.error({
-      message: 'Chưa đăng nhập hoặc đăng nhập đã hết hạn, vui lòng đăng nhập lại.',
+      message: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!',
     })
     history.push('/user/login')
   }

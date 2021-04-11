@@ -46,3 +46,10 @@ export const updatePoint = (payload: ParamType) => {
     data: payload.data,
   } )
 }
+
+export const getAttend = (payload: ParamType) => {
+  return request(`${API_URL}/attend/getAttend`,{
+    method: 'POST',
+    data: payload.data,
+  } )
+}
