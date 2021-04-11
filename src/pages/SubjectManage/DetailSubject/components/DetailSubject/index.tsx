@@ -305,6 +305,14 @@ const ListNew: FC<Props> = ({
       </Row>
       <Row>
         <Col span={8} lg={4} className="font-weight--500">
+          Tổng số tiết học:
+        </Col>
+        <Col span={16} lg={20}>
+          {dataTable?.data?.lessonNum}
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8} lg={4} className="font-weight--500">
           Tổng số sinh viên:
         </Col>
         <Col span={16} lg={20}>

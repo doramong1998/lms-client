@@ -9,7 +9,8 @@ import {
   changeTeacherSubject,
   deleteStudentFromSubject,
   updatePoint,
-  getAttend
+  getAttend,
+  postAttend
 } from "./service";
 
 type Model = {
@@ -30,6 +31,7 @@ type Model = {
     deleteStudentFromSubject: Effect;
     updatePoint: Effect;
     getAttend: Effect;
+    postAttend: Effect;
   };
 };
 
@@ -116,7 +118,7 @@ export default <Model>{
         return Promise.resolve(response);
       } catch (error) {
         const err = yield error.response.json();
-        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
       }
     },
@@ -127,7 +129,7 @@ export default <Model>{
         return Promise.resolve(response);
       } catch (error) {
         const err = yield error.response.json();
-        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
       }
     },
@@ -138,7 +140,7 @@ export default <Model>{
         return Promise.resolve(response);
       } catch (error) {
         const err = yield error.response.json();
-        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
       }
     },
@@ -149,7 +151,7 @@ export default <Model>{
         return Promise.resolve(response);
       } catch (error) {
         const err = yield error.response.json();
-        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
         return Promise.reject(err);
       }
     },
@@ -162,6 +164,17 @@ export default <Model>{
         });
       } catch (error) {
         //
+      }
+    },
+    *postAttend({ payload }, { call, put }) {
+      try {
+        const response = yield call(postAttend, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
       }
     },
   },

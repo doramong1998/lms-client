@@ -93,6 +93,7 @@ const ListNew: FC<Props> = ({
       name: item?.name,
       code: item?.code,
       studentNum: item?.studentNum,
+      lessonNum: item?.lessonNum,
       idTeacher: item.idTeacher,
       status: item?.status,
       teacher: item?.teacher,
@@ -138,6 +139,10 @@ const ListNew: FC<Props> = ({
       title: "Quản lý",
       dataIndex: "teacher",
       render: (value: any) => value?.fullName,
+    },
+    {
+      title: "SL tiết học",
+      dataIndex: "lessonNum",
     },
     {
       title: "SL sinh viên",

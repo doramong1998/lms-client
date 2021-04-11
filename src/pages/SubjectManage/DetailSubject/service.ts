@@ -53,3 +53,10 @@ export const getAttend = (payload: ParamType) => {
     data: payload.data,
   } )
 }
+
+export const postAttend = (payload: ParamType) => {
+  return request(`${API_URL}/attend/postAttend`,{
+    method: 'POST',
+    data: payload.data,
+  } )
+}

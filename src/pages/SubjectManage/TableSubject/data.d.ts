@@ -4,6 +4,7 @@ export type Subject = {
   name?: string,
   studentNum?: number,
   fileNum?: number,
+  lessonNum?: number,
   idTeacher?: string,
   code?: string,
   status?: string,

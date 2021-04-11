@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Button,
   Divider,
@@ -31,7 +31,7 @@ const ModalAttend: FC<Props> = ({
   attendSubject
 }) => {
   const [form] = Form.useForm();
-
+  const [date, setDate] = useState(moment().format('DD/MM/YYYY'))
   useEffect(() => {
     if(data?.data?.idSubject){
       dispatch({
@@ -46,6 +46,30 @@ const ModalAttend: FC<Props> = ({
     }
   },[data])
 
+  const onChangeAttend = (value: any) => {
+    dispatch({
+      type: "subjectManageAndDetail/postAttend",
+      payload: {
+        data: {
+          date: date,
+          idSubject: data?.data?.idSubject,
+          idUser: value.idUser,
+          value: value?.attend?.value ? !value?.attend?.value : true
+        }
+      }
+    }).then((res: any) => {
+      dispatch({
+        type: "subjectManageAndDetail/getAttend",
+        payload: {
+          data: {
+            date: date,
+            idSubject: data?.data?.idSubject
+          }
+        }
+      })
+    })
+  }
+
   const columns: any = [
     {
       title: "STT",
@@ -57,26 +81,24 @@ const ModalAttend: FC<Props> = ({
     {
       title: "Họ và tên",
       dataIndex: "fullName",
-      width: 200,
+      width: 300,
     },
     {
       title: "Mã sinh viên",
       dataIndex: "studentId",
       align: "center",
-      width: 180,
+      width: 200,
     },
     {
       title: "Điểm danh",
       dataIndex: "",
       align: "center",
       render: (value: any) => {
-        return <Button danger={value?.attend?.value}>{value?.attend?.value ? 'Bỏ điểm danh' : 'Điểm danh'}</Button>
+        return <Button type={value?.attend?.value ? 'dashed' : 'primary' } onClick={() => onChangeAttend(value)} danger={value?.attend?.value}>{value?.attend?.value ? 'Hủy' : 'Điểm danh'}</Button>
       },
     },
     
   ];
-
-  console.log(attendSubject)
 
   const handleFinish = (values: any) => {
       // dispatch({
@@ -98,17 +120,18 @@ const ModalAttend: FC<Props> = ({
   }
 
   const onValuesChange = (values: any) => {
-    // if(values.hasOwnProperty('date')){
-    //   dispatch({
-    //     type: "subjectManageAndDetail/getAttend",
-    //     payload: {
-    //       data: {
-    //         date: moment(values.date).format(TYPE_DATE),
-    //         idSubject: data?.data?.idSubject
-    //       }
-    //     }
-    //   })
-    // }
+    if(values.hasOwnProperty('date')){
+      setDate(moment(values.date).format(TYPE_DATE))
+      dispatch({
+        type: "subjectManageAndDetail/getAttend",
+        payload: {
+          data: {
+            date: moment(values.date).format(TYPE_DATE),
+            idSubject: data?.data?.idSubject
+          }
+        }
+      })
+    }
   }
 
   return (
@@ -147,7 +170,7 @@ const ModalAttend: FC<Props> = ({
 
         <Table
         rowKey={(item: any) => item.id}
-        // loading={loading}
+        scroll={{y: 600}}
         columns={columns}
         dataSource={attendSubject?.data || []}
       ></Table>

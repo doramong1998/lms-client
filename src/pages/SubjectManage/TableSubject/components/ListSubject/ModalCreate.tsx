@@ -144,8 +144,8 @@ const ModalCreateOrEdit: FC<Props> = ({
         </Form.Item>
 
         <Form.Item
-          name="studentNum"
-          label="Số lượng sinh viên"
+          name="lessonNum"
+          label="Số tiết học"
           rules={[
             {
               required: true,
