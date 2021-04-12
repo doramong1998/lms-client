@@ -138,6 +138,12 @@ const ListNew: FC<Props> = ({
     modalConfirmDelete(onOk);
   };
 
+  const calcResult = (value: number, endPoint: number) => {
+    if(value > 4 && endPoint > 4){
+      return 'Đạt'
+    } else return 'Học lại'
+  }
+
   const columns: any = [
     {
       title: "STT",
@@ -175,7 +181,7 @@ const ListNew: FC<Props> = ({
       title: "Điểm danh",
       dataIndex: "point",
       align: "center",
-      render: (value: any) => value?.pointDiligence || 'Chưa có điểm',
+      render: (value: any) => `${value?.pointDiligence.length} / ${dataTable?.data?.lessonNum}`,
     },
     {
       title: "Điểm giữa kì",
@@ -193,19 +199,16 @@ const ListNew: FC<Props> = ({
       title: "Trung bình",
       dataIndex: "point",
       align: "center",
-      render: (value: any) => <b>{(value?.pointDiligence && value?.pointEndTerm && value?.pointMidTerm) ?
-        Math.round((value?.pointDiligence*0.3 + (value?.pointEndTerm*0.3 + value?.pointMidTerm*0.7)*0.7)*100)/100 : 'Chưa có điểm'}</b> ,
+      render: (value: any) => <b>{(value?.pointEndTerm && value?.pointMidTerm) ?
+        Math.round((value?.pointDiligence?.length*0.3 / dataTable?.data?.lessonNum + (value?.pointEndTerm*0.3 + value?.pointMidTerm*0.7)*0.7)*100)/100 : 'Chưa có điểm'}</b> ,
     },
-    
     {
-      title: "Trạng thái",
-      dataIndex: "status",
-      render: (value: any) => (
-        <Badge
-          status={value ? "success" : "default"}
-          text={value ? "Hoạt động" : "Khóa"}
-        />
-      ),
+      title: "Đánh giá",
+      dataIndex: "point",
+      align: "center",
+      width: 200,
+      render: (value: any) => <b>{(value?.pointEndTerm && value?.pointMidTerm) ?
+        calcResult(Math.round((value?.pointDiligence?.length*0.3 / dataTable?.data?.lessonNum  + (value?.pointEndTerm*0.3 + value?.pointMidTerm*0.7)*0.7)*100)/100, value?.pointMidTerm )  : 'Chưa có đánh giá'}</b> ,
     },
     {
       title: "Hành động",
@@ -313,6 +316,14 @@ const ListNew: FC<Props> = ({
       </Row>
       <Row>
         <Col span={8} lg={4} className="font-weight--500">
+          Tổng số tín chỉ:
+        </Col>
+        <Col span={16} lg={20}>
+          {dataTable?.data?.credit}
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8} lg={4} className="font-weight--500">
           Tổng số sinh viên:
         </Col>
         <Col span={16} lg={20}>
@@ -355,7 +366,7 @@ const ListNew: FC<Props> = ({
         loading={loading}
         columns={columns}
         dataSource={dataSource}
-        scroll={{ x: 1500 }}
+        scroll={{ x: 1600 }}
         style={{ width: 1183 }}
       ></Table>
 

@@ -97,6 +97,7 @@ const ListNew: FC<Props> = ({
       idTeacher: item.idTeacher,
       status: item?.status,
       teacher: item?.teacher,
+      credit: item?.credit,
       totalStudent: item?.totalStudent,
     })) || [];
 
@@ -143,6 +144,10 @@ const ListNew: FC<Props> = ({
     {
       title: "SL tiết học",
       dataIndex: "lessonNum",
+    },
+    {
+      title: "Số tín chỉ",
+      dataIndex: "credit",
     },
     {
       title: "SL sinh viên",

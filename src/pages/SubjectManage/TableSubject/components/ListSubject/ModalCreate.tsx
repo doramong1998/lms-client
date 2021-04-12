@@ -158,6 +158,20 @@ const ModalCreateOrEdit: FC<Props> = ({
           <InputNumber className="w--full" />
         </Form.Item>
         <Form.Item
+          name="credit"
+          label="Số tín chỉ"
+          rules={[
+            {
+              required: true,
+              message: formatMessage({
+                id: "form.formItem.required.message",
+              }),
+            },
+          ]}
+        >
+          <InputNumber className="w--full" />
+        </Form.Item>
+        <Form.Item
           name="totalStudent"
           label="Số lượng sinh viên tối đa"
           rules={[

@@ -8,7 +8,7 @@ import {
   DatePicker,
   Table,
 } from "antd";
-import { Dispatch, formatMessage } from "umi";
+import { Dispatch, formatMessage, history } from "umi";
 import { connect, FormattedMessage, } from "umi";
 import { CloseOutlined } from "@ant-design/icons";
 import { SubjectT } from "../../data";
@@ -101,22 +101,14 @@ const ModalAttend: FC<Props> = ({
   ];
 
   const handleFinish = (values: any) => {
-      // dispatch({
-      //   type: "subjectManageAndDetail/updatePoint",
-      //   payload: {
-      //     data: {
-      //       ...values,
-      //       idUser: data?.idUser,
-      //       idSubject: dataTable?.data?.idSubject,
-      //       idPoint: data?.point?.idPoint
-      //     },
-      //   },
-      // }).then((res: any) => {
-      //   if (res) {
-      //     form.resetFields();
-      //     setIsVisibleModal(false);
-      //   }
-      // });
+    dispatch({
+      type: "subjectManageAndDetail/getDetailSubject",
+      payload: {
+        id: history.location.pathname.replace("/subject-manage/", ""),
+      },
+    });
+    setIsVisibleModal(false);
+    form.resetFields();
   }
 
   const onValuesChange = (values: any) => {

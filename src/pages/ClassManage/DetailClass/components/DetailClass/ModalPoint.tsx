@@ -29,11 +29,9 @@ const ModalPoint: FC<Props> = ({
   data,
   isVisibleModal,
   setIsVisibleModal,
-  listClassStudent,
   loadingGet
 }) => {
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState<any>(null);
   const [pointStudent, setPointStudent] = useState<any>(null);
   useEffect(() => {
     if (loadingGet === true) {
@@ -43,53 +41,68 @@ const ModalPoint: FC<Props> = ({
       setLoading(false);
     }
   }, [loadingGet, dispatch]);
-
   useEffect(() => {
-    if(data) dispatch({
-      type: "classManageAndDetail/getClassBytStudent",
-      payload: {
-        data: { idUser: data?.idUser}
-      },
-    });
+    if(data){
+      dispatch({
+        type: "classManageAndDetail/getPointStudent",
+        payload: {
+          data: {
+            idUser: data?.idUser,
+          }
+        }
+      }).then((res: any) => {
+        setPointStudent(res?.data)
+      })
+    }
   }, [dispatch, data])
 
-  const onChangeValue = (value: any) => {
-    setValue(value)
-    dispatch({
-      type: "classManageAndDetail/getPointStudent",
-      payload: {
-        data: {
-          idUser: data?.idUser,
-          idSubject: value
-        }
-      }
-    }).then((res: any) => {
-      setPointStudent([res?.data])
-    })
-  };
+  const calcResult = (value: number, endPoint: number) => {
+    if(value > 4 && endPoint > 4){
+      return 'Đạt'
+    } else return 'Học lại'
+  }
 
   const columns: any = [
     {
-      title: "Điểm danh",
-      dataIndex: "pointDiligence",
+      title: "Mã môn học",
+      dataIndex: "code",
       align:'center',
+    },
+    {
+      title: "Tên môn học",
+      dataIndex: "name",
+    },
+    {
+      title: "Điểm danh",
+      dataIndex: "point",
+      align:'center',
+      render: (value: any, record: any) => `${value?.pointDiligence?.length} / ${record?.lessonNum || 1}` 
     },
     {
       title: "Điểm giữa kì",
-      dataIndex: "pointMidTerm",
+      dataIndex: "point",
       align:'center',
+      render: (value: any) => value?.pointMidTerm || 'Chưa có điểm'
     },
     {
-      title: "Điểm cuối kì",
-      dataIndex: "pointEndTerm",
+      title: "Điểm thi ",
+      dataIndex: "point",
       align:'center',
+      render: (value: any) => value?.pointEndTerm || 'Chưa có điểm'
     },
     {
-      title: "Trung bình",
-      dataIndex: "",
+      title: "KTHP",
+      dataIndex: "point",
       align: "center",
-      render: (value: any) => <b>{(value?.pointDiligence && value?.pointEndTerm && value?.pointMidTerm) ?
-        Math.round((value?.pointDiligence*0.3 + (value?.pointEndTerm*0.3 + value?.pointMidTerm*0.7)*0.7)*100)/100 : 'Chưa có điểm'}</b> ,
+      render: (value: any, record: any) => <b>{(value?.pointEndTerm && value?.pointMidTerm) ?
+        Math.round((value?.pointDiligence?.length*0.3 / record?.lessonNum + (value?.pointEndTerm*0.3 + value?.pointMidTerm*0.7)*0.7)*100)/100 : 'Chưa có điểm'}</b> ,
+    },
+    {
+      title: "Đánh giá",
+      dataIndex: "point",
+      align: "center",
+      render: (value: any, record: any) => <b>{(value?.pointEndTerm && value?.pointMidTerm) ?
+        calcResult(Math.round((value?.pointDiligence?.length*0.3 / record?.lessonNum + (value?.pointEndTerm*0.3 + value?.pointMidTerm*0.7)*0.7)*100)/100, value?.pointMidTerm )  : 'Chưa có đánh giá'}</b> ,
     },
   ]
 
@@ -98,40 +111,32 @@ const ModalPoint: FC<Props> = ({
       title="Tra cứu điểm"
       visible={isVisibleModal}
       footer={null}
+      width={1200}
       closeIcon={
         <CloseOutlined
           onClick={() => {
             setIsVisibleModal(false);
             setPointStudent(null)
-            setValue(null)
           }}
         />
       }
       centered
     >
   <>
-        <Row>
-          Chọn môn học:
-        </Row>
-        <Row className='mt--15'>
-        <Select placeholder='Chọn môn học' value={value} className='w--full mb--15' onChange={(select) => onChangeValue(select)}>
-            {listClassStudent?.data?.map((item: any) => <Option key={item.idSubject} value={item.idSubject}>{item.code} - {item.name}</Option>)}
-    </Select>
-    {pointStudent && <Table
+   <Table
         className='w--full'
         loading={loading}
         columns={columns}
         dataSource={pointStudent}
-        pagination={false}
-      ></Table>}
-        </Row>
+        scroll={{y: 500}}
+      ></Table>
+    
         <Divider />
           <Space className="w--full justify-content--flexEnd">
             <Button
               onClick={() => {
                 setIsVisibleModal(false);
                 setPointStudent(null)
-                setValue(null)
               }}
             >
               <FormattedMessage id="button.close" />

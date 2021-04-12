@@ -10,6 +10,7 @@ export type Subject = {
   status?: string,
   teacher?: any,
   totalStudent?: number,
+  credit?: any,
 }
 
 export type ListSubject = {
