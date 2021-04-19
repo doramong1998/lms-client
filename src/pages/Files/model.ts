@@ -8,6 +8,7 @@ import {
   deleteFile,
   resultScan,
   scanBeforeUpload,
+  updateTimeFile
 } from "./service";
 
 type Model = {
@@ -23,6 +24,7 @@ type Model = {
     deleteFile: Effect;
     resultScan: Effect;
     scanBeforeUpload: Effect;
+    updateTimeFile: Effect;
   };
 };
 
@@ -108,5 +110,17 @@ export default <Model>{
         return Promise.reject(err);
       }
     },
+    *updateTimeFile({ payload }, { call, put }) {
+      try {
+        const response = yield call(updateTimeFile, payload);
+        message.success(response?.message || "Gia hạn thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
   },
+  
 };

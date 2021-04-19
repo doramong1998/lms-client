@@ -156,13 +156,23 @@ export function getRoutes() {
             ]
           },
           {
-            "path": "/subject",
+            "path": "/subject-teacher",
             "name": "subject",
             "icon": "BookOutlined",
             "authority": [
-              "2",
+              "2"
+            ],
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Subject__SubjectTeacher' */'@/pages/Subject/SubjectTeacher'), loading: LoadingComponent}),
+            "exact": true
+          },
+          {
+            "path": "/subject-student",
+            "name": "subject",
+            "icon": "BookOutlined",
+            "authority": [
               "3"
             ],
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Subject__SubjectStudent' */'@/pages/Subject/SubjectStudent'), loading: LoadingComponent}),
             "exact": true
           },
           {

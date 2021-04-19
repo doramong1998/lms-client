@@ -9,16 +9,20 @@ import ModelSetting0 from 'E:/a/Doan/lms-client/src/models/setting.ts';
 import ModelModel1 from 'E:/a/Doan/lms-client/src/pages/Account/model.ts';
 import ModelModel2 from 'E:/a/Doan/lms-client/src/pages/AccountManage/model.ts';
 import ModelModel3 from 'E:/a/Doan/lms-client/src/pages/Calendar/model.ts';
-import ModelModel4 from 'E:/a/Doan/lms-client/src/pages/ClassManage/DetailClass/model.ts';
-import ModelModel5 from 'E:/a/Doan/lms-client/src/pages/ClassManage/ListClass/model.ts';
-import ModelModel6 from 'E:/a/Doan/lms-client/src/pages/Enroll/model.ts';
-import ModelModel7 from 'E:/a/Doan/lms-client/src/pages/Files/model.ts';
-import ModelModel8 from 'E:/a/Doan/lms-client/src/pages/SubjectManage/DetailSubject/model.ts';
-import ModelModel9 from 'E:/a/Doan/lms-client/src/pages/SubjectManage/TableSubject/model.ts';
-import ModelModel10 from 'E:/a/Doan/lms-client/src/pages/themes/model.ts';
-import ModelModel11 from 'E:/a/Doan/lms-client/src/pages/user/change/model.ts';
-import ModelModel12 from 'E:/a/Doan/lms-client/src/pages/user/forgot/model.ts';
-import ModelModel13 from 'E:/a/Doan/lms-client/src/pages/user/login/model.ts';
+import ModelModel4 from 'E:/a/Doan/lms-client/src/pages/Class/ClassStudent/model.ts';
+import ModelModel5 from 'E:/a/Doan/lms-client/src/pages/Class/ClassTeacher/model.ts';
+import ModelModel6 from 'E:/a/Doan/lms-client/src/pages/ClassManage/DetailClass/model.ts';
+import ModelModel7 from 'E:/a/Doan/lms-client/src/pages/ClassManage/ListClass/model.ts';
+import ModelModel8 from 'E:/a/Doan/lms-client/src/pages/Enroll/model.ts';
+import ModelModel9 from 'E:/a/Doan/lms-client/src/pages/Files/model.ts';
+import ModelModel10 from 'E:/a/Doan/lms-client/src/pages/Subject/SubjectStudent/model.ts';
+import ModelModel11 from 'E:/a/Doan/lms-client/src/pages/Subject/SubjectTeacher/model.ts';
+import ModelModel12 from 'E:/a/Doan/lms-client/src/pages/SubjectManage/DetailSubject/model.ts';
+import ModelModel13 from 'E:/a/Doan/lms-client/src/pages/SubjectManage/TableSubject/model.ts';
+import ModelModel14 from 'E:/a/Doan/lms-client/src/pages/themes/model.ts';
+import ModelModel15 from 'E:/a/Doan/lms-client/src/pages/user/change/model.ts';
+import ModelModel16 from 'E:/a/Doan/lms-client/src/pages/user/forgot/model.ts';
+import ModelModel17 from 'E:/a/Doan/lms-client/src/pages/user/login/model.ts';
 
 let app:any = null;
 
@@ -55,6 +59,10 @@ app.model({ namespace: 'model', ...ModelModel10 });
 app.model({ namespace: 'model', ...ModelModel11 });
 app.model({ namespace: 'model', ...ModelModel12 });
 app.model({ namespace: 'model', ...ModelModel13 });
+app.model({ namespace: 'model', ...ModelModel14 });
+app.model({ namespace: 'model', ...ModelModel15 });
+app.model({ namespace: 'model', ...ModelModel16 });
+app.model({ namespace: 'model', ...ModelModel17 });
   return app;
 }
 

@@ -47,8 +47,8 @@ export const getPointStudent = (payload: ParamType) => {
   })
 }
 
-export const getClassBytStudent = (payload: ParamType) => {
-  return request(`${API_URL}/classes/getClassBytStudent`,{
+export const getClassByStudent = (payload: ParamType) => {
+  return request(`${API_URL}/classes/getClassByStudent`,{
     method: 'POST',
     data: payload.data
   })

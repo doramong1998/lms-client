@@ -5,41 +5,44 @@ import {
   Form,
   Input,
   Modal,
+  Select,
   Space,
   InputNumber,
 } from "antd";
-import { Dispatch, formatMessage } from "umi";
-import { connect, FormattedMessage, } from "umi";
+import type { Dispatch } from "umi";
+import { connect, FormattedMessage, useIntl } from "umi";
 import { CloseOutlined } from "@ant-design/icons";
-import { SubjectT } from "../../data";
+import { ClassT } from "../../data";
+
+const { Option } = Select;
 
 type Props = {
   dispatch: Dispatch;
   data: any;
-  dataTable: any;
   listTeacher: any;
   isVisibleModal: boolean;
   setIsVisibleModal: any;
 };
 
-const ModalPoint: FC<Props> = ({
+const ModalCreateOrEdit: FC<Props> = ({
   dispatch,
   data,
-  dataTable,
+  listTeacher,
   isVisibleModal,
   setIsVisibleModal,
 }) => {
+  const { formatMessage } = useIntl();
   const [form] = Form.useForm();
 
   const handleFinish = (values: any) => {
+    if (data) {
       dispatch({
-        type: "subjectManageAndDetail/updatePoint",
+        type: "classManage/updateClass",
         payload: {
+          id: data?.id,
           data: {
             ...values,
-            idUser: data?.idUser,
-            idSubject: dataTable?.data?.idSubject,
-            idPoint: data?.point?.idPoint
+            status: values.status === "true",
           },
         },
       }).then((res: any) => {
@@ -48,22 +51,38 @@ const ModalPoint: FC<Props> = ({
           setIsVisibleModal(false);
         }
       });
-  }
+    } else {
+      dispatch({
+        type: "classManage/createClass",
+        payload: {
+          data: {
+            ...values,
+            status: values.status === "true",
+          },
+        },
+      }).then((res: any) => {
+        if (res) {
+          form.resetFields();
+          setIsVisibleModal(false);
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
         ...data,
-        pointDiligence: data?.point?.pointDiligence,
-        pointMidTerm: data?.point?.pointMidTerm,
-        pointEndTerm: data?.point?.pointEndTerm,
+        status: data.status ? "true" : "false",
       });
     }
   }, [data]);
 
   return (
     <Modal
-      title="Cập nhập điểm"
+      title={formatMessage({
+        id: !data ? "button.create" : "button.update",
+      })}
       visible={isVisibleModal}
       footer={null}
       closeIcon={
@@ -78,8 +97,8 @@ const ModalPoint: FC<Props> = ({
     >
       <Form form={form} layout="vertical" onFinish={handleFinish}>
         <Form.Item
-          name="fullName"
-          label="Sinh viên"
+          name="name"
+          label="Tên lớp học"
           rules={[
             {
               required: true,
@@ -89,12 +108,12 @@ const ModalPoint: FC<Props> = ({
             },
           ]}
         >
-          <Input disabled/>
+          <Input />
         </Form.Item>
 
         <Form.Item
-          name="studentId"
-          label="Mã sinh viên"
+          name="idTeacher"
+          label="Giáo viên quản lý"
           rules={[
             {
               required: true,
@@ -104,26 +123,16 @@ const ModalPoint: FC<Props> = ({
             },
           ]}
         >
-         <Input disabled></Input>
+          <Select placeholder="Chọn giáo viên" className="w--full">
+            {listTeacher?.data?.map((item: any) => (
+              <Option key={item.idUser} value={item.idUser}>{item.fullName}</Option>
+            ))}
+          </Select>
         </Form.Item>
 
-        {/* <Form.Item
-          name="pointDiligence"
-          label="Điểm danh"
-          rules={[
-            {
-              required: true,
-              message: formatMessage({
-                id: "form.formItem.required.message",
-              }),
-            },
-          ]}
-        >
-          <InputNumber min={0} max={10} className="w--full" />
-        </Form.Item> */}
         <Form.Item
-          name="pointMidTerm"
-          label="Điểm giữa kì"
+          name="studentNum"
+          label="Số lượng sinh viên"
           rules={[
             {
               required: true,
@@ -133,11 +142,11 @@ const ModalPoint: FC<Props> = ({
             },
           ]}
         >
-          <InputNumber  min={0} max={10} className="w--full" />
+          <InputNumber className="w--full" />
         </Form.Item>
         <Form.Item
-          name="pointEndTerm"
-          label="Điểm cuối kì"
+          name="totalStudent"
+          label="Số lượng sinh viên tối đa"
           rules={[
             {
               required: true,
@@ -147,9 +156,27 @@ const ModalPoint: FC<Props> = ({
             },
           ]}
         >
-          <InputNumber  min={0} max={10} className="w--full" />
+          <InputNumber className="w--full" />
         </Form.Item>
-       
+        <Form.Item
+          name="status"
+          label="Trạng thái"
+          initialValue="true"
+          rules={[
+            {
+              required: true,
+              message: formatMessage({
+                id: "form.formItem.required.message",
+              }),
+            },
+          ]}
+        >
+          <Select placeholder="Chọn trạng thái" className="w--full">
+            <Option value="true">Hoạt động</Option>
+            <Option value="false">Khóa</Option>
+          </Select>
+        </Form.Item>
+
         <Divider />
         <Form.Item className="mb--0">
           <Space className="w--full justify-content--flexEnd">
@@ -173,13 +200,13 @@ const ModalPoint: FC<Props> = ({
 
 export default connect(
   ({
-    subjectManageAndDetail,
+    classManage,
   }: {
-    subjectManageAndDetail: SubjectT;
+    classManage: ClassT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    listTeacher: subjectManageAndDetail.listTeacher,
+    listTeacher: classManage.listTeacher,
   })
-)(ModalPoint);
+)(ModalCreateOrEdit);

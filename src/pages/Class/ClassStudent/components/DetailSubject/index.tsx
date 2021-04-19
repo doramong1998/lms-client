@@ -1,48 +1,34 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Button, Space, Card, Spin } from "antd";
+import { Row, Col, Divider, Table, Badge, Avatar, Select, Spin, Card } from "antd";
 import type { Dispatch } from "umi";
-import { connect, FormattedMessage } from "umi";
-import ModalCreate from "./ModalCreate";
-import type { FileT, ListFile, File } from "../../data";
-import { modalConfirmDelete } from "@/utils/utils";
-import { saveAs } from "file-saver";
-import {
-  PlusOutlined,
-  EllipsisOutlined,
-  DownloadOutlined,
-  EyeOutlined,
-  RetweetOutlined,
-} from "@ant-design/icons";
+import { connect, history } from "umi";
+import type { DataT } from "../../data";
+import { DownloadOutlined, EllipsisOutlined, EyeOutlined } from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
-import ModalShow from "./ModalShow";
+import ModalShow from "@/pages/Files/components/ListFile/ModalShow";
 
+const { Option } = Select;
 type Props = {
   dispatch: Dispatch;
-  dataTable: ListFile;
+  dataTable: any;
   loadingGet: boolean;
-  loadingCreate: boolean;
-  loadingUpdate: boolean;
-  loadingDelete: boolean;
+  listSubject: any;
 };
 
-const ListNew: FC<Props> = ({
+const DetailClass: FC<Props> = ({
   dispatch,
   dataTable,
-  loadingCreate,
-  loadingDelete,
   loadingGet,
-  loadingUpdate,
+  listSubject
 }) => {
-  const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [isVisibleShow, setIsVisibleShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
-
   useEffect(() => {
     dispatch({
-      type: "files/getListFile",
+      type: "subjectAndStudent/getListSubject",
     });
   }, [dispatch]);
 
@@ -55,73 +41,66 @@ const ListNew: FC<Props> = ({
     }
   }, [loadingGet, dispatch]);
 
-  useEffect(() => {
-    if (
-      loadingCreate === true ||
-      loadingDelete === true ||
-      loadingUpdate === true
-    ) {
-      setLoading(true);
-    }
-    if (
-      loadingCreate === false ||
-      loadingDelete === false ||
-      loadingUpdate === false
-    ) {
-      dispatch({
-        type: "FileManage/getListFile",
-      });
-      setLoading(false);
-    }
-  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate]);
-
-  const dataSource =
-    dataTable?.data?.map((item: File) => ({
-      id: item?.id,
-      idUser: item?.idUser,
-      name: item?.name,
-      type: item?.type,
-      url: item?.url,
-      status: item?.status,
-      idFile: item?.idFile,
-    })) || [];
-
-  const onReloadFile = (idFile: any) => {
+  const onChangeSelect = (values: any) => {
     dispatch({
-      type: "files/updateTimeFile",
+      type: "subjectAndStudent/getDetailUserSubject",
       payload: {
-        data: {
-          idFile,
-        },
-      },
-    })
-  };
+        id: values
+      }
+    });
+  } 
 
   return (
     <>
       <div className="layout--main__title">
-        <FormattedMessage id="FileManage.listFile" />
+      <Select placeholder='Chọn môn học...' style={{width: 300}} onChange={onChangeSelect}>
+        {listSubject?.data?.map((item: any) => <Option key={item.idSubject} value={item.idSubject}>{item.name}</Option>)}
+    </Select>
       </div>
       <Divider />
-      <Row gutter={24} className="mb--24">
-        <Col md={12}></Col>
-        <Col md={12}>
-          <Space className="w--full justify-content--flexEnd">
-            <Button
-              type="primary"
-              onClick={() => {
-                setIsVisibleModal(true);
-              }}
-            >
-              <PlusOutlined className="mr--5" />
-              <FormattedMessage id="button.create" />
-            </Button>
-          </Space>
-        </Col>
-      </Row>
       <Spin spinning={loading}>
+      {dataTable?.data && <>
+        <Row gutter={12} className='mb--5'>
+        <Col span={12} className='font-size--20 font-weight--500'>Thông tin chung:</Col>
+      </Row>
         <Row gutter={12}>
-          {dataSource?.map((item: any) => {
+          <Col span={8} lg={4} className='font-weight--500'>Quản lý lớp:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.fullName}</Col>
+        </Row>
+        <Row gutter={12}>
+        <Col span={8} lg={4} className='font-weight--500'>Số điện thoại:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.phone}</Col>
+        </Row>
+        <Row>
+        <Col span={8} lg={4} className='font-weight--500'>Email:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.teacher?.email}</Col>
+        </Row>
+      <Divider />
+        <Row gutter={12} className='mb--5'>
+        <Col span={12} className='font-size--20 font-weight--500'>Thông tin sinh viên:</Col>
+      </Row>
+        <Row gutter={12}>
+          <Col span={12}>Họ và tên: <b>{dataTable?.data?.user?.fullName}</b></Col>
+          <Col span={12}>Mã sinh viên: <b>{dataTable?.data?.user?.studentId}</b> </Col>
+        </Row>
+        <Row gutter={12}>
+        <Col span={8} lg={4}>Điểm danh:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.point?.pointDiligence?.length}/{dataTable?.data?.lessonNum} </Col>
+        </Row>
+        <Row gutter={12}>
+        <Col span={8} lg={4}>Điểm thi giữa kì:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.point?.pointMidTerm}</Col>
+        </Row>
+        <Row gutter={12}>
+        <Col span={8} lg={4}>Điểm thi cuối kì:</Col>
+          <Col span={16} lg={20}>{dataTable?.data?.point?.pointEndTerm}</Col>
+        </Row>
+        <Divider />
+        <Row gutter={12} className='mb--5'>
+        <Col span={12} className='font-size--20 font-weight--500'>Tài liệu môn học:</Col>
+      </Row>
+      <Row gutter={12}>
+          {dataTable?.data?.listFile?.map((item: any) => {
             if (item?.type.indexOf("image") !== -1) {
               return (
                 <Col span={24} md={6} key={item.id}>
@@ -140,7 +119,7 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <RetweetOutlined  onClick={() => onReloadFile(item.idFile)}/>,
+                      <EllipsisOutlined key="ellipsis" />,
                     ]}
                     cover={
                       <img
@@ -172,7 +151,7 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <RetweetOutlined  onClick={() => onReloadFile(item.idFile)}/>,
+                      <EllipsisOutlined key="ellipsis" />,
                     ]}
                     cover={
                       <img
@@ -204,7 +183,7 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <RetweetOutlined  onClick={() => onReloadFile(item.idFile)}/>,
+                      <EllipsisOutlined key="ellipsis" />,
                     ]}
                     cover={
                       <img
@@ -221,14 +200,8 @@ const ListNew: FC<Props> = ({
             }
           })}
         </Row>
-      </Spin>
-      <ModalCreate
-        isVisibleModal={isVisibleModal}
-        setIsVisibleModal={() => {
-          setIsVisibleModal(false);
-        }}
-      />
-      <ModalShow
+        </>}
+        <ModalShow
         isVisibleModal={isVisibleShow}
         setIsVisibleModal={() => {
           setIsVisibleShow(false);
@@ -236,23 +209,24 @@ const ListNew: FC<Props> = ({
         }}
         data={data}
       />
+      </Spin>
+   
     </>
   );
 };
 
 export default connect(
   ({
-    files,
+    subjectAndStudent,
     loading,
   }: {
-    files: FileT;
+    subjectAndStudent: DataT;
     loading: {
       effects: Record<string, boolean>;
     };
   }) => ({
-    dataTable: files.listFile,
-    loadingGet: loading.effects["files/getListFile"],
-    loadingUpdate: loading.effects["files/updateFile"],
-    loadingDelete: loading.effects["files/deleteFile"],
+    dataTable: subjectAndStudent.detailSubject,
+    listSubject: subjectAndStudent.listSubject,
+    loadingGet: loading.effects["subjectAndStudent/getDetailUserSubject"],
   })
-)(ListNew);
+)(DetailClass);

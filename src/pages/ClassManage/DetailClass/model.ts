@@ -9,7 +9,7 @@ import {
   changeTeacherClass,
   deleteStudentFromClass,
   getPointStudent,
-  getClassBytStudent
+  getClassByStudent
 } from "./service";
 
 type Model = {
@@ -30,7 +30,7 @@ type Model = {
     changeTeacherClass: Effect;
     deleteStudentFromClass: Effect;
     getPointStudent: Effect;
-    getClassBytStudent: Effect;
+    getClassByStudent: Effect;
   };
 };
 
@@ -166,9 +166,9 @@ export default <Model>{
         return Promise.reject(err);
       }
     },
-    *getClassBytStudent({ payload }, { call, put }) {
+    *getClassByStudent({ payload }, { call, put }) {
       try {
-        const response = yield call(getClassBytStudent, payload);
+        const response = yield call(getClassByStudent, payload);
         yield put({
           type: "saveListClassStudent",
           payload: response,

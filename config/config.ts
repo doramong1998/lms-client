@@ -140,10 +140,18 @@ export default defineConfig({
               ]
             },
             {
-              path: "/subject",
+              path: "/subject-teacher",
               name: "subject",
               icon: "BookOutlined",
-              authority: ["2", "3"],
+              authority: ["2"],
+              component: "@/pages/Subject/SubjectTeacher",
+            },
+            {
+              path: "/subject-student",
+              name: "subject",
+              icon: "BookOutlined",
+              authority: ["3"],
+              component: "@/pages/Subject/SubjectStudent",
             },
             {
               path: "/subject-manage",
