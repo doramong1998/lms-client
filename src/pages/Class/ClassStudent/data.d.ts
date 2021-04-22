@@ -1,4 +1,4 @@
 export type DataT = {
-  detailSubject: any,
-  listSubject: any
+  detailClass: any,
+  pointUser: any
 }

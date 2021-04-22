@@ -111,10 +111,18 @@ export default defineConfig({
               component: "@/pages/Files",
             },
             {
-              path: "/class",
+              path: "/class-teacher",
               name: "class",
               icon: "ReadOutlined",
-              authority: ["2", "3"],
+              authority: ["2"],
+              component: "@/pages/Class/ClassTeacher",
+            },
+            {
+              path: "/class-student",
+              name: "class",
+              icon: "ReadOutlined",
+              authority: ["3"],
+              component: "@/pages/Class/ClassStudent",
             },
             {
               path: "/class-manage",

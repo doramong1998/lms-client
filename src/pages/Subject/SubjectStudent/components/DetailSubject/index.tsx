@@ -1,13 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Table, Badge, Avatar, Select, Spin, Card } from "antd";
+import { Row, Col, Divider, Table, Badge, Avatar, Select, Spin, Card, Button, Space } from "antd";
 import type { Dispatch } from "umi";
 import { connect, history } from "umi";
 import type { DataT } from "../../data";
-import { DownloadOutlined, EllipsisOutlined, EyeOutlined } from "@ant-design/icons";
+import { DownloadOutlined, EllipsisOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
 import ModalShow from "@/pages/Files/components/ListFile/ModalShow";
+import ModalUpload from "./ModalUpload";
 
 const { Option } = Select;
 type Props = {
@@ -27,6 +28,7 @@ const DetailClass: FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<any>(undefined);
   const [data, setData] = useState<any>(null);
+  const [isVisibleModalUpload, setIsVisibleModalUpload] = useState(false);
   useEffect(() => {
     dispatch({
       type: "subjectAndStudent/getListSubject",
@@ -51,6 +53,15 @@ const DetailClass: FC<Props> = ({
       }
     });
   } 
+
+  const onReload = () => {
+    dispatch({
+      type: "subjectAndStudent/getDetailUserSubject",
+      payload: {
+        id: selectedSubject
+      }
+    });
+  }
 
   return (
     <>
@@ -100,6 +111,18 @@ const DetailClass: FC<Props> = ({
         <Divider />
         <Row gutter={12} className='mb--5'>
         <Col span={12} className='font-size--20 font-weight--500'>Tài liệu môn học:</Col>
+        <Col span={12}>
+        <Space className="w--full justify-content--flexEnd">
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsVisibleModalUpload(true)
+              }}
+            >
+              <UploadOutlined className="mr--5" />
+              Tải lên
+            </Button>
+          </Space> </Col>
       </Row>
       <Row gutter={12}>
           {dataTable?.data?.listFile?.map((item: any) => {
@@ -212,7 +235,14 @@ const DetailClass: FC<Props> = ({
         data={data}
       />
       </Spin>
-   
+      <ModalUpload
+        isVisibleModal={isVisibleModalUpload}
+        setIsVisibleModal={() => {
+          setIsVisibleModalUpload(false)
+          onReload()
+        }}
+        idSubject={ dataTable?.data?.idSubject}
+      />
     </>
   );
 };

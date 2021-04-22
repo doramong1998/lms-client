@@ -1,18 +1,18 @@
 import type { Effect, Reducer } from "umi";
 import type { DataT } from "./data";
 import {
-  getDetailUserSubject, getListSubject
+  getClassByMe, getListSubject
 } from "./service";
 
 type Model = {
   namespace: "classAndStudent";
   state: DataT;
   reducers: {
-    saveDetailSubject: Reducer<DataT>;
+    saveDetailClass: Reducer<DataT>;
     saveListSubject: Reducer<DataT>;
   };
   effects: {
-    getDetailUserSubject: Effect;
+    getClassByMe: Effect;
     getListSubject: Effect;
   };
 };
@@ -20,14 +20,14 @@ type Model = {
 export default <Model>{
   namespace: "classAndStudent",
   state: {
-   detailSubject: {},
-   listSubject: {}
+   detailClass: {},
+   pointUser: {}
   },
   reducers: {
-    saveDetailSubject(state, { payload }) {
+    saveDetailClass(state, { payload }) {
       return {
         ...state,
-        detailSubject: {
+        detailClass: {
           ...payload,
         },
       };
@@ -35,18 +35,18 @@ export default <Model>{
     saveListSubject(state, { payload }) {
       return {
         ...state,
-        listSubject: {
+        pointUser: {
           ...payload,
         },
       };
     },
   },
   effects: {
-    *getDetailUserSubject({ payload }, { call, put }) {
+    *getClassByMe({ payload }, { call, put }) {
       try {
-        const response = yield call(getDetailUserSubject, payload);
+        const response = yield call(getClassByMe, payload);
         yield put({
-          type: "saveDetailSubject",
+          type: "saveDetailClass",
           payload: response,
         });
       } catch (error) {

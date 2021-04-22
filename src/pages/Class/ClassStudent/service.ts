@@ -7,8 +7,8 @@ type ParamType = {
   data?: any
 }
 
-export const getDetailUserSubject = (payload: ParamType) => {
-  return request(`${API_URL}/subject/getUserInSubject/${payload.id}`)
+export const getClassByMe = (payload: ParamType) => {
+  return request(`${API_URL}/classes/getClassByMe`)
 }
 
 export const getListSubject = (payload: ParamType) => {

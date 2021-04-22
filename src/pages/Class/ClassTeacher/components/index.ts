@@ -1,3 +1,3 @@
-import ListClass from './ListClass'
+import DetailSubject from './DetailSubject'
 
-export { ListClass }
+export { DetailSubject }

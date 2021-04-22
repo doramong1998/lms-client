@@ -1,3 +1,3 @@
-import DetailSubject from './DetailSubject'
+import DetailClass from './DetailClass'
 
-export { DetailSubject }
+export { DetailClass }

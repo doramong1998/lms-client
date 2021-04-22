@@ -121,13 +121,23 @@ export function getRoutes() {
             "exact": true
           },
           {
-            "path": "/class",
+            "path": "/class-teacher",
             "name": "class",
             "icon": "ReadOutlined",
             "authority": [
-              "2",
+              "2"
+            ],
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Class__ClassTeacher' */'@/pages/Class/ClassTeacher'), loading: LoadingComponent}),
+            "exact": true
+          },
+          {
+            "path": "/class-student",
+            "name": "class",
+            "icon": "ReadOutlined",
+            "authority": [
               "3"
             ],
+            "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Class__ClassStudent' */'@/pages/Class/ClassStudent'), loading: LoadingComponent}),
             "exact": true
           },
           {
