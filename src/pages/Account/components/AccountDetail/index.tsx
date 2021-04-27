@@ -203,7 +203,7 @@ const ListNew: FC<Props> = ({ dispatch, accountDetail, listClass }) => {
                     <Input />
                   </Form.Item>
                   <Form.Item name="studentId" label="Mã sinh viên">
-                    <Input />
+                    <Input disabled />
                   </Form.Item>
                 </Col>
               </Row>
@@ -221,7 +221,7 @@ const ListNew: FC<Props> = ({ dispatch, accountDetail, listClass }) => {
                       },
                     ]}
                   >
-                    <Select placeholder="Chọn lớp học" className="w--full">
+                    <Select disabled placeholder="Chọn lớp học" className="w--full">
                       {listClass?.data?.map((item: any) => (
                         <Option key={item.idClass} value={item.idClass}>
                           {item.name}

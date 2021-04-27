@@ -43,14 +43,14 @@ const ModalTeacher: FC<Props> = ({
       payload: {
         data: {
           idUser: value,
-          idClass: dataClass?.data?.idClass
+          idClass: dataClass?.idClass
         }
       }
     }).then(() => {
       dispatch({
         type: "classManageAndDetail/getDetailClass",
         payload: {
-          id: dataClass?.data?.id
+          id: dataClass?.id
         }
       });
       setValue(undefined)

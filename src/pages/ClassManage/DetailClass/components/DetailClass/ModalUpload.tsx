@@ -11,7 +11,7 @@ type Props = {
   loadingScan: boolean;
   isVisibleModal: boolean;
   setIsVisibleModal: any;
-  idSubject: any
+  idClass: any
 };
 
 const ModalCreateOrEdit: FC<Props> = ({
@@ -19,7 +19,7 @@ const ModalCreateOrEdit: FC<Props> = ({
   loadingScan,
   isVisibleModal,
   setIsVisibleModal,
-  idSubject
+  idClass
 }) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -40,9 +40,9 @@ const ModalCreateOrEdit: FC<Props> = ({
         message.info('Đang kiểm tra file...')
         const form = new FormData()
         form.append('file',info.file)
-        form.append('idSubject',idSubject)
+        form.append('idClass',idClass)
         dispatch({
-          type: "subjectAndTeacher/uploadFile",
+          type: "classAndTeacher/uploadFile",
           payload: {
             data: form,
           }
@@ -92,6 +92,6 @@ export default connect(
       effects: Record<string, boolean>;
     };
   }) => ({
-    loadingScan: loading.effects["subjectAndTeacher/uploadFile"],
+    loadingScan: loading.effects["classAndTeacher/uploadFile"],
   })
 )(ModalCreateOrEdit);

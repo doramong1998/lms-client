@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Button, Space, Card, Spin } from "antd";
+import { Row, Col, Divider, Button, Space, Card, Spin, Menu, Dropdown } from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage } from "umi";
 import ModalCreate from "./ModalCreate";
@@ -13,6 +13,8 @@ import {
   EllipsisOutlined,
   DownloadOutlined,
   EyeOutlined,
+  MoreOutlined,
+  DeleteOutlined,
   RetweetOutlined,
 } from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
@@ -97,6 +99,37 @@ const ListNew: FC<Props> = ({
     })
   };
 
+  const onDeleteOne = (id: any) => {
+    const onOk = () =>
+      dispatch({
+        type: "files/deleteFile",
+        payload: {
+          id
+        },
+      })
+    modalConfirmDelete(onOk);
+  }
+
+  const renderMenu = (item: any) => (
+    <Menu>
+       <Menu.Item
+        icon={<RetweetOutlined />}
+        onClick={() => onReloadFile(item.idFile)}
+      >
+        Làm mới
+      </Menu.Item>
+      <Menu.Item
+        danger
+        icon={<DeleteOutlined />}
+        onClick={() => onDeleteOne(item.idFile)}
+      >
+        Xóa
+      </Menu.Item>
+    </Menu>
+  );
+
+       
+
   return (
     <>
       <div className="layout--main__title">
@@ -140,7 +173,9 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <RetweetOutlined  onClick={() => onReloadFile(item.idFile)}/>,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                        <MoreOutlined  />
+                      </Dropdown>
                     ]}
                     cover={
                       <img
@@ -172,7 +207,9 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <RetweetOutlined  onClick={() => onReloadFile(item.idFile)}/>,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                        <MoreOutlined  />
+                      </Dropdown>
                     ]}
                     cover={
                       <img
@@ -204,7 +241,9 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <RetweetOutlined  onClick={() => onReloadFile(item.idFile)}/>,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                        <MoreOutlined  />
+                      </Dropdown>
                     ]}
                     cover={
                       <img

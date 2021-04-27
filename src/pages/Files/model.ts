@@ -8,7 +8,9 @@ import {
   deleteFile,
   resultScan,
   scanBeforeUpload,
-  updateTimeFile
+  updateTimeFile,
+  deleteFileClass,
+  deleteFileSubject
 } from "./service";
 
 type Model = {
@@ -25,6 +27,8 @@ type Model = {
     resultScan: Effect;
     scanBeforeUpload: Effect;
     updateTimeFile: Effect;
+    deleteFileClass: Effect;
+    deleteFileSubject: Effect;
   };
 };
 
@@ -114,6 +118,28 @@ export default <Model>{
       try {
         const response = yield call(updateTimeFile, payload);
         message.success(response?.message || "Gia hạn thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *deleteFileClass({ payload }, { call }) {
+      try {
+        const response = yield call(deleteFileClass, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *deleteFileSubject({ payload }, { call }) {
+      try {
+        const response = yield call(deleteFileSubject, payload);
+        message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {
         const err = yield error.response.json();

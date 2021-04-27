@@ -53,3 +53,4 @@ export const getClassByStudent = (payload: ParamType) => {
     data: payload.data
   })
 }
+

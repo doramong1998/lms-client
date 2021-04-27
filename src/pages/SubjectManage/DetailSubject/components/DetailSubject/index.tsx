@@ -367,7 +367,7 @@ const ListNew: FC<Props> = ({
         columns={columns}
         dataSource={dataSource}
         scroll={{ x: 1600 }}
-        style={{ width: 1183 }}
+        className='w--full'
       ></Table>
 
       <ModalAdd

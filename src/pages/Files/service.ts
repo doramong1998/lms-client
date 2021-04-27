@@ -26,7 +26,20 @@ export const updateFile = (payload: ParamType) => {
 }
 
 export const deleteFile = (payload: ParamType) => {
-  return request(`${API_URL}/users/delete`, {
+  return request(`${API_URL}/upload/media/${payload.id}`, {
+    method: 'DELETE',
+  })
+}
+
+export const deleteFileClass = (payload: ParamType) => {
+  return request(`${API_URL}/upload/fileClass`, {
+    method: 'DELETE',
+    data: payload.data
+  })
+}
+
+export const deleteFileSubject = (payload: ParamType) => {
+  return request(`${API_URL}/upload/fileSubject`, {
     method: 'DELETE',
     data: payload.data
   })

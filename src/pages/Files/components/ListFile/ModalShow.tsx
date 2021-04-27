@@ -34,9 +34,9 @@ const ModalCreateOrEdit: FC<Props> = ({
   const [pageNumber, setPageNumber] = useState(1);
 
   const renderFile = () => {
-    if (data?.type.indexOf("image") !== -1) {
+    if (data?.type?.indexOf("image") !== -1) {
       return <Image width={600} src={data?.url} />;
-    } else if (data?.type.indexOf("video") !== -1) {
+    } else if (data?.type?.indexOf("video") !== -1) {
       return (
         <ReactPlayer
           url={data?.url}
@@ -69,7 +69,7 @@ const ModalCreateOrEdit: FC<Props> = ({
   };
 
   const renderButton = () => {
-    if (data?.type.indexOf("image") !== -1) {
+    if (data?.type?.indexOf("image") !== -1) {
       return (
         <Row gutter={12} justify="center" className="mt--10">
           <Button
@@ -79,7 +79,7 @@ const ModalCreateOrEdit: FC<Props> = ({
           ></Button>
         </Row>
       );
-    } else if (data?.type.indexOf("video") !== -1) {
+    } else if (data?.type?.indexOf("video") !== -1) {
       return (
         <Row gutter={12} justify="center" align="middle" className="mt--10">
           <Col span={20}>

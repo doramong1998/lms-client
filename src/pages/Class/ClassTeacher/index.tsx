@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { GridContent } from '@ant-design/pro-layout'
-import { DetailSubject } from './components'
+import { DetailClass } from './components'
 
 type Props = {}
 
@@ -9,7 +9,7 @@ const ClassManage: FC<Props> = () => {
     <GridContent>
       <div className="layout--main">
         <div className="layout--main__content">
-          <DetailSubject />
+          <DetailClass />
         </div>
       </div>
     </GridContent>

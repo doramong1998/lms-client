@@ -16,6 +16,7 @@ import {
 } from "@ant-design/icons";
 import ModalTeacher from "./ModalTeacher";
 import ModalPoint from "./ModalPoint";
+// import ModalUpload from "./ModalUpload";
 
 type Props = {
   dispatch: Dispatch;
@@ -296,8 +297,15 @@ const DetailClass: FC<Props> = ({
       <ModalAdd
         isVisibleModal={isVisibleModal}
         setIsVisibleModal={() => setIsVisibleModal(false) }
-        dataClass={dataTable}
+        dataClass={dataTable?.data}
       />
+  {/* <ModalUpload
+        isVisibleModal={isVisibleModalUpload}
+        setIsVisibleModal={() => {
+          setIsVisibleModalUpload(false);
+        }}
+        idClass={ dataTable?.data?.class?.idClass}
+      /> */}
 
       <ModalTeacher
         isVisibleModal={isVisibleTeacher}
