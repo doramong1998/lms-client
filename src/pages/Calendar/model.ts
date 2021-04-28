@@ -1,107 +1,61 @@
 import { message } from 'antd'
 import type { Effect, Reducer } from 'umi'
-import { history } from 'umi'
-import { formatMessage } from 'umi'
-import type { LandingPageT } from './data'
+import type { CalendarT } from './data'
 import {
-  getLandingPage,
-  createLandingPage,
-  editLandingPage,
-  deleteLandingPage,
-  deleteMultiLandingPage,
+  getCalendar, createCalendar
 } from './service'
 
 type Model = {
   namespace: 'calendar'
-  state: LandingPageT
+  state: CalendarT
   reducers: {
-    savelistLandingPage: Reducer<LandingPageT>
-    savelandingPageCreated: Reducer<LandingPageT>
+    saveDataCalendar: Reducer<CalendarT>
   }
   effects: {
-    getLandingPage: Effect
-    createLandingPage: Effect
-    editLandingPage: Effect
-    deleteLandingPage: Effect
-    deleteMultiLandingPage: Effect
+   getCalendar: Effect;
+   createCalendar: Effect;
   }
 }
 
 export default <Model>{
   namespace: 'calendar',
   state: {
-    listLandingPage: {
-      status: false,
-    },
-    landingPageCreated: {
-      status: false,
-    },
+    dataCalendar: {}
   },
   reducers: {
-    savelistLandingPage(state, { payload }) {
+    saveDataCalendar(state, { payload }) {
       return {
         ...state,
-        listLandingPage: {
-          ...payload,
-        },
-      }
-    },
-    savelandingPageCreated(state, { payload }) {
-      return {
-        ...state,
-        landingPageCreated: {
+        dataCalendar: {
           ...payload,
         },
       }
     },
   },
   effects: {
-    *getLandingPage({ payload }, { call, put }) {
+    *getCalendar({ payload }, { call, put }) {
       try {
-        const response = yield call(getLandingPage, payload)
-        if (response.status === 403) {
-          localStorage.removeItem('token')
-          history.push('/user/login')
-        } else {
+        const response = yield call(getCalendar, payload)
           yield put({
-            type: 'savelistLandingPage',
+            type: 'saveDataCalendar',
             payload: response,
           })
-        }
+          return Promise.resolve(response);
       } catch (error) {
-        //
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
       }
     },
-    *createLandingPage({ payload }, { call, put }) {
+    *createCalendar({ payload }, { call }) {
       try {
-        const response = yield call(createLandingPage, payload)
-        yield put({
-          type: 'savelandingPageCreated',
-          payload: response,
-        })
+        const response = yield call(createCalendar, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
       } catch (error) {
-        message.error(formatMessage({ id: 'error' }))
-      }
-    },
-    *editLandingPage({ payload }, { call }) {
-      try {
-        yield call(editLandingPage, payload)
-      } catch (error) {
-        message.error(formatMessage({ id: 'error' }))
-      }
-    },
-    *deleteLandingPage({ payload }, { call }) {
-      try {
-        yield call(deleteLandingPage, payload)
-      } catch (error) {
-        message.error(formatMessage({ id: 'error' }))
-      }
-    },
-    *deleteMultiLandingPage({ payload }, { call }) {
-      try {
-        yield call(deleteMultiLandingPage, payload)
-      } catch (error) {
-        message.error(formatMessage({ id: 'error' }))
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
       }
     },
   },

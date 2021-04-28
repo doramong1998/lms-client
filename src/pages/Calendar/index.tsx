@@ -1,4 +1,3 @@
-import React from 'react'
 import type { FC } from 'react'
 import { GridContent } from '@ant-design/pro-layout'
 import { ListCalendar } from './components'

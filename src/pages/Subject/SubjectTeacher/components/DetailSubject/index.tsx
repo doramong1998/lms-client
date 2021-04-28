@@ -25,9 +25,9 @@ import {
   PlusOutlined,
   CheckCircleOutlined,
   DownloadOutlined,
-  EllipsisOutlined,
   EyeOutlined,
   UploadOutlined,
+  RetweetOutlined,
 } from "@ant-design/icons";
 import ModalUpdatePoint from "./ModalUpdatePoint";
 import ModalAttend from "./ModalAttend";
@@ -46,6 +46,7 @@ type Props = {
   loadingUpdate: boolean;
   loadingDelete: boolean;
   loadingUpdatePoint: boolean;
+  loadingDeleteFile: boolean;
 };
 
 const ListNew: FC<Props> = ({
@@ -56,7 +57,8 @@ const ListNew: FC<Props> = ({
   loadingGet,
   loadingUpdate,
   loadingUpdatePoint,
-  listSubject
+  listSubject,
+  loadingDeleteFile,
 }) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [isVisibleModalUpload, setIsVisibleModalUpload] = useState(false);
@@ -82,6 +84,17 @@ const ListNew: FC<Props> = ({
       setLoading(false);
     }
   }, [loadingGet, dispatch]);
+
+  useEffect(() => {
+    if (loadingDeleteFile === true) {
+      setLoading(true);
+    }
+    if (loadingDeleteFile === false) {
+      reloadAttend()
+      setLoading(false);
+    }
+  }, [loadingDeleteFile, dispatch]);
+
 
   useEffect(() => {
     if (
@@ -272,6 +285,51 @@ const ListNew: FC<Props> = ({
     });
   }
 
+  const onReloadFile = (idFile: any) => {
+    dispatch({
+      type: "files/updateTimeFile",
+      payload: {
+        data: {
+          idFile,
+        },
+      },
+    })
+  };
+
+  console.log(dataTable)
+
+  const onDeleteFile = (idFile: any) => {
+    const onOk = () =>
+      dispatch({
+        type: "files/deleteFileSubject",
+        payload: {
+          data: {
+            idFile,
+            idSubject: dataTable?.data?.idSubject
+          }
+        },
+      })
+    modalConfirmDelete(onOk);
+  }
+
+  const renderMenu = (item: any) => (
+    <Menu>
+       <Menu.Item
+        icon={<RetweetOutlined />}
+        onClick={() => onReloadFile(item?.idFile)}
+      >
+        Làm mới
+      </Menu.Item>
+      <Menu.Item
+        danger
+        icon={<DeleteOutlined />}
+        onClick={() => onDeleteFile(item?.idFile)}
+      >
+        Xóa
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <>
      <div className="layout--main__title">
@@ -418,7 +476,9 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <EllipsisOutlined key="ellipsis" />,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                      <MoreOutlined  />
+                    </Dropdown>,
                     ]}
                     cover={
                       <img
@@ -450,7 +510,9 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <EllipsisOutlined key="ellipsis" />,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                      <MoreOutlined  />
+                    </Dropdown>,
                     ]}
                     cover={
                       <img
@@ -482,7 +544,9 @@ const ListNew: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <EllipsisOutlined key="ellipsis" />,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                      <MoreOutlined  />
+                    </Dropdown>,
                     ]}
                     cover={
                       <img
@@ -564,6 +628,7 @@ export default connect(
     loadingUpdate: loading.effects["subjectAndTeacher/updateSubject"],
     loadingDelete:
       loading.effects["subjectAndTeacher/deleteStudentFromSubject"],
+    loadingDeleteFile: loading.effects["files/deleteFileSubject"],
     loadingUpdatePoint: loading.effects["subjectAndTeacher/updatePoint"],
   })
 )(ListNew);

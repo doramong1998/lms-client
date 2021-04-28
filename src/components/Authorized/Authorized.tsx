@@ -25,7 +25,7 @@ const Authorized: FC<Props> = ({
     <Result
       status="403"
       title="403"
-      subTitle="Sorry, you are not authorized to access this page."
+      subTitle="Bạn không có quyền truy cập trang này!"
     />
   ),
 }) => {

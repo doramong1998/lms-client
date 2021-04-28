@@ -19,10 +19,10 @@ const noMatch = (
   <Result
     status={403}
     title="403"
-    subTitle="Sorry, you are not authorized to access this page."
+    subTitle="Bạn không có quyền truy cập trang này!"
     extra={
       <Button type="primary">
-        <Link to="/user/login">Go Login</Link>
+        <Link to="/">Về trang chủ</Link>
       </Button>
     }
   />

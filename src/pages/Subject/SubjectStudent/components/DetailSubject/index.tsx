@@ -1,14 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Table, Badge, Avatar, Select, Spin, Card, Button, Space } from "antd";
+import { Row, Col, Divider, Select, Spin, Card, Button, Space, Menu, Dropdown } from "antd";
 import type { Dispatch } from "umi";
-import { connect, history } from "umi";
+import { connect } from "umi";
 import type { DataT } from "../../data";
-import { DownloadOutlined, EllipsisOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DownloadOutlined, EyeOutlined, MoreOutlined, RetweetOutlined, UploadOutlined } from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
 import ModalShow from "@/pages/Files/components/ListFile/ModalShow";
 import ModalUpload from "./ModalUpload";
+import { modalConfirmDelete } from "@/utils/utils";
 
 const { Option } = Select;
 type Props = {
@@ -16,13 +17,15 @@ type Props = {
   dataTable: any;
   loadingGet: boolean;
   listSubject: any;
+  loadingDeleteFile:boolean
 };
 
 const DetailClass: FC<Props> = ({
   dispatch,
   dataTable,
   loadingGet,
-  listSubject
+  listSubject,
+  loadingDeleteFile
 }) => {
   const [isVisibleShow, setIsVisibleShow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -44,6 +47,17 @@ const DetailClass: FC<Props> = ({
     }
   }, [loadingGet, dispatch]);
 
+  useEffect(() => {
+    if (loadingDeleteFile === true) {
+      setLoading(true);
+    }
+    if (loadingDeleteFile === false) {
+      onReload()
+      setLoading(false);
+    }
+  }, [loadingDeleteFile, dispatch]);
+
+
   const onChangeSelect = (values: any) => {
     setSelectedSubject(values)
     dispatch({
@@ -62,6 +76,50 @@ const DetailClass: FC<Props> = ({
       }
     });
   }
+
+  const onReloadFile = (idFile: any) => {
+    dispatch({
+      type: "files/updateTimeFile",
+      payload: {
+        data: {
+          idFile,
+        },
+      },
+    })
+  };
+
+
+  const onDeleteFile = (idFile: any) => {
+    const onOk = () =>
+      dispatch({
+        type: "files/deleteFileSubject",
+        payload: {
+          data: {
+            idFile,
+            idSubject: dataTable?.data?.idSubject
+          }
+        },
+      })
+    modalConfirmDelete(onOk);
+  }
+
+  const renderMenu = (item: any) => (
+    <Menu>
+       <Menu.Item
+        icon={<RetweetOutlined />}
+        onClick={() => onReloadFile(item?.idFile)}
+      >
+        Làm mới
+      </Menu.Item>
+      <Menu.Item
+        danger
+        icon={<DeleteOutlined />}
+        onClick={() => onDeleteFile(item?.idFile)}
+      >
+        Xóa
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <>
@@ -144,7 +202,9 @@ const DetailClass: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <EllipsisOutlined key="ellipsis" />,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                      <MoreOutlined  />
+                    </Dropdown>,
                     ]}
                     cover={
                       <img
@@ -176,7 +236,9 @@ const DetailClass: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <EllipsisOutlined key="ellipsis" />,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                      <MoreOutlined  />
+                    </Dropdown>,
                     ]}
                     cover={
                       <img
@@ -208,7 +270,9 @@ const DetailClass: FC<Props> = ({
                         key="download"
                         onClick={() => saveAs(item.url, item.name)}
                       />,
-                      <EllipsisOutlined key="ellipsis" />,
+                      <Dropdown overlay={() => renderMenu(item)}>
+                      <MoreOutlined  />
+                    </Dropdown>,
                     ]}
                     cover={
                       <img
@@ -260,5 +324,6 @@ export default connect(
     dataTable: subjectAndStudent.detailSubject,
     listSubject: subjectAndStudent.listSubject,
     loadingGet: loading.effects["subjectAndStudent/getDetailUserSubject"],
+    loadingDeleteFile: loading.effects["files/deleteFileSubject"],
   })
 )(DetailClass);

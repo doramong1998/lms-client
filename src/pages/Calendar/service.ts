@@ -7,32 +7,13 @@ type ParamType = {
   data?: any
 }
 
-export const getLandingPage = () => {
-  return request(`${API_URL}/ldpage`)
+export const getCalendar = () => {
+  return request(`${API_URL}/calendar`)
 }
 
-export const createLandingPage = (payload: ParamType) => {
-  return request(`${API_URL}/ldpage`, {
+export const createCalendar = (payload: ParamType) => {
+  return request(`${API_URL}/calendar/addCalendar`, {
     method: 'POST',
     data: payload.data,
-  })
-}
-
-export const editLandingPage = (payload: ParamType) => {
-  return request(`${API_URL}/admin/news/${payload.id}`, {
-    method: 'PATCH',
-    data: payload.data,
-  })
-}
-
-export const deleteLandingPage = (payload: ParamType) => {
-  return request(`${API_URL}/admin/news/${payload.id}`, {
-    method: 'DELETE',
-  })
-}
-
-export const deleteMultiLandingPage = (payload: ParamType) => {
-  return request(`${API_URL}/admin/news${payload.query}`, {
-    method: 'DELETE',
   })
 }

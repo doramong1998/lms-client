@@ -1,38 +1,28 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FC } from 'react'
 import {
   Row,
   Col,
   Spin,
   Button,
-  Form,
-  Input,
   Space,
   Divider,
   Calendar,
   Badge,
 } from 'antd'
 import type { Dispatch } from 'umi'
-import { connect, FormattedMessage, useIntl } from 'umi'
+import { connect, FormattedMessage } from 'umi'
 import {
-  DeleteOutlined,
-  EditOutlined,
-  MoreOutlined,
   PlusOutlined,
-  SearchOutlined,
 } from '@ant-design/icons'
-import qs from 'qs'
 import moment from 'moment'
-import { BUILDER_URL, modalConfirmDelete } from '@/utils/utils'
-import type { LandingPageT, ListLandingPages, LandingPage } from '../../data'
+import type { CalendarT } from '../../data'
 import ModalCreate from './ModalCreate'
-import type { UserAndLogin } from '@/pages/user/login/data'
 
 type Props = {
   dispatch: Dispatch
-  dataTable: ListLandingPages
-  userAndLogin: UserAndLogin
+  dataTable: any
   creating?: boolean
   editing?: boolean
   deletingOne?: boolean
@@ -42,107 +32,53 @@ type Props = {
 const ListNew: FC<Props> = ({
   dispatch,
   dataTable,
-  userAndLogin,
   creating,
   editing,
-  deletingOne,
-  deletingMulti,
+  // deletingOne,
+  // deletingMulti,
 }) => {
-  const { formatMessage } = useIntl()
   const [isVisibleModal, setIsVisibleModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [calendarData, setCalendarData] = useState<any>([
-    {
-      key: "001",
-      date: '02/02/2021',
-      data: [
-        { type: 'error', content: 'Họp nội bộ' },
-      ]
-    },
-    {
-      key: "002",
-      date: '08/02/2021',
-      data: [
-        { type: 'warning', content: 'Nghỉ làm' },
-      ]
-    },
-    {
-      key: "003",
-      date: '11/02/2021',
-      data: [
-        { type: 'success', content: 'Ngày tất niên' },
-      ]
-    },
-    {
-      key: "004",
-      date: '12/02/2021',
-      data: [
-        { type: 'success', content: 'Tết nguyên đán' },
-      ]
-    },
-    {
-      key: "005",
-      date: '19/02/2021',
-      data: [
-        { type: 'warning', content: 'Đi học lại' },
-        { type: 'success', content: 'Liên hoan' },
-      ]
-    },
-  ])
+  const [isVisibleModalDate, setIsVisibleModalDate] = useState(false)
+  const [selectedDate, setSelectedDate] = useState(null)
 
   useEffect(() => {
-    // dispatch({
-    //   type: 'landingPages/getLandingPage',
-    // })
+    dispatch({
+      type: 'calendar/getCalendar',
+    })
   }, [dispatch])
 
-
-
-  useEffect(() => {
-    if (deletingOne === true || deletingMulti === true) {
-      setLoading(true)
-    }
-    if (deletingOne === false || deletingMulti === false) {
-      // dispatch({
-      //   type: 'landingPages/getLandingPage',
-      // })
-      setLoading(false)
-    }
-  }, [deletingOne, deletingMulti, dispatch])
+  // useEffect(() => {
+  //   if (deletingOne === true || deletingMulti === true) {
+  //     setLoading(true)
+  //   }
+  //   if (deletingOne === false || deletingMulti === false) {
+  //     dispatch({
+  //       type: 'calendar/getCalendar',
+  //     })
+  //     setLoading(false)
+  //   }
+  // }, [deletingOne, deletingMulti, dispatch])
 
   useEffect(() => {
-    if (creating === true || editing === true) {
+    if (creating === true) {
       setLoading(true)
     }
-    if (creating === false || editing === false) {
+    if (creating === false) {
       dispatch({
-        type: 'landingPages/getLandingPage',
+        type: 'calendar/getCalendar',
       })
       setLoading(false)
     }
   }, [creating, dispatch, editing])
 
-  const onSearch = (values: any) => {
-    let query = ''
-    if (values.search !== '') {
-      const listField = ['firstName', 'lastName', 'email', 'phone'].map(
-        (item: string) => `${item}||$contL||${values.search}`,
-      )
-      query = `&${qs.stringify({ or: [...listField] }, { arrayFormat: 'repeat' })}`
-    }
-    // dispatch({
-    //   type: 'landingPages/getLandingPage',
-    //   payload: {
-    //     query: `?limit=10&sort=createdAt,DESC&page=1${query}`,
-    //   },
-    // })
-  }
-
   const getListData = (value: any) => {
     let listData: any = []
-    calendarData?.map((item: any) => {
-      if(item.date === moment(value).format('DD/MM/YYYY')){
-        listData = item.data
+    dataTable?.data?.map((item: any) => {
+      if(moment.unix(item.time).format("DD/MM/YYYY") === moment(value).format('DD/MM/YYYY')){
+        listData.push({
+          type: item.type, content: item.name
+        })
       }
     })
     return listData
@@ -161,6 +97,10 @@ const ListNew: FC<Props> = ({
     )
   }
 
+  const onSelect = (date: any) => {
+    setSelectedDate(date.format('DD/MM/YYYY'))
+    setIsVisibleModalDate(true)
+  }
 
   return (
     <>
@@ -174,19 +114,6 @@ const ListNew: FC<Props> = ({
         </Col>
         <Col md={12}>
           <Space className="w--full justify-content--flexEnd">
-            <Form initialValues={{ search: '' }}
-              onFinish={onSearch}>
-              <Form.Item name="search"
-                className="mb--0">
-                <Space size={2}>
-                  <Input className="w--200"
-                    placeholder={formatMessage({ id: 'common.search' })} />
-                  <Button htmlType="submit">
-                    <SearchOutlined />
-                  </Button>
-                </Space>
-              </Form.Item>
-            </Form>
             <Button
               type="primary"
               onClick={() => {
@@ -203,7 +130,7 @@ const ListNew: FC<Props> = ({
         <Col span={24}>
           <div className="layout--table">
             <Spin spinning={loading}>
-            <Calendar dateCellRender={dateCellRender} />
+            <Calendar dateCellRender={dateCellRender} onSelect={onSelect}/>
             </Spin>
           </div>
         </Col>
@@ -211,8 +138,6 @@ const ListNew: FC<Props> = ({
       <ModalCreate
         isVisibleModal={isVisibleModal}
         setIsVisibleModal={setIsVisibleModal}
-        calendarData={calendarData}
-        setCalendarData={setCalendarData}
       />
     </>
   )
@@ -220,21 +145,15 @@ const ListNew: FC<Props> = ({
 
 export default connect(
   ({
-    // landingPages,
-    userAndLogin,
+    calendar,
     loading,
   }: {
-    // landingPages: LandingPageT
-    userAndLogin: UserAndLogin
+    calendar: CalendarT
     loading: {
       effects: Record<string, boolean>
     }
   }) => ({
-    userAndLogin,
-    // dataTable: landingPages.listLandingPage,
-    // creating: loading.effects['landingPages/createLandingPage'],
-    // editing: loading.effects['landingPages/editLandingPage'],
-    // deletingOne: loading.effects['landingPages/deleteLandingPage'],
-    // deletingMulti: loading.effects['landingPages/deleteMultiLandingPage'],
+    dataTable: calendar.dataCalendar,
+    creating: loading.effects['calendar/createCalendar'],
   }),
 )(ListNew)
