@@ -17,3 +17,16 @@ export const createCalendar = (payload: ParamType) => {
     data: payload.data,
   })
 }
+
+export const deleteCalendar = (payload: ParamType) => {
+  return request(`${API_URL}/calendar/deleteCalendar`, {
+    method: 'DELETE',
+    data: payload.data,
+  })
+}
+export const updateCalendar = (payload: ParamType) => {
+  return request(`${API_URL}/calendar/updateCalendar`, {
+    method: 'PUT',
+    data: payload.data,
+  })
+}

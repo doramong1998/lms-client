@@ -11,6 +11,7 @@ import {
   Button,
   Dropdown,
   Space,
+  Calendar,
 } from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage, history } from "umi";
@@ -27,6 +28,7 @@ import {
 import ModalTeacher from "./ModalTeacher";
 import ModalUpdatePoint from "./ModalUpdatePoint";
 import ModalAttend from "./ModalAttend";
+import moment from "moment";
 
 type Props = {
   dispatch: Dispatch;
@@ -101,6 +103,36 @@ const ListNew: FC<Props> = ({
       setLoading(false);
     }
   }, [loadingCreate, dispatch, loadingDelete, loadingUpdate,loadingUpdatePoint]);
+
+  const getListData = (value: any) => {
+    let listData: any = []
+    dataTable?.data?.calendar?.map((item: any) => {
+      if(moment.unix(item?.time).format("DD/MM/YYYY") === moment(value).format('DD/MM/YYYY')){
+        listData.push({
+          type: item.type, content: item.name
+        })
+      }
+    })
+    return listData
+  }
+
+  const onSelect = (date: any) => {
+    // setSelectedDate(date.format('DD/MM/YYYY'))
+    // setIsVisibleModalDate(true)
+  }
+
+  const dateCellRender = (value: any) => {
+    const listData = getListData(value)
+    return (
+      <ul className="m--0 p--0">
+        {listData.map((item: any) => (
+          <li key={item.content}>
+            <Badge status={item.type} text={item.content} />
+          </li>
+        ))}
+      </ul>
+    )
+  }
 
   const dataSource =
     dataTable?.data?.students?.map((item: any) => ({
@@ -252,6 +284,8 @@ const ListNew: FC<Props> = ({
     },
   ];
 
+  console.log(dataTable?.data)
+
   return (
     <>
       <div className="layout--main__title">
@@ -369,7 +403,13 @@ const ListNew: FC<Props> = ({
         scroll={{ x: 1600 }}
         className='w--full'
       ></Table>
-
+      <Divider />
+      <Row gutter={12} className="mb--5">
+        <Col span={12} className="font-size--20 font-weight--500">
+          Lịch học:
+        </Col>
+        </Row>
+      <Calendar dateCellRender={dateCellRender} onSelect={onSelect}/>
       <ModalAdd
         isVisibleModal={isVisibleModal}
         setIsVisibleModal={() => setIsVisibleModal(false)}

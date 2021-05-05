@@ -22,7 +22,7 @@ const noMatch = (
     subTitle="Bạn không có quyền truy cập trang này!"
     extra={
       <Button type="primary">
-        <Link to="/">Về trang chủ</Link>
+        <Link to="/calendar">Về trang chủ</Link>
       </Button>
     }
   />
@@ -60,6 +60,10 @@ const BasicLayout: FC<Props> = (props) => {
   const { formatMessage } = useIntl()
   const menuDataRef = useRef<MenuDataItem[]>([])
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [menu, setMenu] = useState<any>([])
+  useEffect(() => {
+    setMenu(menuDataRef?.current)
+  },[menuDataRef])
 
   const resizeWindow = () => {
     setWindowWidth(window.innerWidth)
@@ -80,11 +84,14 @@ const BasicLayout: FC<Props> = (props) => {
 
   const authorized = useMemo(
     () =>
-      getMatchMenu(location.pathname || '/', menuDataRef.current).pop() || {
+    location.pathname !== '/' ? getMatchMenu(location.pathname || '/', menu).pop() || {
+        authority: 'noAuth',
+      } : {
         authority: undefined,
       },
-    [location.pathname],
+    [location.pathname, menu],
   )
+
   return (
     <>
       {windowWidth < 768 ? (

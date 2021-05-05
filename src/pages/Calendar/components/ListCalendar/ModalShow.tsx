@@ -1,130 +1,98 @@
-import type { FC } from 'react'
-import { Badge, Button, DatePicker, Divider, Form, Input, Modal, Select, Space } from 'antd'
-import { connect, Dispatch } from 'umi'
-import { FormattedMessage, useIntl } from 'umi'
-import { CloseOutlined } from '@ant-design/icons'
-import moment from 'moment'
-import { CalendarT } from '../../data'
-
-const { Option } = Select
+import { FC, useState } from "react";
+import { Badge, Modal, Row, Col, Space } from "antd";
+import { connect, Dispatch } from "umi";
+import { CloseOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { CalendarT } from "../../data";
+import { modalConfirmDelete } from "@/utils/utils";
+import ModalCreate from "./ModalCreate";
 
 type Props = {
-  dispatch: Dispatch
-  isVisibleModal: boolean
-  setIsVisibleModal: any
-}
+  dispatch: Dispatch;
+  isVisibleModal: boolean;
+  setIsVisibleModal: any;
+  data: any;
+};
 
 const ModalCreateOrEdit: FC<Props> = ({
   dispatch,
   isVisibleModal,
   setIsVisibleModal,
+  data,
 }) => {
-  const { formatMessage } = useIntl()
-  const [form] = Form.useForm()
+  const [modalEdit, setModalEdit] = useState(false);
+  const [dataSelect, setDataSelect] = useState<any>(null);
+  const onEdit = (values: any) => {
+    setDataSelect(values);
+    setModalEdit(true);
+  };
 
-  const handleFinish = (values: any) => {
-    dispatch({
-      type: 'calendar/createCalendar',
-      payload: {
-        data: {
-          name: values?.content,
-          type: values?.type,
-          time: moment(values?.date).unix(),
-          status: true
-        }
-      }
-    }).then((res: any) => {
-      form.resetFields()
-      setIsVisibleModal(false)
-    })
-   
-  }
+  const onDelete = (item: any) => {
+    console.log(item);
+    const onOk = () =>
+      dispatch({
+        type: "calendar/deleteCalendar",
+        payload: {
+          data: {
+            idCalendar: item.idCalendar,
+          },
+        },
+      }).then(() => {
+        setIsVisibleModal(false);
+      });
+    modalConfirmDelete(onOk);
+  };
 
   return (
     <Modal
-      title={formatMessage({
-        id: 'button.create',
-      })}
+      title="Chi tiết"
       visible={isVisibleModal}
       footer={null}
       closeIcon={<CloseOutlined onClick={() => setIsVisibleModal(false)} />}
       centered
     >
-      <Form form={form}
-        layout="vertical"
-        onFinish={handleFinish}>
-        <Form.Item
-          name="date"
-          label={formatMessage({ id: 'common.date' })}
-          rules={[
-            {
-              required: true,
-              message: formatMessage({ id: 'form.formItem.required.message' }),
-            },
-          ]}
-        >
-          <DatePicker className='w--full' format="DD/MM/YYYY" />
-        </Form.Item>
-        <Form.Item
-          name="type"
-          label={formatMessage({ id: 'common.type' })}
-          rules={[
-            {
-              required: true,
-              message: formatMessage({ id: 'form.formItem.required.message' }),
-            },
-          ]}
-        >
-          <Select placeholder='Chọn loại' className='w--full'>
-            <Option value="success"><Badge status="success" /> Success</Option>
-            <Option value="error"> <Badge status="error" /> Error</Option>
-            <Option value="default"><Badge status="default" /> Default</Option>
-            <Option value="processing"><Badge status="processing" /> Processing</Option>
-            <Option value="warning"><Badge status="warning" /> Warning</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="content"
-          label={formatMessage({ id: 'common.title' })}
-          rules={[
-            {
-              required: true,
-              message: formatMessage({ id: 'form.formItem.required.message' }),
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Divider />
-        <Form.Item className="mb--0">
-          <Space className="w--full justify-content--flexEnd">
-            <Button onClick={() => setIsVisibleModal(false)}>
-              <FormattedMessage id="button.cancel" />
-            </Button>
-            <Button htmlType="submit"
-              type="primary">
-              <FormattedMessage
-                id='button.create'
-              />
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
+      <ul className="m--0 p--0">
+        {data?.map((item: any) => (
+          <li key={item.content}>
+            <Row gutter={10} className="mt--10">
+              <Col span={16}>
+                <Badge status={item.type} text={item.content} />
+              </Col>
+              <Col span={8}>
+                <Space className="w--full justify-content--flexEnd">
+                  <EditOutlined
+                    onClick={() => onEdit(item)}
+                    style={{ color: "#f1c40f", fontSize: "20px" }}
+                  />
+                  <DeleteOutlined
+                    onClick={() => onDelete(item)}
+                    style={{ color: "#c0392b", fontSize: "20px" }}
+                  />
+                </Space>
+              </Col>
+            </Row>
+          </li>
+        ))}
+      </ul>
+      <ModalCreate
+        isVisibleModal={modalEdit}
+        setIsVisibleModal={setModalEdit}
+        data={dataSelect}
+      />
     </Modal>
-  )
-}
+  );
+};
 
 export default connect(
   ({
     calendar,
     loading,
   }: {
-    calendar: CalendarT
+    calendar: CalendarT;
     loading: {
-      effects: Record<string, boolean>
-    }
+      effects: Record<string, boolean>;
+    };
   }) => ({
     dataTable: calendar.dataCalendar,
-    creating: loading.effects['calendar/createCalendar'],
-  }),
-)(ModalCreateOrEdit)
+    creating: loading.effects["calendar/createCalendar"],
+  })
+)(ModalCreateOrEdit);

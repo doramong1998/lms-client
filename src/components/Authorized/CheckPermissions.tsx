@@ -30,6 +30,9 @@ const checkPermissions = <T, K>(
   if (!authority) {
     return target
   }
+  if (authority === 'noAuth') {
+    return Exception
+  }
   // 数组处理
   if (Array.isArray(authority)) {
     if (Array.isArray(currentAuthority)) {
