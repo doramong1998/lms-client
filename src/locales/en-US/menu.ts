@@ -2,6 +2,7 @@ export default {
   'menu.home': 'Home',
   'menu.account': 'Account',
   'menu.account-manage': 'Account Manage',
+  'menu.message': 'Message',
   'menu.class-manage': 'Class Manage',
   'menu.class-manage.list': 'Class Manage',
   'menu.class-manage.detail': 'Detail class',

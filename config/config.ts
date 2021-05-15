@@ -206,6 +206,13 @@ export default defineConfig({
                   authority: ["1", "2", "3"],
                 },
                 {
+                  name: "message",
+                  icon: "MessageOutlined",
+                  path: "/message",
+                  component: "@/pages/Chat",
+                  authority: ["1", "2", "3"],
+                },
+                {
                   name: "settings",
                   icon: "SettingOutlined",
                   path: "/settings",

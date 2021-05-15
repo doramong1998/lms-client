@@ -2,7 +2,7 @@ import { message } from 'antd'
 import type { Effect, Reducer } from 'umi'
 import type { CalendarT } from './data'
 import {
-  getCalendar, createCalendar, deleteCalendar, updateCalendar
+  getCalendar, createCalendar, deleteCalendar, updateCalendar, createCalendarSubject
 } from './service'
 
 type Model = {
@@ -16,6 +16,7 @@ type Model = {
    createCalendar: Effect;
    deleteCalendar: Effect;
    updateCalendar: Effect;
+   createCalendarSubject: Effect;
   }
 }
 
@@ -52,6 +53,17 @@ export default <Model>{
     *createCalendar({ payload }, { call }) {
       try {
         const response = yield call(createCalendar, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *createCalendarSubject({ payload }, { call }) {
+      try {
+        const response = yield call(createCalendarSubject, payload);
         message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {

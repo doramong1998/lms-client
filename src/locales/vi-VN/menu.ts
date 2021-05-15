@@ -16,5 +16,6 @@ export default {
   'menu.calendar': 'Lịch cá nhân',
   'menu.enroll': 'Đăng ký học',
   'menu.enroll.enroll': 'Đăng ký',
-  'menu.enroll.enrollList': 'Danh sách đăng ký'
+  'menu.enroll.enrollList': 'Danh sách đăng ký',
+  'menu.message': 'Tin nhắn',
 }

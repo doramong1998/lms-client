@@ -10,6 +10,7 @@ export * from 'E:/a/Doan/lms-client/src/models/setting';
 export * from 'E:/a/Doan/lms-client/src/pages/Account/model';
 export * from 'E:/a/Doan/lms-client/src/pages/AccountManage/model';
 export * from 'E:/a/Doan/lms-client/src/pages/Calendar/model';
+export * from 'E:/a/Doan/lms-client/src/pages/Chat/model';
 export * from 'E:/a/Doan/lms-client/src/pages/Class/ClassStudent/model';
 export * from 'E:/a/Doan/lms-client/src/pages/Class/ClassTeacher/model';
 export * from 'E:/a/Doan/lms-client/src/pages/ClassManage/DetailClass/model';

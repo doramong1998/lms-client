@@ -246,6 +246,18 @@ export function getRoutes() {
                 "exact": true
               },
               {
+                "name": "message",
+                "icon": "MessageOutlined",
+                "path": "/message",
+                "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__Chat' */'@/pages/Chat'), loading: LoadingComponent}),
+                "authority": [
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "exact": true
+              },
+              {
                 "name": "settings",
                 "icon": "SettingOutlined",
                 "path": "/settings",

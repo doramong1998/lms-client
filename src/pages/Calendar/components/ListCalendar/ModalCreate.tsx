@@ -23,6 +23,7 @@ type Props = {
   isVisibleModal: boolean;
   setIsVisibleModal: any;
   data?: any;
+  idSubject?: any;
 };
 
 const ModalCreateOrEdit: FC<Props> = ({
@@ -30,23 +31,41 @@ const ModalCreateOrEdit: FC<Props> = ({
   isVisibleModal,
   setIsVisibleModal,
   data,
+  idSubject,
 }) => {
   const { formatMessage } = useIntl();
   const [form] = Form.useForm();
 
-  console.log(data);
-
   useEffect(() => {
-    form.setFieldsValue({
+   if(data){
+     form.setFieldsValue({
       date: moment(data?.time * 1000),
       type: data?.type,
       content: data?.content,
     });
+  }
   }, [data]);
 
   const handleFinish = (values: any) => {
     if (!data) {
-      dispatch({
+      if(idSubject){
+        dispatch({
+          type: "calendar/createCalendarSubject",
+          payload: {
+            data: {
+              idSubject,
+              name: values?.content,
+              type: values?.type,
+              time: moment(values?.date).unix(),
+              status: true,
+            },
+          },
+        }).then((res: any) => {
+          form.resetFields();
+          setIsVisibleModal(false);
+        });
+      }
+      else dispatch({
         type: "calendar/createCalendar",
         payload: {
           data: {

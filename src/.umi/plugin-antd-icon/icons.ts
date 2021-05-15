@@ -9,6 +9,7 @@ import GroupOutlined from '@ant-design/icons/GroupOutlined';
 import BookOutlined from '@ant-design/icons/BookOutlined';
 import UsergroupAddOutlined from '@ant-design/icons/UsergroupAddOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
+import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined'
 
 export default {
@@ -21,6 +22,7 @@ GroupOutlined,
 BookOutlined,
 UsergroupAddOutlined,
 UserOutlined,
+MessageOutlined,
 SettingOutlined
 }
     

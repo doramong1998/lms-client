@@ -28,6 +28,8 @@ import {
 import ModalTeacher from "./ModalTeacher";
 import ModalUpdatePoint from "./ModalUpdatePoint";
 import ModalAttend from "./ModalAttend";
+import ModalCreate from "@/pages/Calendar/components/ListCalendar/ModalCreate";
+import ModalShow from "@/pages/Calendar/components/ListCalendar/ModalShow";
 import moment from "moment";
 
 type Props = {
@@ -38,6 +40,9 @@ type Props = {
   loadingUpdate: boolean;
   loadingDelete: boolean;
   loadingUpdatePoint: boolean;
+  loadingCreateDate: boolean;
+  loadingUpdateDate: boolean;
+  loadingDeleteDate: boolean;
 };
 
 const ListNew: FC<Props> = ({
@@ -47,7 +52,10 @@ const ListNew: FC<Props> = ({
   loadingDelete,
   loadingGet,
   loadingUpdate,
-  loadingUpdatePoint
+  loadingUpdatePoint,
+  loadingCreateDate ,
+  loadingDeleteDate,
+  loadingUpdateDate,
 }) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,8 +63,10 @@ const ListNew: FC<Props> = ({
   const [isVisibleTeacher, setIsVisibleTeacher] = useState(false);
   const [isVisiblePoint, setIsVisiblePoint] = useState(false);
   const [isVisibleAttend, setIsVisibleAttend] = useState(false);
+  const [isVisibleCreate, setIsVisibleCreate] = useState(false);
+  const [isVisibleShow, setIsVisibleShow] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
+  const [selectedDate, setSelectedDate] = useState(null);
   useEffect(() => {
     dispatch({
       type: "subjectManageAndDetail/getDetailSubject",
@@ -68,6 +78,8 @@ const ListNew: FC<Props> = ({
       type: "subjectManageAndDetail/getListTeacher",
     });
   }, [dispatch]);
+
+  console.log(loadingDeleteDate)
 
   useEffect(() => {
     if (loadingGet === true) {
@@ -83,6 +95,9 @@ const ListNew: FC<Props> = ({
       loadingCreate === true ||
       loadingDelete === true ||
       loadingUpdate === true || 
+      loadingCreateDate === true ||
+      loadingDeleteDate === true ||
+      loadingUpdateDate === true || 
       loadingUpdatePoint === true
     ) {
       setLoading(true);
@@ -91,6 +106,9 @@ const ListNew: FC<Props> = ({
       loadingCreate === false ||
       loadingDelete === false ||
       loadingUpdate === false ||
+      loadingCreateDate === false ||
+      loadingDeleteDate === false ||
+      loadingUpdateDate === false || 
       loadingUpdatePoint === false
     ) {
       setSelectedRowKeys([]);
@@ -102,23 +120,26 @@ const ListNew: FC<Props> = ({
       });
       setLoading(false);
     }
-  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate,loadingUpdatePoint]);
+  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate,loadingUpdatePoint,loadingDeleteDate,loadingUpdateDate, loadingCreateDate]);
+
+  const onSelect = (date: any) => {
+    setSelectedDate(getListData(date));
+    if (getListData(date).length > 0) setIsVisibleShow(true);
+  };
 
   const getListData = (value: any) => {
     let listData: any = []
     dataTable?.data?.calendar?.map((item: any) => {
       if(moment.unix(item?.time).format("DD/MM/YYYY") === moment(value).format('DD/MM/YYYY')){
         listData.push({
-          type: item.type, content: item.name
+          type: item.type,
+          content: item.name,
+          idCalendar: item.idCalendar,
+          time: item?.time,
         })
       }
     })
     return listData
-  }
-
-  const onSelect = (date: any) => {
-    // setSelectedDate(date.format('DD/MM/YYYY'))
-    // setIsVisibleModalDate(true)
   }
 
   const dateCellRender = (value: any) => {
@@ -284,8 +305,6 @@ const ListNew: FC<Props> = ({
     },
   ];
 
-  console.log(dataTable?.data)
-
   return (
     <>
       <div className="layout--main__title">
@@ -408,6 +427,13 @@ const ListNew: FC<Props> = ({
         <Col span={12} className="font-size--20 font-weight--500">
           Lịch học:
         </Col>
+        <Col span={12} className="font-size--20 font-weight--500">
+        <Space className="w--full justify-content--flexEnd">
+                  <Button htmlType="submit" type="primary" onClick={() => setIsVisibleCreate(true)}>
+                    <PlusOutlined />Thêm lịch
+                  </Button>
+                </Space>
+        </Col>
         </Row>
       <Calendar dateCellRender={dateCellRender} onSelect={onSelect}/>
       <ModalAdd
@@ -434,6 +460,16 @@ const ListNew: FC<Props> = ({
         setIsVisibleModal={() => setIsVisibleAttend(false)}
         data={dataTable}
       />  
+      <ModalCreate
+        isVisibleModal={isVisibleCreate}
+        setIsVisibleModal={setIsVisibleCreate}
+        idSubject={dataTable?.data?.idSubject}
+      />
+      <ModalShow
+        isVisibleModal={isVisibleShow}
+        setIsVisibleModal={setIsVisibleShow}
+        data={selectedDate}
+      />
     </>
   );
 };
@@ -455,5 +491,8 @@ export default connect(
     loadingDelete:
       loading.effects["subjectManageAndDetail/deleteStudentFromSubject"],
     loadingUpdatePoint: loading.effects["subjectManageAndDetail/updatePoint"],
+    loadingCreateDate: loading.effects["calendar/createCalendarSubject"],
+    loadingUpdateDate: loading.effects["calendar/updateCalendar"],
+    loadingDeleteDate: loading.effects["calendar/deleteCalendar"],
   })
 )(ListNew);
