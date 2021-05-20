@@ -1,7 +1,19 @@
 /* eslint-disable no-underscore-dangle */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Row, Col, Divider, Table, Menu, Badge, Button, Dropdown, Space, Avatar } from "antd";
+import {
+  Row,
+  Col,
+  Divider,
+  Table,
+  Menu,
+  Badge,
+  Button,
+  Dropdown,
+  Space,
+  Avatar,
+  Upload,
+} from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage, history } from "umi";
 import ModalAdd from "./ModalAdd";
@@ -12,10 +24,13 @@ import {
   DeleteOutlined,
   MoreOutlined,
   PlusOutlined,
-  EyeOutlined
+  EyeOutlined,
+  FileExcelOutlined,
 } from "@ant-design/icons";
+import * as XLSX from "xlsx";
 import ModalTeacher from "./ModalTeacher";
 import ModalPoint from "./ModalPoint";
+import ModalXLSX from "./ModalXLSX";
 // import ModalUpload from "./ModalUpload";
 
 type Props = {
@@ -25,6 +40,7 @@ type Props = {
   loadingCreate: boolean;
   loadingUpdate: boolean;
   loadingDelete: boolean;
+  loadingImport: boolean;
 };
 
 const DetailClass: FC<Props> = ({
@@ -34,6 +50,7 @@ const DetailClass: FC<Props> = ({
   loadingDelete,
   loadingGet,
   loadingUpdate,
+  loadingImport
 }) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,13 +58,16 @@ const DetailClass: FC<Props> = ({
   const [isVisibleTeacher, setIsVisibleTeacher] = useState(false);
   const [isVisiblePoint, setIsVisiblePoint] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [isVisibleXLSX, setIsVisibleXLSX] = useState(false);
+
+  const [dataXLSX, setDataXLSX] = useState<any>(null);
 
   useEffect(() => {
     dispatch({
       type: "classManageAndDetail/getDetailClass",
       payload: {
-        id: history.location.pathname.replace('/class-manage/','')
-      }
+        id: history.location.pathname.replace("/class-manage/", ""),
+      },
     });
     dispatch({
       type: "classManageAndDetail/getListTeacher",
@@ -67,25 +87,27 @@ const DetailClass: FC<Props> = ({
     if (
       loadingCreate === true ||
       loadingDelete === true ||
-      loadingUpdate === true
+      loadingUpdate === true ||
+      loadingImport === true
     ) {
       setLoading(true);
     }
     if (
       loadingCreate === false ||
       loadingDelete === false ||
-      loadingUpdate === false
+      loadingUpdate === false ||
+      loadingImport === false
     ) {
       setSelectedRowKeys([]);
       dispatch({
         type: "classManageAndDetail/getDetailClass",
         payload: {
-          id: history.location.pathname.replace('/class-manage/','')
-        }
+          id: history.location.pathname.replace("/class-manage/", ""),
+        },
       });
       setLoading(false);
     }
-  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate]);
+  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate, loadingImport]);
 
   const dataSource =
     dataTable?.data?.students?.map((item: any) => ({
@@ -115,28 +137,48 @@ const DetailClass: FC<Props> = ({
         payload: {
           data: {
             idUser,
-            idClass: dataTable?.data?.idClass
+            idClass: dataTable?.data?.idClass,
           },
         },
       });
     modalConfirmDelete(onOk);
-  }
+  };
+
+  const handleUpload = (e: any) => {
+    const f = e.file;
+    const reader = new FileReader();
+    reader.onload = (evt: any) => {
+      // evt = on_file_select event
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, {
+        header: ["id", "code", "firstName", "", "", "lastName", "", "class"],
+        range: 11,
+      });
+      let newData = data?.filter((item: any) => item?.code)
+      setDataXLSX(newData);
+      setIsVisibleXLSX(true)
+    };
+    reader.readAsBinaryString(f);
+  };
 
   const columns: any = [
     {
       title: "STT",
       dataIndex: "STT",
       fixed: "left",
-      align:'center',
+      align: "center",
       width: 70,
       render: (value: any, item: any, index: number) => index + 1,
     },
     {
       title: "Ảnh đại diện",
       dataIndex: "avatar",
-      align:'center',
+      align: "center",
       width: 150,
-      render: (value: any) => <Avatar size={50} src={value} />
+      render: (value: any) => <Avatar size={50} src={value} />,
     },
     {
       title: "Họ và tên",
@@ -146,26 +188,26 @@ const DetailClass: FC<Props> = ({
     {
       title: "Mã sinh viên",
       dataIndex: "studentId",
-      align:'center',
+      align: "center",
       width: 120,
     },
     {
       title: "Giới tính",
       dataIndex: "gender",
-      align:'center',
+      align: "center",
       width: 120,
-      render: (value: any) => value === 'male' ? 'Nam' : 'Nữ'
+      render: (value: any) => (value === "male" ? "Nam" : "Nữ"),
     },
     {
       title: "Ngày sinh",
       dataIndex: "dob",
-      align:'center',
+      align: "center",
       width: 120,
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
-      align:'center',
+      align: "center",
       width: 120,
     },
     {
@@ -190,15 +232,18 @@ const DetailClass: FC<Props> = ({
     {
       title: "Hành động",
       dataIndex: "",
-      align:'center',
+      align: "center",
       fixed: "right",
       width: 120,
       render: (value: any, record: any) => {
         const menu = (
           <Menu>
-             <Menu.Item
+            <Menu.Item
               icon={<EyeOutlined />}
-              onClick={() => { setIsVisiblePoint(true); setData(value)}}
+              onClick={() => {
+                setIsVisiblePoint(true);
+                setData(value);
+              }}
             >
               Xem điểm
             </Menu.Item>
@@ -238,39 +283,74 @@ const DetailClass: FC<Props> = ({
         Chi tiết lớp: {dataTable?.data?.name}
       </div>
       <Divider />
-      <Row gutter={12} className='mb--5'>
-        <Col span={12} className='font-size--20 font-weight--500'>Thông tin chung:</Col>
+      <Row gutter={12} className="mb--5">
+        <Col span={12} className="font-size--20 font-weight--500">
+          Thông tin chung:
+        </Col>
         <Col span={12}>
           <Space className="w--full justify-content--flexEnd">
-            <Button type='default' onClick={() => setIsVisibleTeacher(true)} icon={<EditOutlined/>}>Sửa</Button>
+            <Button
+              type="default"
+              onClick={() => setIsVisibleTeacher(true)}
+              icon={<EditOutlined />}
+            >
+              Sửa
+            </Button>
           </Space>
         </Col>
       </Row>
-        <Row gutter={12}>
-          <Col span={8} lg={4} className='font-weight--500'>Quản lý lớp:</Col>
-          <Col span={16} lg={20}>{dataTable?.data?.teacher?.fullName}</Col>
-        </Row>
-        <Row gutter={12}>
-        <Col span={8} lg={4} className='font-weight--500'>Số điện thoại:</Col>
-          <Col span={16} lg={20}>{dataTable?.data?.teacher?.phone}</Col>
-        </Row>
-        <Row>
-        <Col span={8} lg={4} className='font-weight--500'>Email:</Col>
-          <Col span={16} lg={20}>{dataTable?.data?.teacher?.email}</Col>
-        </Row>
-        <Row>
-        <Col span={8} lg={4} className='font-weight--500'>Tổng số sinh viên:</Col>
-          <Col span={16} lg={20}>{dataTable?.data?.students.length}</Col>
-        </Row>
+      <Row gutter={12}>
+        <Col span={8} lg={4} className="font-weight--500">
+          Quản lý lớp:
+        </Col>
+        <Col span={16} lg={20}>
+          {dataTable?.data?.teacher?.fullName}
+        </Col>
+      </Row>
+      <Row gutter={12}>
+        <Col span={8} lg={4} className="font-weight--500">
+          Số điện thoại:
+        </Col>
+        <Col span={16} lg={20}>
+          {dataTable?.data?.teacher?.phone}
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8} lg={4} className="font-weight--500">
+          Email:
+        </Col>
+        <Col span={16} lg={20}>
+          {dataTable?.data?.teacher?.email}
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8} lg={4} className="font-weight--500">
+          Tổng số sinh viên:
+        </Col>
+        <Col span={16} lg={20}>
+          {dataTable?.data?.students.length}
+        </Col>
+      </Row>
       <Divider />
       <Row gutter={24} className="mb--24">
         <Col md={12}></Col>
         <Col md={12}>
           <Space className="w--full justify-content--flexEnd">
+            <Upload
+              beforeUpload={() => false}
+              onChange={handleUpload}
+              showUploadList={false}
+            >
+              <Button type="default">
+                <FileExcelOutlined className="mr--5" />
+                Tải file
+              </Button>
+            </Upload>
+
             <Button
               type="primary"
               onClick={() => {
-                setIsVisibleModal(true)
+                setIsVisibleModal(true);
               }}
             >
               <PlusOutlined className="mr--5" />
@@ -290,16 +370,16 @@ const DetailClass: FC<Props> = ({
         loading={loading}
         columns={columns}
         dataSource={dataSource}
-        scroll={{x: 1500}}
-        style={{width: 1183}}
+        scroll={{ x: 1500 }}
+        style={{ width: "100%" }}
       ></Table>
 
       <ModalAdd
         isVisibleModal={isVisibleModal}
-        setIsVisibleModal={() => setIsVisibleModal(false) }
+        setIsVisibleModal={() => setIsVisibleModal(false)}
         dataClass={dataTable?.data}
       />
-  {/* <ModalUpload
+      {/* <ModalUpload
         isVisibleModal={isVisibleModalUpload}
         setIsVisibleModal={() => {
           setIsVisibleModalUpload(false);
@@ -309,13 +389,19 @@ const DetailClass: FC<Props> = ({
 
       <ModalTeacher
         isVisibleModal={isVisibleTeacher}
-        setIsVisibleModal={() => setIsVisibleTeacher(false) }
+        setIsVisibleModal={() => setIsVisibleTeacher(false)}
         dataClass={dataTable}
       />
-        <ModalPoint
+      <ModalPoint
         isVisibleModal={isVisiblePoint}
-        setIsVisibleModal={() => setIsVisiblePoint(false) }
+        setIsVisibleModal={() => setIsVisiblePoint(false)}
         data={data}
+      />
+       <ModalXLSX
+        isVisibleModal={isVisibleXLSX}
+        setIsVisibleModal={() => { setIsVisibleXLSX(false); setDataXLSX(null) }}
+        data={dataXLSX}
+        idClass={dataTable?.data?.idClass}
       />
     </>
   );
@@ -335,6 +421,8 @@ export default connect(
     loadingGet: loading.effects["classManageAndDetail/getListClass"],
     loadingCreate: loading.effects["classManageAndDetail/addStudentToClass"],
     loadingUpdate: loading.effects["classManageAndDetail/updateClass"],
-    loadingDelete: loading.effects["classManageAndDetail/deleteStudentFromClass"],
+    loadingDelete:
+      loading.effects["classManageAndDetail/deleteStudentFromClass"],
+    loadingImport: loading.effects["classManageAndDetail/addFileStudentToClass"],
   })
 )(DetailClass);

@@ -26,6 +26,13 @@ export const addStudentToClass = (payload: ParamType) => {
   } )
 }
 
+export const addFileStudentToClass = (payload: ParamType) => {
+  return request(`${API_URL}/classes/addFileStudentToClass`,{
+    method: 'POST',
+    data: payload.data,
+  } )
+}
+
 export const changeTeacherClass = (payload: ParamType) => {
   return request(`${API_URL}/classes/changeTeacherClass`,{
     method: 'POST',

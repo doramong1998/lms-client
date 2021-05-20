@@ -9,7 +9,8 @@ import {
   changeTeacherClass,
   deleteStudentFromClass,
   getPointStudent,
-  getClassByStudent
+  getClassByStudent,
+  addFileStudentToClass
 } from "./service";
 
 type Model = {
@@ -31,6 +32,7 @@ type Model = {
     deleteStudentFromClass: Effect;
     getPointStudent: Effect;
     getClassByStudent: Effect;
+    addFileStudentToClass: Effect;
   };
 };
 
@@ -122,6 +124,17 @@ export default <Model>{
     *addStudentToClass({ payload }, { call, put }) {
       try {
         const response = yield call(addStudentToClass, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.error || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *addFileStudentToClass({ payload }, { call, put }) {
+      try {
+        const response = yield call(addFileStudentToClass, payload);
         message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {
