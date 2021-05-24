@@ -10,7 +10,8 @@ import {
   deleteStudentFromSubject,
   updatePoint,
   getAttend,
-  postAttend
+  postAttend,
+  addFileStudentToSubject
 } from "./service";
 
 type Model = {
@@ -32,6 +33,7 @@ type Model = {
     updatePoint: Effect;
     getAttend: Effect;
     postAttend: Effect;
+    addFileStudentToSubject: Effect;
   };
 };
 
@@ -114,6 +116,17 @@ export default <Model>{
     *addStudentToSubject({ payload }, { call, put }) {
       try {
         const response = yield call(addStudentToSubject, payload);
+        message.success(response?.message || "Thành công!");
+        return Promise.resolve(response);
+      } catch (error) {
+        const err = yield error.response.json();
+        message.error(err?.message || "Có lỗi xảy ra, vui lòng thử lại!");
+        return Promise.reject(err);
+      }
+    },
+    *addFileStudentToSubject({ payload }, { call, put }) {
+      try {
+        const response = yield call(addFileStudentToSubject, payload);
         message.success(response?.message || "Thành công!");
         return Promise.resolve(response);
       } catch (error) {

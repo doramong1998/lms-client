@@ -12,10 +12,12 @@ import {
   Dropdown,
   Space,
   Calendar,
+  Upload,
 } from "antd";
 import type { Dispatch } from "umi";
 import { connect, FormattedMessage, history } from "umi";
 import ModalAdd from "./ModalAdd";
+import * as XLSX from "xlsx";
 import type { SubjectT } from "../../data";
 import { modalConfirmDelete } from "@/utils/utils";
 import {
@@ -24,6 +26,7 @@ import {
   MoreOutlined,
   PlusOutlined,
   CheckCircleOutlined,
+  FileExcelOutlined,
 } from "@ant-design/icons";
 import ModalTeacher from "./ModalTeacher";
 import ModalUpdatePoint from "./ModalUpdatePoint";
@@ -31,6 +34,7 @@ import ModalAttend from "./ModalAttend";
 import ModalCreate from "@/pages/Calendar/components/ListCalendar/ModalCreate";
 import ModalShow from "@/pages/Calendar/components/ListCalendar/ModalShow";
 import moment from "moment";
+import ModalXLSX from "./ModalXLSX";
 
 type Props = {
   dispatch: Dispatch;
@@ -43,6 +47,7 @@ type Props = {
   loadingCreateDate: boolean;
   loadingUpdateDate: boolean;
   loadingDeleteDate: boolean;
+  loadingUpdateFile: boolean;
 };
 
 const ListNew: FC<Props> = ({
@@ -56,6 +61,7 @@ const ListNew: FC<Props> = ({
   loadingCreateDate ,
   loadingDeleteDate,
   loadingUpdateDate,
+  loadingUpdateFile
 }) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -67,6 +73,8 @@ const ListNew: FC<Props> = ({
   const [isVisibleShow, setIsVisibleShow] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isVisibleXLSX, setIsVisibleXLSX] = useState(false);
+  const [dataXLSX, setDataXLSX] = useState<any>(null);
   useEffect(() => {
     dispatch({
       type: "subjectManageAndDetail/getDetailSubject",
@@ -78,8 +86,6 @@ const ListNew: FC<Props> = ({
       type: "subjectManageAndDetail/getListTeacher",
     });
   }, [dispatch]);
-
-  console.log(loadingDeleteDate)
 
   useEffect(() => {
     if (loadingGet === true) {
@@ -98,7 +104,8 @@ const ListNew: FC<Props> = ({
       loadingCreateDate === true ||
       loadingDeleteDate === true ||
       loadingUpdateDate === true || 
-      loadingUpdatePoint === true
+      loadingUpdatePoint === true || 
+      loadingUpdateFile === true
     ) {
       setLoading(true);
     }
@@ -109,7 +116,8 @@ const ListNew: FC<Props> = ({
       loadingCreateDate === false ||
       loadingDeleteDate === false ||
       loadingUpdateDate === false || 
-      loadingUpdatePoint === false
+      loadingUpdatePoint === false ||
+      loadingUpdateFile === false
     ) {
       setSelectedRowKeys([]);
       dispatch({
@@ -120,7 +128,7 @@ const ListNew: FC<Props> = ({
       });
       setLoading(false);
     }
-  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate,loadingUpdatePoint,loadingDeleteDate,loadingUpdateDate, loadingCreateDate]);
+  }, [loadingCreate, dispatch, loadingDelete, loadingUpdate,loadingUpdatePoint,loadingDeleteDate,loadingUpdateDate,loadingUpdateFile, loadingCreateDate]);
 
   const onSelect = (date: any) => {
     setSelectedDate(getListData(date));
@@ -305,6 +313,26 @@ const ListNew: FC<Props> = ({
     },
   ];
 
+  const handleUpload = (e: any) => {
+    const f = e.file;
+    const reader = new FileReader();
+    reader.onload = (evt: any) => {
+      // evt = on_file_select event
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, {
+        header: ["id", "code", "firstName", "", "", "lastName", "", "class"],
+        range: 11,
+      });
+      let newData = data?.filter((item: any) => item?.code)
+      setDataXLSX(newData);
+      setIsVisibleXLSX(true)
+    };
+    reader.readAsBinaryString(f);
+  };
+
   return (
     <>
       <div className="layout--main__title">
@@ -388,6 +416,16 @@ const ListNew: FC<Props> = ({
         <Col md={12}></Col>
         <Col md={12}>
           <Space className="w--full justify-content--flexEnd">
+          <Upload
+              beforeUpload={() => false}
+              onChange={handleUpload}
+              showUploadList={false}
+            >
+              <Button type="default">
+                <FileExcelOutlined className="mr--5" />
+                Tải file
+              </Button>
+            </Upload>
           <Button
               type="default"
               onClick={() => {
@@ -470,6 +508,12 @@ const ListNew: FC<Props> = ({
         setIsVisibleModal={setIsVisibleShow}
         data={selectedDate}
       />
+       <ModalXLSX
+        isVisibleModal={isVisibleXLSX}
+        setIsVisibleModal={() => { setIsVisibleXLSX(false); setDataXLSX(null) }}
+        data={dataXLSX}
+        idSubject={dataTable?.data?.idSubject}
+      />
     </>
   );
 };
@@ -494,5 +538,6 @@ export default connect(
     loadingCreateDate: loading.effects["calendar/createCalendarSubject"],
     loadingUpdateDate: loading.effects["calendar/updateCalendar"],
     loadingDeleteDate: loading.effects["calendar/deleteCalendar"],
+    loadingUpdateFile: loading.effects["subjectManageAndDetail/addFileStudentToSubject"],
   })
 )(ListNew);

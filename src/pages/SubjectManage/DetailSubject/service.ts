@@ -26,6 +26,14 @@ export const addStudentToSubject = (payload: ParamType) => {
   } )
 }
 
+
+export const addFileStudentToSubject = (payload: ParamType) => {
+  return request(`${API_URL}/subject/addFileStudentToSubject`,{
+    method: 'POST',
+    data: payload.data,
+  } )
+}
+
 export const changeTeacherSubject = (payload: ParamType) => {
   return request(`${API_URL}/subject/changeTeacherSubject`,{
     method: 'POST',
