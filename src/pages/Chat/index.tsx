@@ -11,9 +11,9 @@ type Props = {
 };
 
 const Chatting: FC<Props> = ({ accountInfo }) => {
-  const appID = "33096e25a4674b9";
+  const appID = "1893053a8ed743f2";
   const region = "us";
-  const authKey = "814e65a68ab6e81ca0415e94c170f8702dc2c1a6";
+  const authKey = "6d93902f53e46d0bd5c7a1aa32ae11dfce5e84a2";
   const [authentication, setAuthentication] = useState(false);
   useEffect(() => {
     const appSetting = new CometChat.AppSettingsBuilder()

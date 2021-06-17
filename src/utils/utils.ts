@@ -8,8 +8,8 @@ export const isUrl = (path: string): boolean => reg.test(path)
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1])
 
-export const API_URL = 'https://doantotnghiephuy.tk/api'
-// export const API_URL = 'http://localhost:3000/api'
+// export const API_URL = 'https://doantotnghiephuy.tk/api'
+export const API_URL = 'http://localhost:3000/api'
 export const KEY_API = '51048b28ab891f17a50c22327a4d2414fe42f65d568a0a168712e204de2d975a'
 export const VIRUSTOTAL_URL = 'https://www.virustotal.com/vtapi/v2/file'
 export const TYPE_DATE = 'DD/MM/YYYY'
